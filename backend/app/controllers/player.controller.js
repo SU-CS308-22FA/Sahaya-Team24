@@ -25,7 +25,7 @@ exports.create = (req, res) => {
   };
 
   // Save Player in the database
-  Tutorial.create(player)
+  Player.create(player)
     .then(data => {
       res.send(data);
     })

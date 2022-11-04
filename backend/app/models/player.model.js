@@ -2,7 +2,8 @@
 module.exports = (sequelize, Sequelize) => {
     const Player = sequelize.define("player", {
       p_id: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        primaryKey: true
       },
       p_name: {
         type: Sequelize.STRING
