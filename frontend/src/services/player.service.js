@@ -1,4 +1,4 @@
-import http from "../http-common";
+import http from "../api/http-common";
 
 class PlayerDataService {
   getAll() {
