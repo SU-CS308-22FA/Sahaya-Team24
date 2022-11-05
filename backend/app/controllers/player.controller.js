@@ -5,7 +5,14 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Player
 exports.create = (req, res) => {
   // Validate request
-  if (!req.params.id || !req.params.name || !req.params.age || !req.params.positionA || !req.params.positionB || !req.params.location) {
+  console.log("req body");
+  console.log(req.body);
+  console.log("req params");
+  console.log(req.params);
+  console.log("req data");
+  console.log(req.data);
+  if (!req.body.p_id || !req.body.p_name || !req.body.p_age || !req.body.position_a || !req.body.position_b || !req.body.p_location) {
+    console.log("help");
     res.status(400).send({
       message: "Content can not be empty!"
     });
@@ -14,14 +21,14 @@ exports.create = (req, res) => {
 
   // Create a Player
   const player = {
-    p_id: req.params.id,
-    p_name: req.body.name,
-    p_age: req.body.age,
+    p_id: req.body.p_id,
+    p_name: req.body.p_name,
+    p_age: req.body.p_age,
     pr: 0,
     fpr: 0,
-    position_a: positionA,
-    position_b: positionB,
-    p_location: location
+    position_a: req.body.position_a,
+    position_b: req.body.position_b,
+    p_location: req.body.p_location
   };
 
   // Save Player in the database
