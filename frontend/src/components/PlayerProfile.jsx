@@ -8,8 +8,6 @@ import { Link } from "react-router-dom";
 import classes from './PlayerProfile.module.css';
 import Layout from './layout/Layout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { margin, padding } from "@mui/system";
-
 
 const PlayerProfile = () => {
   const [player, setPlayer] = useState(null);
@@ -19,10 +17,10 @@ const PlayerProfile = () => {
   useEffect(() => {
     const getPlayerData = async () => {
       try {
-        console.log(getAuth().currentUser.uid);
+        //console.log(getAuth().currentUser.uid);
         const uID = getAuth().currentUser.uid;
         const response = await PlayerDataService.get(uID);
-        console.log(response.data);
+        //console.log(response.data);
         setPlayer(response.data);
       } catch (err) {
         console.log(err);
@@ -56,7 +54,6 @@ const PlayerProfile = () => {
           label="Key"
           onChange={(event) => setKey(event.target.value)}
         >
-          
           <MenuItem value={"p_name"}>Name</MenuItem>
           <MenuItem value={"position_a"}>Position A</MenuItem>
           <MenuItem value={"position_b"}>Position B</MenuItem>
@@ -71,12 +68,8 @@ const PlayerProfile = () => {
       Change Value!</Button>
       </div>
       </Card>
-
-
       
-      
-      
-      <Link to="/" style={{
+      <Link to="/HomePage" style={{
        position: 'absolute', left: '90%',
       }}>Home</Link>
       

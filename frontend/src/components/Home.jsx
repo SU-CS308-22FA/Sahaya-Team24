@@ -5,7 +5,6 @@ import SignOut from './SignOut'
 
 import { Card } from '@mui/material';
 
-
 import classes from './Home.module.css';
 import Layout from './layout/Layout';
 
@@ -13,10 +12,8 @@ const Home = () => {
   let navigate = useNavigate();
 
   const navigateToProfile = () => {
-  navigate('/ProfilePage');
+    navigate('/ProfilePage');
   };
-
-  
 
   return (
     <div>
