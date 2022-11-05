@@ -22,7 +22,7 @@ const PlayerProfile = () => {
         console.log(getAuth().currentUser.uid);
         const uID = getAuth().currentUser.uid;
         const response = await PlayerDataService.get(uID);
-  
+        console.log(response.data);
         setPlayer(response.data);
       } catch (err) {
         console.log(err);
@@ -38,7 +38,7 @@ const PlayerProfile = () => {
       <Card className = {classes.cardProfile}>
       <div><AccountCircleIcon fontSize="large"  /></div>
       <div>Name:{player != null ? player.p_name : null}</div>
-      <div>Age:{player != null ? player.age : null}</div>
+      <div>Age:{player != null ? player.p_age : null}</div>
       <div>Player Rating:{player != null ? player.pr : null}</div>
       <div>Fair Play Rating:{player != null ? player.fpr : null}</div>
       <div>Position A:{player != null ? player.position_a : null}</div>

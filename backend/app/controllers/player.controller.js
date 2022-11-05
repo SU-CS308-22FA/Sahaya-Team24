@@ -67,6 +67,7 @@ exports.findOne = (req, res) => {
 
   Player.findByPk(id)
     .then(data => {
+      console.log(data);
       if (data) {
         res.send(data);
       } else {
