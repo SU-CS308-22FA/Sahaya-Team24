@@ -1,43 +1,103 @@
-import React, { useState } from "react";
+
 import PlayerDataService from '../services/player.service';
 import { TextField, Button } from "@mui/material";
-
+import React, { Component } from "react";
 import { getAuth } from "firebase/auth";
 
+export default class AddPlayer extends Component{ 
+  constructor(props) {
+    super(props);
+    this.onChangeName = this.onChangeName.bind(this);
+    this.onChangeAge = this.onChangeAge.bind(this);
+    this.onChangePosA = this.onChangePosA.bind(this);
+    this.onChangePosB = this.onChangePosB.bind(this);
+    this.onChangeLocation = this.onChangeLocation.bind(this);
+    this.savePlayer = this.savePlayer.bind(this);
+    this.newPlayer = this.newPlayer.bind(this);
 
-const CreatePlayer = () => {
-  const [age, setAge] = useState(0);
-  const [name, setName] = useState("");
-  const [positionA, setPositionA] = useState("");
-  const [positionB, setPositionB] = useState("");
-  const [pLocation, setPLocation] = useState("");
-
-  const handleSubmit = async () => {
-    var data = {
+    this.state = {
       p_id: getAuth().currentUser.uid,
-        p_name: name,
-        age: age,
-        position_a: positionA,
-        position_b: positionB,
-        p_location: pLocation,
+      p_name: "",
+      p_age: 0,
+      position_a: "",
+      position_b: "",
+      p_location: ""
     };
-    try {
-      PlayerDataService.create(data);
-      console.log(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  }
+  onChangeName(e) {
+    this.setState({
+      p_name: e.target.value
+    });
+  }
+  onChangeAge(e) {
+    this.setState({
+      p_age: e.target.value
+    });
+  }
+  onChangePosA(e) {
+    this.setState({
+      position_a: e.target.value
+    });
+  }
+  onChangePosB(e) {
+    this.setState({
+      position_b: e.target.value
+    });
+  }
+  onChangeLocation(e) {
+    this.setState({
+      p_location: e.target.value
+    });
+  }
+  
+  savePlayer() {
+    var data = {
+      p_id: this.state.p_id,
+      p_name: this.state.p_name,
+      p_age: this.state.p_age,
+      position_a: this.state.position_a,
+      position_b: this.state.position_b,
+      p_location: this.state.p_location,
+    };
 
+    PlayerDataService.create(data)
+      .then(response => {
+        this.setState({
+          p_id: response.data.id,
+          p_name: response.data.p_name,
+          p_age: response.data.p_age,
+          position_a: response.data.position_a,
+          position_b: response.data.position_b,
+          p_location: response.data.p_location
+        });
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+
+  newPlayer() {
+    this.setState({
+      p_id: getAuth().currentUser.uid,
+      p_name: "",
+      p_age: 0,
+      position_a: "",
+      position_b: "",
+      p_location: ""
+    });
+  }
+  render(){
   return (
+    
     <div className="register-container">
       <TextField
         id="input_name"
         required
         label="Name"
         variant="outlined"
-        value={name}
-        onChange={(event) => setName(event.target.value)}
+        value={this.state.p_name}
+        onChange={this.onChangeName}
       />
       <TextField
         id="input_age"
@@ -45,38 +105,39 @@ const CreatePlayer = () => {
         type="number"
         label="Age"
         variant="outlined"
-        value={age}
-        onChange={(event) => setAge(event.target.value)}
+        value={this.state.p_age}
+        onChange={this.onChangeAge}
       />
       <TextField
         id="input_positionA"
         required
         label="Position"
         variant="outlined"
-        value={positionA}
-        onChange={(event) => setPositionA(event.target.value)}
+        value={this.state.position_a}
+        onChange={this.onChangePosA}
       />
       <TextField
         id="input_positionB"
         required
         label="Second Position"
         variant="outlined"
-        value={positionB}
-        onChange={(event) => setPositionB(event.target.value)}
+        value={this.state.position_b}
+        onChange={this.onChangePosB}
       />
       <TextField
         id="input_location"
         required
         label="Location"
         variant="outlined"
-        value={pLocation}
-        onChange={(event) => setPLocation(event.target.value)}
+        value={this.state.p_location}
+        onChange={this.onChangeLocation}
       />
-      <Button variant="contained" onClick={() => handleSubmit()}>
+      <Button variant="contained" onClick={this.savePlayer}>
         Create User!
       </Button>
     </div>
+    
   );
+}
 };
 
-export default CreatePlayer;
