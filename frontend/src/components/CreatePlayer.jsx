@@ -1,10 +1,13 @@
 
 import PlayerDataService from '../services/player.service';
-import { TextField, Button } from "@mui/material";
+import { TextField, Button , Card } from "@mui/material";
 import React, { Component } from "react";
 import { getAuth } from "firebase/auth";
+import classes from './SignIn.module.css';
+import { withRouter } from './withRouter';
 
-export default class AddPlayer extends Component{ 
+
+class AddPlayer extends Component{ 
   constructor(props) {
     super(props);
     this.onChangeName = this.onChangeName.bind(this);
@@ -14,6 +17,7 @@ export default class AddPlayer extends Component{
     this.onChangeLocation = this.onChangeLocation.bind(this);
     this.savePlayer = this.savePlayer.bind(this);
     this.newPlayer = this.newPlayer.bind(this);
+    this.navigation = this.navigation.bind(this);
 
     this.state = {
       p_id: getAuth().currentUser.uid,
@@ -23,7 +27,12 @@ export default class AddPlayer extends Component{
       position_b: "",
       p_location: ""
     };
+    
   }
+  navigation(){
+    this.props.navigate('/')
+  }
+
   onChangeName(e) {
     this.setState({
       p_name: e.target.value
@@ -49,8 +58,11 @@ export default class AddPlayer extends Component{
       p_location: e.target.value
     });
   }
+
   
+
   savePlayer() {
+
     var data = {
       p_id: this.state.p_id,
       p_name: this.state.p_name,
@@ -75,6 +87,7 @@ export default class AddPlayer extends Component{
       .catch(e => {
         console.log(e);
       });
+
   }
 
   newPlayer() {
@@ -89,8 +102,8 @@ export default class AddPlayer extends Component{
   }
   render(){
   return (
-    
-    <div className="register-container">
+    <Card className={classes.card}>
+      <div className={classes.textFieldCss}>
       <TextField
         id="input_name"
         required
@@ -99,6 +112,9 @@ export default class AddPlayer extends Component{
         value={this.state.p_name}
         onChange={this.onChangeName}
       />
+      </div>
+
+      <div className={classes.textFieldCss}>
       <TextField
         id="input_age"
         required
@@ -108,6 +124,8 @@ export default class AddPlayer extends Component{
         value={this.state.p_age}
         onChange={this.onChangeAge}
       />
+      </div>
+      <div className={classes.textFieldCss}>
       <TextField
         id="input_positionA"
         required
@@ -116,6 +134,8 @@ export default class AddPlayer extends Component{
         value={this.state.position_a}
         onChange={this.onChangePosA}
       />
+      </div>
+      <div className={classes.textFieldCss}>
       <TextField
         id="input_positionB"
         required
@@ -124,6 +144,8 @@ export default class AddPlayer extends Component{
         value={this.state.position_b}
         onChange={this.onChangePosB}
       />
+      </div>
+      <div className={classes.textFieldCss}>
       <TextField
         id="input_location"
         required
@@ -132,12 +154,18 @@ export default class AddPlayer extends Component{
         value={this.state.p_location}
         onChange={this.onChangeLocation}
       />
+      </div>
+
       <Button variant="contained" onClick={this.savePlayer}>
         Create User!
       </Button>
-    </div>
-    
+      
+      <Button variant="contained" onClick={this.navigation}>
+        Go to Signin
+      </Button>
+    </Card>
   );
 }
 };
 
+export default withRouter(AddPlayer);

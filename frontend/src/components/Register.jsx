@@ -24,7 +24,7 @@ const Register = () => {
     try {
       const { user } = await registerWithEmailAndPassword(uMail, uPassword);
       console.log(user);
-      navigateToHome();
+      navigateToCP();
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         alert("Cannot create user, email already in use");
@@ -34,9 +34,10 @@ const Register = () => {
     }
   };
 
-
-  const navigateToHome = () => {
-    navigate('/HomePage');
+  
+  
+  const navigateToCP = () => {
+    navigate('/RegisterP/CreateProfile');
     };
 
     const navigateToSign = () => {
