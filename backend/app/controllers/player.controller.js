@@ -11,7 +11,7 @@ exports.create = (req, res) => {
   console.log(req.params);
   console.log("req data");
   console.log(req.data);
-  if (!req.params.p_id || !req.params.p_name || !req.params.p_age || !req.params.position_a || !req.params.position_b || !req.params.p_location) {
+  if (!req.body.p_id || !req.body.p_name || !req.body.p_age || !req.body.position_a || !req.body.position_b || !req.body.p_location) {
     console.log("help");
     res.status(400).send({
       message: "Content can not be empty!"
@@ -21,14 +21,14 @@ exports.create = (req, res) => {
 
   // Create a Player
   const player = {
-    p_id: req.params.p_id,
-    p_name: req.params.p_name,
-    p_age: req.params.p_age,
+    p_id: req.body.p_id,
+    p_name: req.body.p_name,
+    p_age: req.body.p_age,
     pr: 0,
     fpr: 0,
-    position_a: req.params.position_a,
-    position_b: req.params.position_b,
-    p_location: req.params.p_location
+    position_a: req.body.position_a,
+    position_b: req.body.position_b,
+    p_location: req.body.p_location
   };
 
   // Save Player in the database
