@@ -67,6 +67,7 @@ exports.findOne = (req, res) => {
 
   Player.findByPk(id)
     .then(data => {
+      console.log(data);
       if (data) {
         res.send(data);
       } else {
@@ -102,7 +103,7 @@ exports.update = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Tutorial with p_id=" + id
+        message: "Error updating player with p_id=" + id
       });
     });
 };
@@ -110,8 +111,9 @@ exports.update = (req, res) => {
 // Delete a Player with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
+  console.log(id);
   Player.destroy({
-    where: { id: id }
+    where: { p_id: id }
   })
     .then(num => {
       if (num == 1) {
