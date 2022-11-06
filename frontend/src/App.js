@@ -7,6 +7,8 @@ import classes from "./App.module.css";
 
 import HomePage from "./pages/HomePage";
 import RegisterP from "./pages/RegisterP";
+import AddPlayerP from  "./pages/AddPlayerP";
+import ProfilePage from "./pages/ProfilePage";
 
 const App = () => {
   return (
@@ -18,6 +20,8 @@ const App = () => {
             <Route path="/" element={<SignInPage />} />
             <Route path="/RegisterP" element={<RegisterP />} />
             <Route path="/HomePage" element={<HomePage />} />
+            <Route path="/RegisterP/CreateProfile" element={<AddPlayerP />} />
+            <Route path="/ProfilePage" element={<ProfilePage/>} />
           </Routes>
         </div>
       </div>
