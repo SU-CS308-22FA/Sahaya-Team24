@@ -103,7 +103,7 @@ exports.update = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Tutorial with p_id=" + id
+        message: "Error updating player with p_id=" + id
       });
     });
 };

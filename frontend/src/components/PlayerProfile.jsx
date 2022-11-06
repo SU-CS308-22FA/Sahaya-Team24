@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import {Button, Select, MenuItem, FormControl, InputLabel,TextField ,Card,Stack} from '@mui/material'
 import PlayerDataService from '../services/player.service';
 import Delete from "./Delete";
-import PatchPlayer from "./PatchPlayer";
+import updatePlayer from "./updatePlayer";
 import { Link } from "react-router-dom";
 import classes from './PlayerProfile.module.css';
 import Layout from './layout/Layout';
@@ -13,14 +13,24 @@ const PlayerProfile = () => {
   const [player, setPlayer] = useState(null);
   const [key, setKey] = useState("")
   const [value, setValue] = useState("")
-  
+  const getBody = () => {
+    let newBody = player
+    newBody[key] = value
+    setPlayer(player => ({
+      ...player,
+      ...newBody
+    }))
+    console.log(newBody)
+    return newBody
+  }
+
   useEffect(() => {
     const getPlayerData = async () => {
       try {
         //console.log(getAuth().currentUser.uid);
         const uID = getAuth().currentUser.uid;
         const response = await PlayerDataService.get(uID);
-        //console.log(response.data);
+        console.log(response.data);
         setPlayer(response.data);
       } catch (err) {
         console.log(err);
@@ -29,7 +39,8 @@ const PlayerProfile = () => {
     getPlayerData();
     
   }, []);
-  console.log('player: ',player);
+  
+
   return (
     <div>
       <Layout>
@@ -63,7 +74,7 @@ const PlayerProfile = () => {
       <TextField variant="outlined" onChange={(event) =>setValue(event.target.value)}/>
       <div>
       <Button  className={classes.button} variant="contained" onClick={()=>{
-        PatchPlayer(key,value)
+        updatePlayer(getBody())
       }}>
       Change Value!</Button>
       </div>
@@ -73,7 +84,7 @@ const PlayerProfile = () => {
        position: 'absolute', left: '90%',
       }}>Home</Link>
       
-      <Button className = {classes.button} variant="contained" onClick={Delete}>DELETE profile</Button>
+      <Button className = {classes.button} variant="contained" onClick={()=>Delete()}>DELETE profile</Button>
     
     </div>
     )
