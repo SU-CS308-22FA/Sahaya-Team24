@@ -25,7 +25,7 @@ const PlayerProfile = () => {
   }
 
   let navigate = useNavigate();
-  const navigateToHome = () => {
+  const navigateToSignIn = () => {
       navigate('/');
   };
   useEffect(() => {
@@ -86,7 +86,7 @@ const PlayerProfile = () => {
       
       <Button className = {classes.button} variant="contained" onClick={()=>{
         Delete()
-        navigateToHome()
+        navigateToSignIn()
         }}>DELETE profile</Button>
     
     </div>
