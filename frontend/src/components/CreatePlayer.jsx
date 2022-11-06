@@ -30,7 +30,7 @@ class AddPlayer extends Component{
     
   }
   navigation(){
-    this.props.navigate('/')
+    this.props.navigate('./HomePage')
   }
 
   onChangeName(e) {
@@ -156,12 +156,11 @@ class AddPlayer extends Component{
       />
       </div>
 
-      <Button variant="contained" onClick={this.savePlayer}>
+      <Button variant="contained" onClick={()=>{
+        this.savePlayer()
+        this.navigation()
+        }}>
         Create User!
-      </Button>
-      
-      <Button variant="contained" onClick={this.navigation}>
-        Go to Signin
       </Button>
     </Card>
   );

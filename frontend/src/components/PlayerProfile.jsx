@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import classes from './PlayerProfile.module.css';
 import Layout from './layout/Layout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
+import { useNavigate } from 'react-router-dom';
 const PlayerProfile = () => {
   const [player, setPlayer] = useState(null);
   const [key, setKey] = useState("")
@@ -24,6 +24,10 @@ const PlayerProfile = () => {
     return newBody
   }
 
+  let navigate = useNavigate();
+  const navigateToHome = () => {
+      navigate('/');
+  };
   useEffect(() => {
     const getPlayerData = async () => {
       try {
@@ -80,11 +84,10 @@ const PlayerProfile = () => {
       </div>
       </Card>
       
-      <Link to="/HomePage" style={{
-       position: 'absolute', left: '90%',
-      }}>Home</Link>
-      
-      <Button className = {classes.button} variant="contained" onClick={()=>Delete()}>DELETE profile</Button>
+      <Button className = {classes.button} variant="contained" onClick={()=>{
+        Delete()
+        navigateToHome()
+        }}>DELETE profile</Button>
     
     </div>
     )
