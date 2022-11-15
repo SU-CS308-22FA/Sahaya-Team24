@@ -9,6 +9,7 @@ import HomePage from "./pages/HomePage";
 import RegisterP from "./pages/RegisterP";
 import AddPlayerP from  "./pages/AddPlayerP";
 import ProfilePage from "./pages/ProfilePage";
+import MatchCreateP from "./pages/MatchCreateP";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="/HomePage" element={<HomePage />} />
             <Route path="/RegisterP/CreateProfile" element={<AddPlayerP />} />
             <Route path="/ProfilePage" element={<ProfilePage/>} />
+            <Route path="/matchcreation" element={<MatchCreateP/>} />
           </Routes>
         </div>
       </div>
