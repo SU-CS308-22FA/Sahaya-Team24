@@ -7,3 +7,5 @@ class MatchDataService {
 
 
 }
+
+export default new MatchDataService();

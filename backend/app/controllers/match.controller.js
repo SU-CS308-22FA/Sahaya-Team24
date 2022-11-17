@@ -21,8 +21,8 @@ exports.create = (req, res) => {
   
     // Create a Match
     const match = {
-        m_id: req.body.p_id,
-        m_name: req.body.p_name,
+        m_id: req.body.m_id,
+        m_name: req.body.m_name,
         m_location: req.body.m_location,
         m_maxPlayer: req.body.m_maxPlayer,
         m_curPlayer: 0,
