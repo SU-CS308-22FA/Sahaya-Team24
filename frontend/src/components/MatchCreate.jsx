@@ -59,8 +59,8 @@ const MatchCreate = () => {
           fullWidth = {true}
         />
 
-        <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+        <FormControl fullWidth>  
+        <InputLabel id="demo-simple-select-label">Oyuncu sayısı</InputLabel>
         <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -82,7 +82,7 @@ const MatchCreate = () => {
         <>Hakem atansın istiyorum</>
         <Switch {...label} defaultunChecked />
         <div></div>
-        <Button color="success" variant="contained" >Contained</Button>
+        <Button color="success" variant="contained" >Yayınla</Button>
         
         </Box>
     </Card>

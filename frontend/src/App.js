@@ -21,6 +21,7 @@ const App = () => {
             <Route path="/" element={<SignInPage />} />
             <Route path="/RegisterP" element={<RegisterP />} />
             <Route path="/HomePage" element={<HomePage />} />
+            <Route path="/RegisterP/CreateProfile/HomePage" element={<HomePage />} />
             <Route path="/RegisterP/CreateProfile" element={<AddPlayerP />} />
             <Route path="/ProfilePage" element={<ProfilePage/>} />
             <Route path="/matchcreation" element={<MatchCreateP/>} />
