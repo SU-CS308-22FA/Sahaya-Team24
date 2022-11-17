@@ -37,7 +37,7 @@ const MatchCreate = () => {
 
 
     //----------------functions for select numof players-------------------
-    const [numofPlayers, setNOP] = React.useState('');
+    const [numofPlayers, setNOP] = React.useState();
 
     const handleplayerChange = (event) => {
     setNOP(event.target.value);
@@ -59,7 +59,7 @@ const MatchCreate = () => {
       m_id: "testid",
       m_name: name,
       m_location: mLocation,
-      m_maxPlayer: 12,
+      m_maxPlayer: numofPlayers,
       m_curPlayer: 0,
       m_needRefree: checked,
       m_date: value
