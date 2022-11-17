@@ -7,9 +7,15 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { spacing } from '@mui/system';
 
+//issues: axios bad reques: content cannot be emty
+// Also ıdk why but console logs comes one step back from the ffront end if you write "ege" to textfield it logs "eg"
+
+
 
 const MatchCreate = () => {
-    //ıdea this functions wil be addded as modal to hompage so that site will be much cooler
+  //idea this functions wil be addded as modal to hompage so that site will be much cooler
+
+
   //-------------functions for text fields-------------------------
   //matchname
     const [name, setName] = React.useState('Güzel bir lobi ismi');
@@ -44,17 +50,21 @@ const MatchCreate = () => {
     console.log("numofPlayers: ",numofPlayers);
     };
     //------------------------------------------------------------------
+
     
-    // for switch;
+    //----------------for switch--------------------------
     const [checked, setRefree] = React.useState(true);
     const handleRefreeChange = (event) => {
       setRefree(event.target.checked);
       console.log("checked: ",checked);
       
   };
+    //-------------------------------------------------
 
+
+    //-------------------send button------------------------
   const handlecreateMatch = () =>{
-  
+    //create data to send to data base
     var data = {
       m_id: "testid",
       m_name: name,
@@ -65,6 +75,7 @@ const MatchCreate = () => {
       m_date: value
     }
 
+    //send data to database
     MatchDataService.create(data)
     .then(response => {
       this.setState({
@@ -78,11 +89,12 @@ const MatchCreate = () => {
       });
       console.log(response.data);
     }).catch(err => {
+      //when you add err.response u get better feedback from axios
       console.log(err.response);
     });
 
-
   }
+  //---------------------------------------------------
 
   return (
     <Box m = {20} pt = {5}>
