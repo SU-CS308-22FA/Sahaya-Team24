@@ -59,7 +59,7 @@ const MatchCreate = () => {
       m_id: "testid",
       m_name: name,
       m_location: mLocation,
-      m_maxPlayer: numofPlayers,
+      m_maxPlayer: 12,
       m_curPlayer: 0,
       m_needRefree: checked,
       m_date: value
@@ -68,8 +68,8 @@ const MatchCreate = () => {
     MatchDataService.create(data)
     .then(response => {
       this.setState({
-        m_id: response.data.id,
-        m_name: response.data.p_name,
+        m_id: response.data.m_id,
+        m_name: response.data.m_name,
         m_location: response.data.m_location,
         m_maxPlayer: response.data.m_maxPlayer,
         m_curPlayer: response.data.m_curPlayer,
