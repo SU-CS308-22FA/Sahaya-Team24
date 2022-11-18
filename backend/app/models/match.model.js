@@ -22,7 +22,7 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue: false
       },
       m_date : {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,//changed from DATE
       },
     });
     return Match;

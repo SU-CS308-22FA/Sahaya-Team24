@@ -33,7 +33,7 @@ const MatchCreate = () => {
 
 
     //-------------functions for Date time picker--------------------------
-    const [value, setValue] = React.useState(dayjs().add(2,'h').toDate());
+    const [value, setValue] = React.useState(dayjs().add(2,'h').toString());
 
     const handleDateChange = (newValue) => {
       setValue(newValue);
@@ -43,7 +43,7 @@ const MatchCreate = () => {
 
 
     //----------------functions for select numof players-------------------
-    const [numofPlayers, setNOP] = React.useState();
+    const [numofPlayers, setNOP] = React.useState('');
 
     const handleplayerChange = (event) => {
     setNOP(event.target.value);
@@ -66,7 +66,7 @@ const MatchCreate = () => {
   const handlecreateMatch = () =>{
     //create data to send to data base
     var data = {
-      m_id: "testid",
+      m_id: "testid1",
       m_name: name,
       m_location: mLocation,
       m_maxPlayer: numofPlayers,
@@ -90,6 +90,7 @@ const MatchCreate = () => {
       console.log(response.data);
     }).catch(err => {
       //when you add err.response u get better feedback from axios
+      console.log(data);
       console.log(err.response);
     });
 
