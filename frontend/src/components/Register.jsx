@@ -5,11 +5,12 @@ import {
   registerWithEmailAndPassword,
   signInWithGooglePopup,
 } from "../utils/firebase";
-
+import { sendEmailVerification } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 
 import classes from "./Register.module.css";
 import Layout from './layout/Layout';
+import { auth } from "../utils/firebaseConfig";
 
 const Register = () => {
   const [uMail, setUMail] = useState("");
@@ -23,6 +24,7 @@ const Register = () => {
    
     try {
       const { user } = await registerWithEmailAndPassword(uMail, uPassword);
+      await sendEmailVerification(user.auth.currentUser)
       console.log(user);
       navigateToCP();
     } catch (error) {
