@@ -11,12 +11,24 @@ import { Box } from '@mui/system';
 const HomePage = () => {
   const auth=getAuth();
   let navigate = useNavigate();
+  
+  const [allLocations, setAllLocations] = useState([]);
+  const [selectedLocations, setSelectedLocation] = useState(allLocations);
+  const [selectedMatches, setSelectedMatches] = useState([]);
+
+  const [matchesDb, setMatchesDb] = useState([]);
+
 
   useEffect(() => {
     const getMatchesData = async () => {
       try {
         const response = await MatchDataService.getAll();
         console.log(response.data);
+        setMatchesDb(response.data);
+        setSelectedMatches(response.data);
+
+        let dummy=[...new Set(response.data.map((card) => card.m_location))];
+        setAllLocations(dummy);
       } catch (err) {
         console.log(err);
       }
@@ -26,32 +38,17 @@ const HomePage = () => {
   }, []);
 
 
-  const asd=[
-    {name:"Asdasd", stadium:"Sabanci", date:"Monday 22"},
-    {name:"sad", stadium:"Koc", date:"Wednesdey 12"},
-    {name:"asd", stadium:"Bilkent", date:"Thursday 15"},
-    {name:"das", stadium:"Sabanci", date:"Monday 22"},
-    {name:"asdda", stadium:"Koc", date:"Wednesdey 12"},
-    {name:"daasd", stadium:"Bilkent", date:"Thursday 15"},
-    {name:"asdad", stadium:"Sabanci", date:"Monday 22"},
-    {name:"dasdaad", stadium:"Koc", date:"Wednesdey 12"},
-    {name:"daasdas", stadium:"Bilkent", date:"Thursday 15"},
-    {name:"dassadads", stadium:"Sabanci", date:"Monday 22"},
-    {name:"dasdaads", stadium:"Koc", date:"Wednesdey 12"},
-    {name:"dasdasdas", stadium:"Bilkent", date:"Thursday 15"},
+  
 
-  ];
-
-  let allLocations=[...new Set(asd.map((card) => card.stadium))];
-  const [selectedLocations, setSelectedLocation] = useState(allLocations);
-  const [selectedMatches, setSelectedMatches] = useState(asd);
+  
 
   const handleFilter = () => {
     if(selectedLocations.length == 0){
-      setSelectedMatches(asd);
+      setSelectedMatches(matchesDb);
+      matchesDb.forEach((elemt) => console.log(elemt));
     }
     else{
-      let dummy = asd.filter((match) => selectedLocations.indexOf(match.stadium) > -1);
+      let dummy = matchesDb.filter((match) => selectedLocations.indexOf(match.m_location) > -1);
       setSelectedMatches(dummy);
     }
     
@@ -87,10 +84,10 @@ const HomePage = () => {
           <Box>
             <List spa style={{borderColor:"black"}}>
             <ListItem key={"dummy1"}>
-              <MatchListItem passedValue={{name:"dummy1", stadium:"Sabanci", date:"Monday 22"}}/>
+              <MatchListItem passedValue={{m_name:"dummy1", m_location:"Sabanci", m_date:"Monday 22"}}/>
               </ListItem>
               <ListItem key={"dummy2"} >
-              <MatchListItem passedValue={{name:"dummy2", stadium:"Sabanci", date:"Monday 22"}}/>
+              <MatchListItem passedValue={{m_name:"dummy2", m_location:"Sabanci", m_date:"Monday 22"}}/>
               </ListItem>
             </List>
           </Box>
@@ -124,10 +121,10 @@ const HomePage = () => {
           <Box>
             <List spa style={{borderColor:"black"}}>
               <ListItem key={"dummy3"} >
-              <MatchListItem passedValue={{name:"dummy3", stadium:"Sabanci", date:"Monday 22"}}/>
+              <MatchListItem passedValue={{m_name:"dummy3", m_location:"Sabanci", m_date:"Monday 22"}}/>
               </ListItem>
               <ListItem key={"dummy4"} >
-              <MatchListItem passedValue={{name:"dummy4", stadium:"Sabanci", date:"Monday 22"}}/>
+              <MatchListItem passedValue={{m_name:"dummy4", m_location:"Sabanci", m_date:"Monday 22"}}/>
               </ListItem>
             </List>
           </Box>
