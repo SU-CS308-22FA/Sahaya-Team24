@@ -44,3 +44,19 @@ exports.create = (req, res) => {
   };
 
 
+  exports.findAll = (req, res) => {
+    console.log("CONTROLLER FINDALL");
+    
+    Match.findAll({ where: true })
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving players."
+        });
+      });
+  };
+
+

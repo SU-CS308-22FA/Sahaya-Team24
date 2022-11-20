@@ -5,5 +5,8 @@ module.exports = app => {
   
     // Create a new Match
     router.post("/", matches.create);
+
+    router.get("/", matches.findAll);
+
     app.use("/api/matches", router);
   };

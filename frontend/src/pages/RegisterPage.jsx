@@ -1,17 +1,16 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TextField, Button, Typography, Card } from "@mui/material";
 import {
   registerWithEmailAndPassword,
-  signInWithGooglePopup,
 } from "../utils/firebase";
 
 import { useNavigate } from 'react-router-dom';
 
-import classes from "./Register.module.css";
-import Layout from './layout/Layout';
+import classes from "../components/Mix.module.css";
+import Layout from '../components/layout/Layout';
 
-const Register = () => {
+const RegisterPage = () => {
   const [uMail, setUMail] = useState("");
   const [uPassword, setUPassword] = useState("");
   const [uCPassword, setUCPassword] = useState("");
@@ -37,7 +36,7 @@ const Register = () => {
   
   
   const navigateToCP = () => {
-    navigate('/RegisterP/CreateProfile');
+    navigate('/CreatePlayer');
     };
 
     const navigateToSign = () => {
@@ -45,17 +44,15 @@ const Register = () => {
     };
 
   return (
-    
-      <div>
+    <Card style={{backgroundImage:"url('https://amplex.dk/wp-content/uploads/2016/08/iStock_000022325111Large.jpg')", backgroundSize:"cover", backgroundPosition:"center", height:"100vh", borderRadius:"0"}}>
         <Layout>
-        <Card className={classes.card}>
-        <Typography variant="h4" color="#076a06" align="center" gutterBottom>
+        <Card style={{ backgroundColor:"#ffffff", opacity:"85%"}} className={classes.card}>
+        <Typography variant="h4" color="#00466e" align="center" gutterBottom>
             Welcome To Sahaya 
           </Typography>
         
         <div className={classes.textFieldCss}>
         <TextField
-          color="success"
           className={classes.textFieldCss}
           id="input_mail"
           required
@@ -68,7 +65,6 @@ const Register = () => {
         </div>
           <div className={classes.textFieldCss}>
           <TextField
-          color="success"
           className={classes.textFieldCss}
           id="input_password"
           required
@@ -82,7 +78,6 @@ const Register = () => {
           </div>
         <div className={classes.textFieldCss}>
         <TextField
-        color="success"
         className={classes.textFieldCss}
           id="input_confirm_password"
           required
@@ -97,17 +92,17 @@ const Register = () => {
           <div>Passwords don't match!</div>
         ) : null}
         <div>
-        <Button color="success" className={classes.button} variant="contained" onClick={() => handleSubmit()}>
+        <Button style={{margin:"5px"  }} variant="contained" onClick={() => handleSubmit()}>
           Register!
         </Button>
         </div>
         <div>
-        <Button className={classes.haveAccount} disabled={false} onClick={navigateToSign}>Already Have An Acccount?</Button>
+        <Button onClick={navigateToSign}>Already Have An Acccount?</Button>
         </div>
         </Card>
       </Layout>
-      </div>
+    </Card>
   );
 };
 
-export default Register;
+export default RegisterPage;
