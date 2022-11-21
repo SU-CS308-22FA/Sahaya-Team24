@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import MatchDataService from '../services/match.service';
 import dayjs, { Dayjs } from 'dayjs';
 import {Button, Select,  FormControl,MenuItem, InputLabel,TextField ,Card,Stack ,Box,Switch } from '@mui/material';
@@ -66,6 +67,8 @@ const MatchCreate = () => {
 
 
     //-------------------send button------------------------
+
+    let navigate = useNavigate();
   const handlecreateMatch = () =>{
     //create data to send to data base
     var data = {
@@ -97,6 +100,7 @@ const MatchCreate = () => {
       console.log(err.response);
     });
 
+    navigate('../HomePage');
   }
   //---------------------------------------------------
 
