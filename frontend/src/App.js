@@ -11,7 +11,6 @@ import ProfilePage from "./pages/ProfilePage";
 import MatchCreateP from "./pages/MatchCreateP";
 import RegisterPage from "./pages/RegisterPage";
 import MatchDetailPage from "./pages/MatchDetailPage"
-import MatchDetail from "./components/MatchDetail"
 
 
 const App = () => {
