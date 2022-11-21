@@ -6,9 +6,11 @@ import SignInPage from "./pages/SignInPage";
 import classes from "./App.module.css";
 
 import HomePage from "./pages/HomePage";
-import RegisterP from "./pages/RegisterP";
 import AddPlayerP from  "./pages/AddPlayerP";
 import ProfilePage from "./pages/ProfilePage";
+
+import RegisterPage from "./pages/RegisterPage";
+
 
 const App = () => {
   return (
@@ -18,7 +20,7 @@ const App = () => {
         <div className="content">
           <Routes>
             <Route path="/" element={<SignInPage />} />
-            <Route path="/RegisterP" element={<RegisterP />} />
+            <Route path="/RegisterPage" element={<RegisterPage />} />
             <Route path="/HomePage" element={<HomePage />} />
             <Route path="/RegisterP/CreateProfile" element={<AddPlayerP />} />
             <Route path="/ProfilePage" element={<ProfilePage/>} />

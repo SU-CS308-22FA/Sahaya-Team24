@@ -3,7 +3,7 @@ import PlayerDataService from '../services/player.service';
 import { TextField, Button , Card } from "@mui/material";
 import React, { Component } from "react";
 import { getAuth } from "firebase/auth";
-import classes from './SignIn.module.css';
+import classes from '../components/Mix.module.css';
 import { withRouter } from './withRouter';
 
 
