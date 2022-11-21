@@ -9,8 +9,9 @@ import HomePage from "./pages/HomePage";
 import AddPlayerP from  "./pages/AddPlayerP";
 import ProfilePage from "./pages/ProfilePage";
 import MatchCreateP from "./pages/MatchCreateP";
-
 import RegisterPage from "./pages/RegisterPage";
+import MatchDetailPage from "./pages/MatchDetailPage"
+import MatchDetail from "./components/MatchDetail"
 
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
             <Route path="/RegisterP/CreateProfile" element={<AddPlayerP />} />
             <Route path="/ProfilePage" element={<ProfilePage/>} />
             <Route path="/matchcreation" element={<MatchCreateP/>} />
+            <Route path="/matchDetail" element={<MatchDetailPage/>} />
           </Routes>
         </div>
       </div>
