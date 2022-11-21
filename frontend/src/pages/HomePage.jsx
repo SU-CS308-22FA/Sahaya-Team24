@@ -59,9 +59,16 @@ const HomePage = () => {
     });
   }
 
+
+
   const navigateToProfile = () => {
     navigate('/ProfilePage');
   };
+
+  const navigateToCreateMatch = () =>{
+    navigate( '/matchcreation' )
+
+  }
 
   if(getAuth().currentUser.emailVerified) return (
     <Card style={{backgroundImage: "url('https://amplex.dk/wp-content/uploads/2016/08/iStock_000022325111Large.jpg')", backgroundSize:"cover", backgroundPosition:"center", height:"100%", borderRadius:"0"}}>
@@ -71,6 +78,7 @@ const HomePage = () => {
     <h1 style={{color: "#ffffff", flexGrow: "1"}}>SAHAYA</h1>
     <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToProfile}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Profile</Typography></Button>
     <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={logout}><Typography style={{color: "#00466e", fontWeight: "bold"}}>SignOut!</Typography></Button>
+    <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToCreateMatch}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Create New Match</Typography></Button>
     </Toolbar>
     </AppBar>
     </Box>
