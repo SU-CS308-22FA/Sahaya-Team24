@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 const MatchListItem = (props) =>{
     let navigate = useNavigate();
+    let val = props.passedValue;
 
-    const navigateToMatchDetail = () => {
-        navigate('/MatchDetail');
+    const navigateToMatchDetail = (e) => {
+        navigate('/MatchDetail', {state: {sentVal: val,},});
       };
 
     return(
