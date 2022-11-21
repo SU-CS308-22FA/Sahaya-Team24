@@ -6,14 +6,17 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { spacing } from '@mui/system';
+import nextId from "react-id-generator"; // npm i react-id-generator
 
-//issues: axios bad reques: content cannot be emty
+
 // Also ıdk why but console logs comes one step back from the ffront end if you write "ege" to textfield it logs "eg"
 
 
 
 const MatchCreate = () => {
   //idea this functions wil be addded as modal to hompage so that site will be much cooler
+  const matchID = nextId("Match-Lobby-");
+
 
 
   //-------------functions for text fields-------------------------
@@ -66,7 +69,7 @@ const MatchCreate = () => {
   const handlecreateMatch = () =>{
     //create data to send to data base
     var data = {
-      m_id: "testid1",
+      m_id: matchID,
       m_name: name,
       m_location: mLocation,
       m_maxPlayer: numofPlayers,
