@@ -46,8 +46,8 @@ exports.create = (req, res) => {
 
   exports.findAll = (req, res) => {
     console.log("CONTROLLER FINDALL");
-    
-    Match.findAll({ where: true })
+    var condition = req ? req : null;
+    Match.findAll({ where: condition })
       .then(data => {
         res.send(data);
       })
