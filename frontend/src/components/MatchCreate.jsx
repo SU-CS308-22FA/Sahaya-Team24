@@ -69,6 +69,7 @@ const MatchCreate = () => {
     //-------------------send button------------------------
 
     let navigate = useNavigate();
+    var error_occured = false;
   const handlecreateMatch = () =>{
     //create data to send to data base
     var data = {
@@ -98,9 +99,14 @@ const MatchCreate = () => {
       //when you add err.response u get better feedback from axios
       console.log(data);
       console.log(err.response);
+      error_occured = true;
     });
 
-    navigate('../HomePage');
+    if(matchID != "" && name != ""  && mLocation != "" && numofPlayers != "" && value != ""){
+      navigate('../HomePage');
+    }else{
+      alert("Lütfen bütün boşlukları doldurunuz");
+    }
   }
   //---------------------------------------------------
 
