@@ -46,8 +46,7 @@ exports.create = (req, res) => {
 
 // Retrieve all Players from the database.
 exports.findAll = (req, res) => {
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
+  var condition = req ? req : null;
 
   Player.findAll({ where: condition })
     .then(data => {
