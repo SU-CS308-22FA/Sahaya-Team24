@@ -8,8 +8,9 @@ import classes from "./App.module.css";
 import HomePage from "./pages/HomePage";
 import AddPlayerP from "./pages/AddPlayerP";
 import ProfilePage from "./pages/ProfilePage";
-
+import MatchCreateP from "./pages/MatchCreateP";
 import RegisterPage from "./pages/RegisterPage";
+import MatchDetailPage from "./pages/MatchDetailPage"
 
 import { UserDataContext } from "./contexts/UserDataContext";
 import { UserIdContext } from "./contexts/UserIdContext";
@@ -32,6 +33,10 @@ const App = () => {
                 <Route path="/HomePage" element={<HomePage />} />
                 <Route path="/RegisterP/CreateProfile" element={<AddPlayerP />} />
                 <Route path="/ProfilePage" element={<ProfilePage />} />
+                <Route path="/ProfilePage" element={<ProfilePage/>} />
+                <Route path="/matchcreation" element={<MatchCreateP/>} />
+                <Route path="/matchDetail" element={<MatchDetailPage/>} />
+                <Route path="/RegisterP/CreateProfile/HomePage" element={<HomePage />} />
               </Routes>
             </div>
           </div>

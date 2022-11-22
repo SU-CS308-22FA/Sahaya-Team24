@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
 
 var corsOptions = {
@@ -19,6 +18,17 @@ db.sequelize.sync();
 // db.sequelize.sync({ force: true }).then(() => {
 //   console.log("Drop and re-sync db.");
 // });
+
+
+
+/*const sendEmail = require("./email/sendEmail")
+var mailOptions = { //Example email format you can use html instead of text
+  from: 'susahaya24@gmail.com',
+  to: 'ahmethanozcancs@gmail.com',
+  subject: 'Sending Email using Node.js',
+  text: 'That was easy!'
+};
+sendEmail(mailOptions)*/
 
 // simple route
 app.get("/", (req, res) => {

@@ -11,7 +11,7 @@ exports.create = (req, res) => {
     console.log(req.params);
     console.log("req data");
     console.log(req.data);
-    if (!req.body.m_id || !req.body.m_name || !req.body.m_location || !req.body.m_date) {//checks will be add
+    if (req.body.m_id != "" || req.body.m_name != "" || req.body.m_location != "" || req.body.m_date != ""|| req.body.m_maxPlayer != null ) {//checks will be add
       console.log("help");
       res.status(400).send({
         message: "Match content can not be empty!"
