@@ -1,23 +1,23 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
-import {Button, Select, MenuItem, FormControl, InputLabel,TextField ,Card,Stack} from '@mui/material'
-import PlayerDataService from '../services/player.service';
-import Delete from "./Delete";
-import updatePlayer from "./updatePlayer";
+import {Button, Select, MenuItem, FormControl, InputLabel,TextField ,Card} from '@mui/material'
+import RefereeDataService from '../services/referee.service';
+import DeleteR from "./DeleteR";
+import updateReferee from "./updateReferee";
 import classes from './PlayerProfile.module.css';
 import Layout from './layout/Layout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
-import { UserIdContext } from "../contexts/UserIdContext";
-const PlayerProfile = () => {
-  const [player, setPlayer] = useState(null);
+
+const RefereeProfile = () => {
+  const [referee, setReferee] = useState(null);
   const [key, setKey] = useState("")
   const [value, setValue] = useState("")
   const getBody = () => {
-    let newBody = player
+    let newBody = referee
     newBody[key] = value
-    setPlayer(player => ({
-      ...player,
+    setReferee(referee => ({
+      ...referee,
       ...newBody
     }))
     console.log(newBody)
@@ -29,38 +29,30 @@ const PlayerProfile = () => {
       navigate('/');
   };
 
-  const {userId} = useContext(UserIdContext);
-
   useEffect(() => {
-    const getPlayerData = async () => {
+    const getRefereeData = async () => {
       try {
-        //console.log(getAuth().currentUser.uid);
-        //const uID = getAuth().currentUser.uid;
-        const uID = userId;
-        const response = await PlayerDataService.get(uID);
+        const uID = getAuth().currentUser.uid;
+        const response = await RefereeDataService.get(uID);
         console.log(response.data);
-        setPlayer(response.data);
+        setReferee(response.data);
       } catch (err) {
         console.log(err);
       }
     };
-    getPlayerData();
-    
+    getRefereeData();
   }, []);
   
-
   return (
     <div>
       <Layout>
       <Card className = {classes.cardProfile}>
       <div><AccountCircleIcon fontSize="large"  /></div>
-      <div>Name:{player != null ? player.p_name : null}</div>
-      <div>Age:{player != null ? player.p_age : null}</div>
-      <div>Player Rating:{player != null ? player.pr : null}</div>
-      <div>Fair Play Rating:{player != null ? player.fpr : null}</div>
-      <div>Position A:{player != null ? player.position_a : null}</div>
-      <div>Position B:{player != null ? player.position_b : null}</div>
-      <div>Location:{player != null ? player.p_location : null}</div>
+      <div>Name:{referee != null ? referee.r_name : null}</div>
+      <div>Age:{referee != null ? referee.r_age : null}</div>
+      <div>Referee Rating:{referee != null ? referee.rr : null}</div>
+      <div>Fair Play Rating:{referee != null ? referee.fpr : null}</div>
+      <div>Location:{referee != null ? referee.r_location : null}</div>
       </Card>
       </Layout>
       <Card className = {classes.card}>
@@ -73,23 +65,21 @@ const PlayerProfile = () => {
           label="Key"
           onChange={(event) => setKey(event.target.value)}
         >
-          <MenuItem value={"p_name"}>Name</MenuItem>
-          <MenuItem value={"position_a"}>Position A</MenuItem>
-          <MenuItem value={"position_b"}>Position B</MenuItem>
-          <MenuItem value={"p_location"}>Location</MenuItem>
+          <MenuItem value={"r_name"}>Name</MenuItem>
+          <MenuItem value={"r_location"}>Location</MenuItem>
         </Select>
       </FormControl>
       <TextField variant="outlined" onChange={(event) =>setValue(event.target.value)}/>
       <div>
       <Button  className={classes.button} variant="contained" onClick={()=>{
-        updatePlayer(getBody())
+        updateReferee(getBody())
       }}>
       Change Value!</Button>
       </div>
       </Card>
       
       <Button className = {classes.button} variant="contained" onClick={()=>{
-        Delete()
+        DeleteR()
         navigateToSignIn()
         }}>DELETE profile</Button>
     
@@ -97,4 +87,4 @@ const PlayerProfile = () => {
     )
 };
 
-export default PlayerProfile;
+export default RefereeProfile;

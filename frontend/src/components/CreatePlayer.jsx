@@ -18,9 +18,10 @@ class AddPlayer extends Component{
     this.savePlayer = this.savePlayer.bind(this);
     this.newPlayer = this.newPlayer.bind(this);
     this.navigation = this.navigation.bind(this);
-
+    let uId = props.uID;
     this.state = {
-      p_id: getAuth().currentUser.uid,
+      //p_id: getAuth().currentUser.uid,
+      p_id: uId,
       p_name: "",
       p_age: 0,
       position_a: "",
@@ -30,7 +31,7 @@ class AddPlayer extends Component{
     
   }
   navigation(){
-    this.props.navigate('./HomePage')
+    this.props.navigate('/')
   }
 
   onChangeName(e) {
