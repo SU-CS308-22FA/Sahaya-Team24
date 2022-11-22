@@ -1,4 +1,4 @@
-import RefereeDataService from '../services/player.service';
+import RefereeDataService from '../services/referee.service';
 import { TextField, Button , Card } from "@mui/material";
 import React, { Component } from "react";
 import { getAuth } from "firebase/auth";
@@ -11,15 +11,15 @@ class AddReferee extends Component{
     super(props);
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangeAge = this.onChangeAge.bind(this);
-    this.onChangePosA = this.onChangePosA.bind(this);
-    this.onChangePosB = this.onChangePosB.bind(this);
     this.onChangeLocation = this.onChangeLocation.bind(this);
-    this.saveReferee = this.savePlayer.bind(this);
-    this.newReferee = this.newPlayer.bind(this);
+    this.saveReferee = this.saveReferee.bind(this);
+    this.newReferee = this.newReferee.bind(this);
     this.navigation = this.navigation.bind(this);
-
+    let uId = this.props.uID;
+    console.log(uId);
     this.state = {
-      r_id: getAuth().currentUser.uid,
+      //r_id: getAuth().currentUser.uid,
+      r_id: uId,
       r_name: "",
       r_age: 0,
       r_location: ""
@@ -51,19 +51,20 @@ class AddReferee extends Component{
   saveReferee() {
 
     var data = {
-      r_id: this.state.p_id,
-      r_name: this.state.p_name,
-      r_age: this.state.p_age,
-      r_location: this.state.p_location,
+      r_id: this.state.r_id,
+      r_name: this.state.r_name,
+      r_age: this.state.r_age,
+      r_location: this.state.r_location,
     };
-
+    console.log("data:");
+    console.log(data);
     RefereeDataService.create(data)
       .then(response => {
         this.setState({
           r_id: response.data.id,
-          r_name: response.data.p_name,
-          r_age: response.data.p_age,
-          r_location: response.data.p_location
+          r_name: response.data.r_name,
+          r_age: response.data.r_age,
+          r_location: response.data.r_location
         });
         console.log(response.data);
       })
@@ -75,7 +76,7 @@ class AddReferee extends Component{
 
   newReferee() {
     this.setState({
-      r_id: getAuth().currentUser.uid,
+      r_id: this.props.uID,
       r_name: "",
       r_age: 0,
       r_location: ""
