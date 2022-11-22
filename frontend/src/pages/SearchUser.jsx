@@ -6,10 +6,17 @@ import PlayerDataService from '../services/player.service';
 import PlayerList from '../components/playerList';
 import RefereeList from '../components/refereeList';
 
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const SearchUser = () => {
+  const [userType, setUserType] = useState('player');
   const [players, setPlayers] = useState(null);
   const [referees, setReferees] = useState(null);
+
   useEffect(() => {
     const getPlayerData = async () => {
       try {
@@ -33,13 +40,28 @@ const SearchUser = () => {
     getRefereeData();
   }, []);
   
-  
+  const handleChange = (event) => {
+    setUserType(event.target.value);
+  };
+
   return (
-    <div className='players'>
-      <h1>Players</h1>
-      {players && <PlayerList players={players} />}
-      <h1>Referees</h1>
-      {referees && <RefereeList referees={referees} />}
+    <div className='users'>
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl >
+          <InputLabel id="demo-simple-select-label">User Type</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={userType}
+            label="UserType"
+            onChange={handleChange}
+          >
+            <MenuItem value={'player'}>Player</MenuItem>
+            <MenuItem value={'referee'}>Referee</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+      {userType === 'player' ? <div>{players && <PlayerList players={players} />}</div> : <div>{referees && <RefereeList referees={referees} />}</div>}     
     </div> 
   );
 }
