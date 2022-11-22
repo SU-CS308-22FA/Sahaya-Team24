@@ -32,7 +32,6 @@ const RefereeProfile = () => {
   useEffect(() => {
     const getRefereeData = async () => {
       try {
-        //console.log(getAuth().currentUser.uid);
         const uID = getAuth().currentUser.uid;
         const response = await RefereeDataService.get(uID);
         console.log(response.data);

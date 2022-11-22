@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { getAuth } from "firebase/auth";
 import {Button, Select, MenuItem, FormControl, InputLabel,TextField ,Card,Stack} from '@mui/material'
 import PlayerDataService from '../services/player.service';
 import Delete from "./Delete";
 import updatePlayer from "./updatePlayer";
-import { Link } from "react-router-dom";
 import classes from './PlayerProfile.module.css';
 import Layout from './layout/Layout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
+import { UserIdContext } from "../contexts/UserIdContext";
 const PlayerProfile = () => {
   const [player, setPlayer] = useState(null);
   const [key, setKey] = useState("")
@@ -28,11 +28,15 @@ const PlayerProfile = () => {
   const navigateToSignIn = () => {
       navigate('/');
   };
+
+  const {userId} = useContext(UserIdContext);
+
   useEffect(() => {
     const getPlayerData = async () => {
       try {
         //console.log(getAuth().currentUser.uid);
-        const uID = getAuth().currentUser.uid;
+        //const uID = getAuth().currentUser.uid;
+        const uID = userId;
         const response = await PlayerDataService.get(uID);
         console.log(response.data);
         setPlayer(response.data);

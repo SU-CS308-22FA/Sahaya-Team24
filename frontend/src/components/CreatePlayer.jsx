@@ -30,7 +30,7 @@ class AddPlayer extends Component{
     
   }
   navigation(){
-    this.props.navigate('./HomePage')
+    this.props.navigate('/')
   }
 
   onChangeName(e) {

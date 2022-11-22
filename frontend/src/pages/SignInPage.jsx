@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { TextField, Button, Typography, Card  } from "@mui/material";
 
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 import classes from '../components/Mix.module.css';
 import Layout from '../components/layout/Layout';
 
+import { UserDataContext } from "../contexts/UserDataContext";
+import { UserIdContext } from "../contexts/UserIdContext";
 
 const SignInPage = () => {
     const auth = getAuth();
@@ -15,9 +22,11 @@ const SignInPage = () => {
     const [uPassword, setUPassword] = useState("");
     let navigate = useNavigate();
 
+    const {userType, setUserType} = useContext(UserDataContext);
+    const {setUserId} = useContext(UserIdContext);
 
     const navigateToHome = () => {
-    navigate('./HomePage');
+      navigate('./HomePage');
     };
 
     const navigateToReg = () => {
@@ -28,7 +37,8 @@ const SignInPage = () => {
       try{
       
         const { user } = await signInWithEmailAndPassword(auth, uMail, uPassword);
-        console.log(user);
+        setUserId(user.uid);
+        console.log(user.uid);
         console.log(user.email);
         navigateToHome();
       } catch (error) {
@@ -75,6 +85,15 @@ const SignInPage = () => {
               onChange={(event) => setUPassword(event.target.value)}
             />
             </div>
+
+            <FormControl>
+              <FormLabel id="demo-row-radio-buttons-group-label">Type of user</FormLabel>
+              <RadioGroup row value={userType} onChange={(e) => setUserType(e.target.value)}>
+                <FormControlLabel value="player" control={<Radio />} label="Player" />
+                <FormControlLabel value="referee" control={<Radio />} label="Referee" />
+              </RadioGroup>
+            </FormControl>
+
             <Button style={{margin:"5px"  }} variant="contained" onClick={() => handleSubmit()}>
               SignIn
             </Button>

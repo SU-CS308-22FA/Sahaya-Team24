@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PlayerProfile from '../components/PlayerProfile';
+import RefereeProfile from '../components/RefereeProfile';
 
+import {UserDataContext} from "../contexts/UserDataContext";
 
 const ProfilePage = () => {
+  const {userType} = useContext(UserDataContext);
   return (
     <div>
-        <PlayerProfile/>
+      {userType === 'player' ? <PlayerProfile/> : <RefereeProfile/>}
     </div>
   )
 }
