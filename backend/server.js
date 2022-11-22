@@ -19,16 +19,9 @@ db.sequelize.sync();
 //   console.log("Drop and re-sync db.");
 // });
 
+const schedule = require('./email/schedule')
 
-
-/*const sendEmail = require("./email/sendEmail")
-var mailOptions = { //Example email format you can use html instead of text
-  from: 'susahaya24@gmail.com',
-  to: 'ahmethanozcancs@gmail.com',
-  subject: 'Sending Email using Node.js',
-  text: 'That was easy!'
-};
-sendEmail(mailOptions)*/
+schedule()
 
 // simple route
 app.get("/", (req, res) => {
