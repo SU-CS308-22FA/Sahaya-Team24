@@ -11,9 +11,12 @@ import ProfilePage from "./pages/ProfilePage";
 import MatchCreateP from "./pages/MatchCreateP";
 import RegisterPage from "./pages/RegisterPage";
 import MatchDetailPage from "./pages/MatchDetailPage"
+import SearchUser from "./pages/SearchUser";
 
 import { UserDataContext } from "./contexts/UserDataContext";
 import { UserIdContext } from "./contexts/UserIdContext";
+import OtherPlayerProfile from "./components/OtherPlayerProfile";
+import OtherRefereeProfile from "./components/OtherRefereeProfile";
 
 const App = () => {
   const [userType, setUserType] = useState(null);
@@ -29,13 +32,15 @@ const App = () => {
             <div className="content">
               <Routes>
                 <Route path="/" element={<SignInPage />} />
+                <Route path="/Player" element={<OtherPlayerProfile />} />
+                <Route path="/Referee" element={<OtherRefereeProfile />} />
+                <Route path="/search" element={<SearchUser />} />
                 <Route path="/RegisterPage" element={<RegisterPage />} />
                 <Route path="/HomePage" element={<HomePage />} />
                 <Route path="/RegisterP/CreateProfile" element={<AddPlayerP />} />
                 <Route path="/ProfilePage" element={<ProfilePage />} />
-                <Route path="/ProfilePage" element={<ProfilePage/>} />
-                <Route path="/matchcreation" element={<MatchCreateP/>} />
-                <Route path="/matchDetail" element={<MatchDetailPage/>} />
+                <Route path="/matchcreation" element={<MatchCreateP />} />
+                <Route path="/matchDetail" element={<MatchDetailPage />} />
                 <Route path="/RegisterP/CreateProfile/HomePage" element={<HomePage />} />
               </Routes>
             </div>
