@@ -24,7 +24,7 @@ exports.create = (req, res) => {
     r_id: req.body.r_id,
     r_name: req.body.r_name,
     r_age: req.body.r_age,
-    pr: 0,
+    rr: 0,
     fpr: 0,
     r_location: req.body.r_location
   };
