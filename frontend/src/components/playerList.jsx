@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import './css/playerList.css';
 
 const PlayerList = ({ players }) => {
   return (
@@ -11,7 +12,7 @@ const PlayerList = ({ players }) => {
           <p> Pos A: { player.position_a }</p>
           <p> Pos B: { player.position_b }</p>
           <p> Location: { player.p_location }</p>
-          <Link to='/Player' state={{uID: player.p_id, uType: 'player'}}>Profile</Link>
+          <Link to='/Player' state={{uID: player.p_id, uType: 'player'}}><button>Profile</button></Link>
         </div>
       ))}
     </div>

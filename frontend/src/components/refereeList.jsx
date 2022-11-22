@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+import './css/refereeList.css';
+
 const RefereeList = ({ referees }) => {
   return (
     <div className="referee-list">
@@ -9,7 +11,7 @@ const RefereeList = ({ referees }) => {
           <p> RR: { referee.rr }</p>
           <p> FPR: { referee.fpr }</p>
           <p> Location: { referee.r_location }</p>
-          <Link to='/Referee' state={{uID: referee.r_id, uType: 'referee'}}>Profile</Link>
+          <Link to='/Referee' state={{uID: referee.r_id, uType: 'referee'}}><button>Profile</button></Link>
         </div>
       ))}
     </div>
