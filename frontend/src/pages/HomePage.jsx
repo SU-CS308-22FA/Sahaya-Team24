@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 import MatchDataService from '../services/match.service';
-import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card, Autocomplete, TextField} from '@mui/material';
+import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card, Autocomplete, TextField, Alert} from '@mui/material';
 import { Box } from '@mui/system';
 
 import MatchListItem from '../components/MatchListItem';
@@ -140,9 +140,15 @@ const HomePage = () => {
 
   </Card>
     )
-  else return(
-    <div>Please verify your email if already verified reload the page!</div>
-  )
+  else {
+    return(
+      <div >
+        <Alert severity='error'>Please verify your email and re-login!</Alert>
+        <Button style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={logout}><Typography style={{color: "#00466e", fontWeight: "bold"}}>LOGOUT!</Typography></Button>
+      </div>
+    )
+  }
+  
 }
 
 export default HomePage;
