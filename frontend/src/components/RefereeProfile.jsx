@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import {Button, Select, MenuItem, FormControl, InputLabel,TextField ,Card} from '@mui/material'
 import RefereeDataService from '../services/referee.service';
-import Delete from "./Delete";
+import DeleteR from "./DeleteR";
 import updateReferee from "./updateReferee";
 import classes from './PlayerProfile.module.css';
 import Layout from './layout/Layout';
@@ -79,7 +79,7 @@ const RefereeProfile = () => {
       </Card>
       
       <Button className = {classes.button} variant="contained" onClick={()=>{
-        Delete()
+        DeleteR()
         navigateToSignIn()
         }}>DELETE profile</Button>
     
