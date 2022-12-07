@@ -35,7 +35,6 @@ const SignInPage = () => {
 
     const handleSubmit = async () => {
       try{
-      
         const { user } = await signInWithEmailAndPassword(auth, uMail, uPassword);
         setUserId(user.uid);
         console.log(user.uid);

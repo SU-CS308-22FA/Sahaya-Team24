@@ -7,9 +7,9 @@ import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card,
 import { Box } from '@mui/system';
 
 import MatchListItem from '../components/MatchListItem';
-import classes from '../components/Mix.module.css';
-import Layout from '../components/layout/Layout';
+
 import { getAuth, signOut } from 'firebase/auth';
+
 
 const HomePage = () => {
   const auth=getAuth();
@@ -20,13 +20,15 @@ const HomePage = () => {
   const [selectedMatches, setSelectedMatches] = useState([]);
   const [matchesDb, setMatchesDb] = useState([]);
 
+
+
   useEffect(() => {
     const getMatchesData = async () => {
       try {
         const response = await MatchDataService.getAll();
-        console.log(response.data);
-        setMatchesDb(response.data);
-        setSelectedMatches(response.data);
+        console.log(response.data.sort((a, b) => (a.m_date > b.m_date) ? 1 : -1));
+        setMatchesDb(response.data.sort((a, b) => (a.m_date > b.m_date) ? 1 : -1));
+        setSelectedMatches(response.data.sort((a, b) => (a.m_date > b.m_date) ? 1 : -1));
 
         let dummy=[...new Set(response.data.map((card) => card.m_location))];
         setAllLocations(dummy);
@@ -88,20 +90,21 @@ const HomePage = () => {
     <Grid container spacing={3}>
       <Grid item xs={3}>
         <Box>
-          <List spa style={{borderColor:"black"}}>
-          <ListItem key={"dummy1"}>
-            <MatchListItem passedValue={{m_name:"dummy1", m_location:"Sabanci", m_date:"Monday 22"}}/>
+          <List spa="true" style={{borderColor:"black"}}>
+          <ListItem key="dummy1">
+            <MatchListItem key="dummy1" passedValue={{m_name:"dummy1", m_location:"Sabanci", m_date:"Monday 22"}}/>
             </ListItem>
-            <ListItem key={"dummy2"} >
-            <MatchListItem passedValue={{m_name:"dummy2", m_location:"Sabanci", m_date:"Monday 22"}}/>
+            <ListItem key="dummy2" >
+            <MatchListItem key="dummy2" passedValue={{m_name:"dummy2", m_location:"Sabanci", m_date:"Monday 22"}}/>
             </ListItem>
           </List>
         </Box>
       </Grid>
       <Grid style={{display: "flex", justifyContent: "center" }} item xs={6}>
           <Stack style={{minHeight:"100vh"}} spacing={2}>
-          <Autocomplete 
-      style={{width:"100%"}}
+          <Autocomplete
+          sx={{ color:"white" }}
+      style={{width:"100%", color:"white"}}
       onChange={(event, value) => setSelectedLocation(value)}
       multiple
       id="tags-standard"
@@ -118,19 +121,19 @@ const HomePage = () => {
       <Button style={{textTransform:"none", color:"white"}} onClick={handleFilter}>Apply Filters</Button>
           {selectedMatches.map((value) => (
             
-              <MatchListItem passedValue={value}/>
+              <MatchListItem key={value.m_id} passedValue={value}/>
             
           ))}
           </Stack>
       </Grid>
       <Grid item xs={3}>
         <Box>
-          <List spa style={{borderColor:"black"}}>
-            <ListItem key={"dummy3"} >
-            <MatchListItem passedValue={{m_name:"dummy3", m_location:"Sabanci", m_date:"Monday 22"}}/>
+          <List spa="true" style={{borderColor:"black"}}>
+            <ListItem key="dummy3" >
+            <MatchListItem key="dummy3" passedValue={{m_name:"dummy3", m_location:"Sabanci", m_date:"Monday 22"}}/>
             </ListItem>
-            <ListItem key={"dummy4"} >
-            <MatchListItem passedValue={{m_name:"dummy4", m_location:"Sabanci", m_date:"Monday 22"}}/>
+            <ListItem key="dummy4" >
+            <MatchListItem  key="dummy4" passedValue={{m_name:"dummy4", m_location:"Sabanci", m_date:"Monday 22"}}/>
             </ListItem>
           </List>
         </Box>
