@@ -1,8 +1,10 @@
 import { Typography, Card, Box, Toolbar, Button } from "@mui/material";
+import { getAuth } from "firebase/auth";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const MatchListItem = (props) =>{
+    const auth=getAuth();
     let navigate = useNavigate();
     let val = props.passedValue;
     var date =  new Date(val.m_date);
@@ -17,6 +19,8 @@ const MatchListItem = (props) =>{
 
     const navigateToMatchDetail = (e) => {
         navigate('/MatchDetail', {state: {sentVal: val,},});
+        console.log(auth.currentUser.email);
+        console.log(auth.currentUser.uid);
       };
 
     return(

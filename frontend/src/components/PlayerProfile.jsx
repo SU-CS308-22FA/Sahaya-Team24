@@ -37,6 +37,7 @@ const PlayerProfile = () => {
         //console.log(getAuth().currentUser.uid);
         //const uID = getAuth().currentUser.uid;
         const uID = userId;
+        console.log(uID);
         const response = await PlayerDataService.get(uID);
         console.log(response.data);
         setPlayer(response.data);
