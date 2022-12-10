@@ -1,26 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-
+import {UserDataContext} from "../contexts/UserDataContext";
+import PlayerDataService from '../services/player.service';
 import MatchDataService from '../services/match.service';
-import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card, Autocomplete, TextField, Alert} from '@mui/material';
+import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card, Autocomplete, TextField, Alert, Divider} from '@mui/material';
 import { Box } from '@mui/system';
 
 import MatchListItem from '../components/MatchListItem';
 
 import { getAuth, signOut } from 'firebase/auth';
+import PlayerProfileInfoCard from '../components/PlayerProfileInfoCard';
+import RefereeProfileInfoCard from '../components/RefereeProfileInfoCard';
 
 
 const HomePage = () => {
   const auth=getAuth();
   let navigate = useNavigate();
-
+  const [player, setPlayer] = useState(null);
   const [allLocations, setAllLocations] = useState([]);
   const [selectedLocations, setSelectedLocation] = useState(allLocations);
   const [selectedMatches, setSelectedMatches] = useState([]);
   const [matchesDb, setMatchesDb] = useState([]);
+  const {userType} = useContext(UserDataContext);
 
-
+  
 
   useEffect(() => {
     const getMatchesData = async () => {
@@ -91,11 +95,11 @@ const HomePage = () => {
       <Grid item xs={3}>
         <Box>
           <List spa="true" style={{borderColor:"black"}}>
-          <ListItem key="dummy1">
-            <MatchListItem key="dummy1" passedValue={{m_name:"dummy1", m_location:"Sabanci", m_date:"Monday 22"}}/>
-            </ListItem>
-            <ListItem key="dummy2" >
-            <MatchListItem key="dummy2" passedValue={{m_name:"dummy2", m_location:"Sabanci", m_date:"Monday 22"}}/>
+          <ListItem key="PlayerInfoAtLeft">
+          <Button style={{padding:"0", textTransform:"none"}} onClick={navigateToProfile}>
+          {userType === 'player' ? <PlayerProfileInfoCard passedValue={player}/> : <RefereeProfileInfoCard passedValue={player}/>}
+            
+        </Button>
             </ListItem>
           </List>
         </Box>
