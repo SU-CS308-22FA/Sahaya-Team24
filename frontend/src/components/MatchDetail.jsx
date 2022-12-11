@@ -3,7 +3,8 @@ import MatchDataService from '../services/match.service';
 import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card, Autocomplete, TextField} from '@mui/material';
 import { Box, margin } from '@mui/system';
 import classes from '../components/Mix.module.css';
-
+import { getAuth } from 'firebase/auth';
+import MatchEditDeletebtns from './MatchEditDeletebtns'
 
 
 const MatchDetail = (inVal) => {
@@ -24,6 +25,23 @@ const MatchDetail = (inVal) => {
 
     var hr = date.getHours();
     var min = date.getMinutes();
+   
+    
+    //---------------getCurrentuserID------------------
+    const auth=getAuth();
+    const uID = auth.currentUser.uid;
+    //-------------------------------------------------
+   
+    let show;
+    //<MatchEditDeletebtns passedValue = {show}/>
+    if(match.owner_id !== uID){
+      console.log("wiever is not owner");
+      show = false;
+     
+    }else{
+      console.log("wiever is owner");
+      show= true;
+    }
     
   return (
     <div>
@@ -58,8 +76,7 @@ const MatchDetail = (inVal) => {
           </Typography>
           </Box>
             <Button style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>
-            <Button id='editbtn' style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maçı Düzenle</Typography></Button>
-            <Button id= 'dltbtn' style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maçı Sil</Typography></Button>
+            <MatchEditDeletebtns passedValue = {show}/>
           </Box>
     </Card>
     
