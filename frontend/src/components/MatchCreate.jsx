@@ -8,7 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { spacing } from '@mui/system';
 import nextId from "react-id-generator"; // npm i react-id-generator
-
+import { getAuth } from 'firebase/auth';
 
 // Also ıdk why but console logs comes one step back from the ffront end if you write "ege" to textfield it logs "eg"
 
