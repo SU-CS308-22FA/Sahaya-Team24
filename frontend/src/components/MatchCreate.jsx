@@ -66,6 +66,12 @@ const MatchCreate = () => {
     //-------------------------------------------------
 
 
+    //---------------getCurrentuserID------------------
+    const auth=getAuth();
+    const uID = auth.currentUser.uid;
+    //-------------------------------------------------
+
+    
     //-------------------send button------------------------
 
     let navigate = useNavigate();
@@ -79,7 +85,8 @@ const MatchCreate = () => {
       m_maxPlayer: numofPlayers,
       m_curPlayer: 0,
       m_needRefree: checked,
-      m_date: value
+      m_date: value,
+      owner_id: uID
     }
 
     //send data to database
