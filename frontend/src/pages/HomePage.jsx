@@ -19,7 +19,7 @@ const HomePage = () => {
   let navigate = useNavigate();
   const [player, setPlayer] = useState(null);
   const [allLocations, setAllLocations] = useState([]);
-  const [selectedLocations, setSelectedLocation] = useState(allLocations);
+  const [selectedLocations, setSelectedLocations] = useState(allLocations);
   const [selectedMatches, setSelectedMatches] = useState([]);
   const [matchesDb, setMatchesDb] = useState([]);
   const {userType} = useContext(UserDataContext);
@@ -109,7 +109,7 @@ const HomePage = () => {
           <Autocomplete
           sx={{ color:"white" }}
       style={{width:"100%", color:"white"}}
-      onChange={(event, value) => setSelectedLocation(value)}
+      onChange={(event, value) => setSelectedLocations(value)}
       multiple
       id="tags-standard"
       options={allLocations}
