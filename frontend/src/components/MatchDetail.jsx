@@ -26,6 +26,7 @@ const MatchDetail = (inVal) => {
     var min = date.getMinutes();
     
   return (
+    <div>
     <Card  style={{ backgroundImage: "url('https://amplex.dk/wp-content/uploads/2016/08/iStock_000022325111Large.jpg')", backgroundSize:"cover", backgroundPosition:"center", height:"100vh", borderRadius:"0"}}>
           
           <Box sx={{flexGrow: 1}} m = {20} backgroundColor ='#00466e'  >
@@ -56,9 +57,13 @@ const MatchDetail = (inVal) => {
             {match.m_curPlayer} 
           </Typography>
           </Box>
-          <Button style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>
+            <Button style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>
+            <Button id='editbtn' style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maçı Düzenle</Typography></Button>
+            <Button id= 'dltbtn' style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maçı Sil</Typography></Button>
           </Box>
     </Card>
+    
+    </div>
   )
 }
 
