@@ -29,14 +29,14 @@ const RefereeProfileInfoCard = (props) =>{
         <Button>
             <Card style={{backgroundColor:"#00466e", margin:"1vh", width:"50vh"}}>
             <Box  sx={{flexGrow: 1, textAlign:"center"}}>
-                <Typography noWrap variant="h4" style={{color:"white", marginTop:"1vh"}}>{referee != null ? referee.p_name : null}</Typography>
+                <Typography noWrap variant="h4" style={{color:"white", marginTop:"1vh"}}>{referee != null ? referee.r_name : null}</Typography>
             </Box>
             <Divider style={{background:"white"}}/>
             <Box  sx={{flexGrow: 1, textAlign:"center"}}>
                 <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>Rating</Typography>
             </Box>
             <Box  sx={{flexGrow: 1, textAlign:"center"}}>
-                <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>{referee != null ? referee.pr : null}</Typography>
+                <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>{referee != null ? referee.rr : null}</Typography>
             </Box>
             <Divider style={{background:"white"}}/>
             <Box  sx={{flexGrow: 1, textAlign:"center"}}>
@@ -49,14 +49,14 @@ const RefereeProfileInfoCard = (props) =>{
             <Box  sx={{flexGrow: 1, textAlign:"center"}}>
                 <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>Location</Typography>
             </Box><Box  sx={{flexGrow: 1, textAlign:"center"}}>
-                <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>{referee != null ? referee.p_location : null}</Typography>
+                <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>{referee != null ? referee.r_location : null}</Typography>
             </Box>
             <Divider style={{background:"white"}}/>
             <Box  sx={{flexGrow: 1, textAlign:"center"}}>
                 <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>Age</Typography>
             </Box>
             <Box  sx={{flexGrow: 1, textAlign:"center"}}>
-                <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>{referee != null ? referee.p_age : null}</Typography>
+                <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>{referee != null ? referee.r_age : null}</Typography>
             </Box>
             
         </Card>
