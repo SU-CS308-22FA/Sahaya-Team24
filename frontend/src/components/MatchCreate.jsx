@@ -71,7 +71,7 @@ const MatchCreate = () => {
     const uID = auth.currentUser.uid;
     //-------------------------------------------------
 
-    
+
     //-------------------send button------------------------
 
     let navigate = useNavigate();
@@ -99,7 +99,8 @@ const MatchCreate = () => {
         m_maxPlayer: response.data.m_maxPlayer,
         m_curPlayer: response.data.m_curPlayer,
         m_needRefree: response.data.m_needRefree,
-        m_date: response.data.m_date
+        m_date: response.data.m_date,
+        owner_id: response.data.owner_id
       });
       console.log(response.data);
     }).catch(err => {
