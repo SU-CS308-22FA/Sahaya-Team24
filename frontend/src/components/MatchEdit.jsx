@@ -16,13 +16,13 @@ const MatchEdit = (val) => {
 
     //-------------functions for text fields-------------------------
     //matchname
-    const [name, setName] = React.useState('Güzel bir lobi ismi');
+    const [name, setName] = React.useState(m.name);
     const handleNameChange = (event) => {
         setName(event.target.value);
         console.log("name: " , name);
     };
     //match location
-    const [mLocation, setLoc] = React.useState('');
+    const [mLocation, setLoc] = React.useState(m.m_location);
     const handleLocChange = (event) => {
         setLoc(event.target.value);
         console.log("loc: ",mLocation);
@@ -30,7 +30,7 @@ const MatchEdit = (val) => {
     //----------------------------------------------------------
 
     //-------------functions for Date time picker--------------------------
-    const [value, setValue] = React.useState(dayjs().add(2,'h').toString());
+    const [value, setValue] = React.useState(dayjs(m.m_date).toString()); //m.m_date .add(2,'h')
     const handleDateChange = (newValue) => {
       setValue(newValue);
       console.log("date: ",value);
@@ -38,7 +38,7 @@ const MatchEdit = (val) => {
     //--------------------------------------------------------------------
 
     //----------------functions for select numof players-------------------
-    const [numofPlayers, setNOP] = React.useState('');
+    const [numofPlayers, setNOP] = React.useState(m.m_maxPlayer);
 
     const handleplayerChange = (event) => {
     setNOP(event.target.value);
@@ -47,7 +47,7 @@ const MatchEdit = (val) => {
     //------------------------------------------------------------------
     
     //----------------for switch--------------------------
-    const [checked, setRefree] = React.useState(true);
+    const [checked, setRefree] = React.useState(m.m_needRefree);
     const handleRefreeChange = (event) => {
       setRefree(event.target.checked);
       console.log("checked: ",checked);
@@ -64,19 +64,17 @@ const MatchEdit = (val) => {
             m_date: value,
             owner_id: m.owner_id,
           }
-
+          
           if( name != ""  && mLocation != "" && numofPlayers != "" && value != ""){
             try{
-                console.log("trying to update")
-    
-    
+                console.log("trying to update");
                 await MatchDataService.update(m.m_id , data);
               }catch (err) {
                   console.log(err);
               }
             navigate('../HomePage');
           }else{
-            alert("Lütfen bütün boşlukları doldurunuz");
+            alert("bir hata oluştu lütfen daha sonra tekrar deneyiniz");
           }
           
           
