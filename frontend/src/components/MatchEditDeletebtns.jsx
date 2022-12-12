@@ -17,7 +17,10 @@ const MatchEditDeletebtns = (data) => {
           
     }
 
-    const navigateToEdit =(e) =>navigate('/MatchDetail', {state: {sentVal: match,},});
+    const navigateToEdit =(e) =>{
+        console.log("trying to navigate edit page")
+        navigate('/matchDetail/editMatch', {state: {sentVal: match,},});
+    }
     
 
     if(data.passedValue.showState){

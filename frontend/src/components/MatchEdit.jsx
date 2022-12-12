@@ -9,6 +9,9 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { spacing } from '@mui/system';
 
 const MatchEdit = (val) => {
+    let m = val.passedValue.sentVal;
+
+    console.log(m);
 
     //-------------functions for text fields-------------------------
     //matchname
@@ -27,7 +30,6 @@ const MatchEdit = (val) => {
 
     //-------------functions for Date time picker--------------------------
     const [value, setValue] = React.useState(dayjs().add(2,'h').toString());
-
     const handleDateChange = (newValue) => {
       setValue(newValue);
       console.log("date: ",value);
@@ -42,6 +44,15 @@ const MatchEdit = (val) => {
     console.log("numofPlayers: ",numofPlayers);
     };
     //------------------------------------------------------------------
+    
+    //----------------for switch--------------------------
+    const [checked, setRefree] = React.useState(true);
+    const handleRefreeChange = (event) => {
+      setRefree(event.target.checked);
+      console.log("checked: ",checked);
+      
+  };
+    //-------------------------------------------------
 
 
   return (
@@ -51,7 +62,7 @@ const MatchEdit = (val) => {
         <TextField
           m = {5}
           required
-          defaultValue="Güzel bir lobi ismi"
+          defaultValue={m.m_name}
           variant="standard"
           size='medium'
           fullWidth = {true}
@@ -60,6 +71,7 @@ const MatchEdit = (val) => {
         <div >Maç tarihi: </div>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
          <DateTimePicker
+          defaultValue = {dayjs(m.m_date)}
           value={value}
           onChange={handleDateChange}
           renderInput={(params) => <TextField {...params} />}
@@ -69,7 +81,7 @@ const MatchEdit = (val) => {
         <div>Maç lokasyonu: </div>
         <TextField
           required
-          defaultValue="En iyi saha"
+          defaultValue={m.m_location}
           size='medium'
           fullWidth = {true}
           onChange={handleLocChange}
@@ -78,6 +90,7 @@ const MatchEdit = (val) => {
         <FormControl fullWidth>  
         <InputLabel id="demo-simple-select-label">Oyuncu sayısı</InputLabel>
         <Select
+            defaultValue={(m.m_maxPlayer)}
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={numofPlayers}
@@ -97,11 +110,12 @@ const MatchEdit = (val) => {
 
         <>Hakem atansın istiyorum</>
         <Switch
+          defaultValue={m.m_needRefree}
           inputProps={{ 'aria-label': 'controlled' }}
           onChange ={ handleRefreeChange }
          />
         <div></div>
-        <Button color="success" variant="contained" onClick={handlecreateMatch} >Yayınla</Button>
+        <Button color="success" variant="contained"  >Yayınla</Button>
         
         </Box>
     </Card>
