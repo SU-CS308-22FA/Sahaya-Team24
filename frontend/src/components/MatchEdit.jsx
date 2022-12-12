@@ -9,6 +9,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { spacing } from '@mui/system';
 
 const MatchEdit = (val) => {
+    let navigate = useNavigate();
     let m = val.passedValue.sentVal;
 
     console.log(m);
@@ -53,7 +54,34 @@ const MatchEdit = (val) => {
       
   };
     //-------------------------------------------------
+    const handleUpdateMatch=async()=>{
+        var data = {
+            m_name: name,
+            m_location: mLocation,
+            m_maxPlayer: numofPlayers,
+            m_curPlayer: m.m_curPlayer,
+            m_needRefree: checked,
+            m_date: value,
+            owner_id: m.owner_id,
+          }
 
+          if( name != ""  && mLocation != "" && numofPlayers != "" && value != ""){
+            try{
+                console.log("trying to update")
+    
+    
+                await MatchDataService.update(m.m_id , data);
+              }catch (err) {
+                  console.log(err);
+              }
+            navigate('../HomePage');
+          }else{
+            alert("Lütfen bütün boşlukları doldurunuz");
+          }
+          
+          
+
+    }
 
   return (
     <Box m = {20} pt = {5}>
@@ -115,7 +143,7 @@ const MatchEdit = (val) => {
           onChange ={ handleRefreeChange }
          />
         <div></div>
-        <Button color="success" variant="contained"  >Yayınla</Button>
+        <Button color="success" variant="contained" onClick={handleUpdateMatch} >Yayınla</Button>
         
         </Box>
     </Card>
