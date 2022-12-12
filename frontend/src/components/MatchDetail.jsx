@@ -42,6 +42,11 @@ const MatchDetail = (inVal) => {
       console.log("wiever is owner");
       show= true;
     }
+
+    let data={
+      _match : match,
+      showState : show
+    }
     
   return (
     <div>
@@ -76,7 +81,7 @@ const MatchDetail = (inVal) => {
           </Typography>
           </Box>
             <Button style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>
-            <MatchEditDeletebtns passedValue = {show}/>
+            <MatchEditDeletebtns passedValue = {data}/>
           </Box>
     </Card>
     
