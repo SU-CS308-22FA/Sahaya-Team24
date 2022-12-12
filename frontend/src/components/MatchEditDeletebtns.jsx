@@ -1,16 +1,20 @@
 import React from 'react'
 import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card, Autocomplete, TextField} from '@mui/material';
 import MatchDataService from '../services/match.service'
+import { useNavigate } from 'react-router-dom';
 
 const MatchEditDeletebtns = (data) => {
+    let navigate = useNavigate();
 
     let match = data.passedValue._match
     const handleDeleteMatch = async () => {
        try{
-        await MatchDataService.delete(match.id);
+        await MatchDataService.delete(match.m_id);
         }catch (err) {
             console.log(err);
           }
+          navigate('../HomePage');
+          
     }
 
 
