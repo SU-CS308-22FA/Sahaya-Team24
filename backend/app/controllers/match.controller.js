@@ -84,3 +84,27 @@ exports.create = (req, res) => {
       });
     });
   };
+
+  exports.update = (req, res) => {
+    const id = req.params.id;
+  
+    Player.update(req.body, {
+      where: { m_id: id }
+    })
+      .then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Match was updated successfully."
+          });
+        } else {
+          res.send({
+            message: `Cannot update Match with id=${id}. Maybe Match was not found or req.body is empty!`
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error updating Match with id=" + id
+        });
+      });
+  };
