@@ -8,9 +8,12 @@ class MatchDataService {
       getAll() {
         return http.get("/matches");
       }
-      
+
       delete(id) {
         return http.delete(`/matches/${id}`);
+      }
+      update(id, data) {
+        return http.put(`/players/${id}`, data);
       }
 }
 
