@@ -6,6 +6,9 @@ module.exports = app => {
     // Create a new Match
     router.post("/", matches.create);
 
+    //Delete match with id
+    router.delete("/:id", matches.delete);
+
     router.get("/", matches.findAll);
 
     app.use("/api/matches", router);
