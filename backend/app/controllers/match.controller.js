@@ -44,7 +44,7 @@ exports.create = (req, res) => {
       });
   };
 
-
+  //finds matches under filter
   exports.findAll = (req, res) => {
     console.log("CONTROLLER FINDALL");
     var condition = req ? req : null;
@@ -60,3 +60,27 @@ exports.create = (req, res) => {
       });
   };
 
+  //Delete the match with specific id
+  exports.delete = (req,res) =>{
+    const id = req.params.id;
+    console.log(id);
+    Match.destroy({
+      where: {m_id: id}
+    })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Match was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Match with id=${id}. Maybe Match was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete Match with id=" + id
+      });
+    });
+  };

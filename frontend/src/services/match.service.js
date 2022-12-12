@@ -8,7 +8,10 @@ class MatchDataService {
       getAll() {
         return http.get("/matches");
       }
-
+      
+      delete(id) {
+        return http.delete(`/matches/${id}`);
+      }
 }
 
 export default new MatchDataService();
