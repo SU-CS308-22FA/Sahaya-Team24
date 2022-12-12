@@ -13,7 +13,7 @@ class MatchDataService {
         return http.delete(`/matches/${id}`);
       }
       update(id, data) {
-        return http.put(`/players/${id}`, data);
+        return http.put(`/matches/${id}`, data);
       }
 }
 
