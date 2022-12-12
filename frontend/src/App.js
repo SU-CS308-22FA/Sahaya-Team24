@@ -17,6 +17,7 @@ import { UserDataContext } from "./contexts/UserDataContext";
 import { UserIdContext } from "./contexts/UserIdContext";
 import OtherPlayerProfile from "./components/OtherPlayerProfile";
 import OtherRefereeProfile from "./components/OtherRefereeProfile";
+import MatchEdit from "./components/MatchEdit"
 
 const App = () => {
   const [userType, setUserType] = useState(null);
@@ -42,6 +43,7 @@ const App = () => {
                 <Route path="/matchcreation" element={<MatchCreateP />} />
                 <Route path="/matchDetail" element={<MatchDetailPage />} />
                 <Route path="/RegisterP/CreateProfile/HomePage" element={<HomePage />} />
+                <Route path="/matchDetail/editMatch" element={<MatchEdit />} />
               </Routes>
             </div>
           </div>

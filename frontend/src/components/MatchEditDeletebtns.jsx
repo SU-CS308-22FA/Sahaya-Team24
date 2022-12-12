@@ -17,12 +17,14 @@ const MatchEditDeletebtns = (data) => {
           
     }
 
+    const navigateToEdit =(e) =>navigate('/MatchDetail', {state: {sentVal: match,},});
+    
 
     if(data.passedValue.showState){
         console.log(data.passedValue.showState);
      return (
     <div>
-        <Button id='editbtn' style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none"  }}   variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maçı Düzenle</Typography></Button>
+        <Button id='editbtn' onClick={ navigateToEdit } style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none"  }}   variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maçı Düzenle</Typography></Button>
         <Button id= 'dltbtn'  onClick={ () => handleDeleteMatch() } style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maçı Sil</Typography></Button>
     </div>
      )
