@@ -88,7 +88,7 @@ exports.create = (req, res) => {
   exports.update = (req, res) => {
     const id = req.params.id;
   
-    Player.update(req.body, {
+    Match.update(req.body, {
       where: { m_id: id }
     })
       .then(num => {
