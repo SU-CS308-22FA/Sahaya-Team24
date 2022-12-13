@@ -9,6 +9,12 @@ class MatchDataService {
         return http.get("/matches");
       }
 
+      delete(id) {
+        return http.delete(`/matches/${id}`);
+      }
+      update(id, data) {
+        return http.put(`/matches/${id}`, data);
+      }
 }
 
 export default new MatchDataService();

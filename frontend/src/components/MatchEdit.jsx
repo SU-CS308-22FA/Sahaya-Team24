@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import MatchDataService from '../services/match.service';
 import dayjs, { Dayjs } from 'dayjs';
@@ -7,116 +7,79 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { spacing } from '@mui/system';
-import nextId from "react-id-generator"; // npm i react-id-generator
-import { getAuth } from 'firebase/auth';
 
-// Also ıdk why but console logs comes one step back from the ffront end if you write "ege" to textfield it logs "eg"
+const MatchEdit = (val) => {
+    let navigate = useNavigate();
+    let m = val.passedValue.sentVal;
 
+    console.log(m);
 
-
-const MatchCreate = () => {
-  //idea this functions wil be addded as modal to hompage so that site will be much cooler
-  const matchID = nextId("Match-Lobby-");
-
-
-
-  //-------------functions for text fields-------------------------
-  //matchname
-    const [name, setName] = React.useState('Güzel bir lobi ismi');
+    //-------------functions for text fields-------------------------
+    //matchname
+    const [name, setName] = React.useState(m.name);
     const handleNameChange = (event) => {
-    setName(event.target.value);
-    console.log("name: " , name);
-  };
-  //match location
-  const [mLocation, setLoc] = React.useState('');
-  const handleLocChange = (event) => {
-    setLoc(event.target.value);
-    console.log("loc: ",mLocation);
-  };
-  //----------------------------------------------------------
-
+        setName(event.target.value);
+        console.log("name: " , name);
+    };
+    //match location
+    const [mLocation, setLoc] = React.useState(m.m_location);
+    const handleLocChange = (event) => {
+        setLoc(event.target.value);
+        console.log("loc: ",mLocation);
+    };
+    //----------------------------------------------------------
 
     //-------------functions for Date time picker--------------------------
-    const [value, setValue] = React.useState(dayjs().add(2,'h').toString());
-
+    const [value, setValue] = React.useState(dayjs(m.m_date).toString()); //m.m_date .add(2,'h')
     const handleDateChange = (newValue) => {
       setValue(newValue);
       console.log("date: ",value);
     };
     //--------------------------------------------------------------------
 
-
     //----------------functions for select numof players-------------------
-    const [numofPlayers, setNOP] = React.useState('');
+    const [numofPlayers, setNOP] = React.useState(m.m_maxPlayer);
 
     const handleplayerChange = (event) => {
     setNOP(event.target.value);
     console.log("numofPlayers: ",numofPlayers);
     };
     //------------------------------------------------------------------
-
     
     //----------------for switch--------------------------
-    const [checked, setRefree] = React.useState(true);
+    const [checked, setRefree] = React.useState(m.m_needRefree);
     const handleRefreeChange = (event) => {
       setRefree(event.target.checked);
       console.log("checked: ",checked);
       
   };
     //-------------------------------------------------
+    const handleUpdateMatch=async()=>{
+        var data = {
+            m_name: name,
+            m_location: mLocation,
+            m_maxPlayer: numofPlayers,
+            m_curPlayer: m.m_curPlayer,
+            m_needRefree: checked,
+            m_date: value,
+            owner_id: m.owner_id,
+          }
+          
+          if( name != ""  && mLocation != "" && numofPlayers != "" && value != ""){
+            try{
+                console.log("trying to update");
+                await MatchDataService.update(m.m_id , data);
+              }catch (err) {
+                  console.log(err);
+              }
+            navigate('../HomePage');
+          }else{
+            alert("bir hata oluştu lütfen daha sonra tekrar deneyiniz");
+          }
+          
+          
 
-
-    //---------------getCurrentuserID------------------
-    const auth=getAuth();
-    const uID = auth.currentUser.uid;
-    //-------------------------------------------------
-
-
-    //-------------------send button------------------------
-
-    let navigate = useNavigate();
-    var error_occured = false;
-  const handlecreateMatch = () =>{
-    //create data to send to data base
-    var data = {
-      m_id: matchID,
-      m_name: name,
-      m_location: mLocation,
-      m_maxPlayer: numofPlayers,
-      m_curPlayer: 0,
-      m_needRefree: checked,
-      m_date: value,
-      owner_id: uID
     }
-
-    //send data to database
-    MatchDataService.create(data)
-    .then(response => {
-      this.setState({
-        m_id: response.data.m_id,
-        m_name: response.data.m_name,
-        m_location: response.data.m_location,
-        m_maxPlayer: response.data.m_maxPlayer,
-        m_curPlayer: response.data.m_curPlayer,
-        m_needRefree: response.data.m_needRefree,
-        m_date: response.data.m_date,
-        owner_id: response.data.owner_id
-      });
-      console.log(response.data);
-    }).catch(err => {
-      //when you add err.response u get better feedback from axios
-      console.log(data);
-      console.log(err.response);
-      error_occured = true;
-    });
-
-    if(matchID != "" && name != ""  && mLocation != "" && numofPlayers != "" && value != ""){
-      navigate('../HomePage');
-    }else{
-      alert("Lütfen bütün boşlukları doldurunuz");
-    }
-  }
-  //---------------------------------------------------
 
   return (
     <Box m = {20} pt = {5}>
@@ -125,7 +88,7 @@ const MatchCreate = () => {
         <TextField
           m = {5}
           required
-          defaultValue="Güzel bir lobi ismi"
+          defaultValue={m.m_name}
           variant="standard"
           size='medium'
           fullWidth = {true}
@@ -134,6 +97,7 @@ const MatchCreate = () => {
         <div >Maç tarihi: </div>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
          <DateTimePicker
+          defaultValue = {dayjs(m.m_date)}
           value={value}
           onChange={handleDateChange}
           renderInput={(params) => <TextField {...params} />}
@@ -143,7 +107,7 @@ const MatchCreate = () => {
         <div>Maç lokasyonu: </div>
         <TextField
           required
-          defaultValue="En iyi saha"
+          defaultValue={m.m_location}
           size='medium'
           fullWidth = {true}
           onChange={handleLocChange}
@@ -152,6 +116,7 @@ const MatchCreate = () => {
         <FormControl fullWidth>  
         <InputLabel id="demo-simple-select-label">Oyuncu sayısı</InputLabel>
         <Select
+            defaultValue={(m.m_maxPlayer)}
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={numofPlayers}
@@ -171,18 +136,17 @@ const MatchCreate = () => {
 
         <>Hakem atansın istiyorum</>
         <Switch
+          defaultChecked={m.m_needRefree}
           inputProps={{ 'aria-label': 'controlled' }}
           onChange ={ handleRefreeChange }
          />
         <div></div>
-        <Button color="success" variant="contained" onClick={handlecreateMatch} >Yayınla</Button>
+        <Button color="success" variant="contained" onClick={handleUpdateMatch} >Yayınla</Button>
         
         </Box>
     </Card>
     </Box>
-    
-    
   )
 }
 
-export default MatchCreate
+export default MatchEdit

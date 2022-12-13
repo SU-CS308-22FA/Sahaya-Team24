@@ -11,7 +11,7 @@ exports.create = (req, res) => {
     console.log(req.params);
     console.log("req data");
     console.log(req.data);
-    if (req.body.m_id == "" || req.body.m_name == "" || req.body.m_location == "" || req.body.m_date == ""|| req.body.m_maxPlayer == null ) {//checks will be add
+    if (req.body.m_id == "" || req.body.m_name == "" || req.body.m_location == "" || req.body.m_date == ""|| req.body.m_maxPlayer == null || req.body.owner_id == "" ) {//checks will be add
       console.log("help");
       res.status(400).send({
         message: "Match content can not be empty!"
@@ -27,7 +27,8 @@ exports.create = (req, res) => {
         m_maxPlayer: req.body.m_maxPlayer,
         m_curPlayer: 0,
         m_needRefree: req.body.m_needRefree,
-        m_date: req.body.m_date
+        m_date: req.body.m_date,
+        owner_id: req.body.owner_id
     };
   
     // Save Match in the database
@@ -43,7 +44,7 @@ exports.create = (req, res) => {
       });
   };
 
-
+  //finds matches under filter
   exports.findAll = (req, res) => {
     console.log("CONTROLLER FINDALL");
     var condition = req ? req : null;
@@ -59,3 +60,51 @@ exports.create = (req, res) => {
       });
   };
 
+  //Delete the match with specific id
+  exports.delete = (req,res) =>{
+    const id = req.params.id;
+    console.log(id);
+    Match.destroy({
+      where: {m_id: id}
+    })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Match was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Match with id=${id}. Maybe Match was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete Match with id=" + id
+      });
+    });
+  };
+
+  exports.update = (req, res) => {
+    const id = req.params.id;
+  
+    Match.update(req.body, {
+      where: { m_id: id }
+    })
+      .then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Match was updated successfully."
+          });
+        } else {
+          res.send({
+            message: `Cannot update Match with id=${id}. Maybe Match was not found or req.body is empty!`
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error updating Match with id=" + id
+        });
+      });
+  };

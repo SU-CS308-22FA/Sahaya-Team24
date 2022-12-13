@@ -24,6 +24,9 @@ module.exports = (sequelize, Sequelize) => {
       m_date : {
         type: Sequelize.STRING,//changed from DATE
       },
+      owner_id:{
+        type: Sequelize.STRING,
+      },
     });
     return Match;
   };

@@ -17,11 +17,12 @@ import { UserDataContext } from "./contexts/UserDataContext";
 import { UserIdContext } from "./contexts/UserIdContext";
 import OtherPlayerProfile from "./components/OtherPlayerProfile";
 import OtherRefereeProfile from "./components/OtherRefereeProfile";
+import MatchEditPage from "./pages/MatchEditPage"
+
 
 const App = () => {
   const [userType, setUserType] = useState(null);
   const value = useMemo(() => ({ userType, setUserType }), [userType, setUserType]);
-
   const [userId, setUserId] = useState(null);
   const val = useMemo(() => ({ userId, setUserId }), [userId, setUserId]);
   return (
@@ -42,6 +43,7 @@ const App = () => {
                 <Route path="/matchcreation" element={<MatchCreateP />} />
                 <Route path="/matchDetail" element={<MatchDetailPage />} />
                 <Route path="/RegisterP/CreateProfile/HomePage" element={<HomePage />} />
+                <Route path="/matchDetail/editMatch" element={<MatchEditPage/>} />
               </Routes>
             </div>
           </div>
