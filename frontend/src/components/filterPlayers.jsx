@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import './css/playerList.css';
 const FilterPlayers = ({searchstring, list}) => {
 
-  const filteredList = list.filter((player) => {
+  const filteredPList = list.filter((player) => {
    if (searchstring === '') {
        return player;
    }
@@ -15,7 +15,7 @@ const FilterPlayers = ({searchstring, list}) => {
 
  return (
   <div>
-    {filteredList.map((player) => (
+    {filteredPList.map((player) => (
       <div className="player-preview" key={player.p_id} >
         <h1>{ player.p_name }</h1>
         <p> Location: { player.p_location }</p>

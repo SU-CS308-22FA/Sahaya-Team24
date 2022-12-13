@@ -13,6 +13,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Stack } from '@mui/system';
 import { Autocomplete, Button, TextField } from '@mui/material';
+import FilterPlayers from "../components/filterPlayers";
+import FilterReferees from "../components/filterReferees";
 
 const SearchUser = () => {
   const [userType, setUserType] = useState('player');
@@ -143,6 +145,12 @@ const SearchUser = () => {
     
   }
 
+  const [input, setInput] = useState('')
+  const handleInput = (e)=>{
+    //console.log(e.target.value)
+    setInput(e.target.value.toLowerCase())
+  }
+
   return (
     <div className='users'>
       <Box sx={{ minWidth: 120 }}>
@@ -219,9 +227,20 @@ const SearchUser = () => {
         />
       )}/> : null}
       <Button style={{textTransform:"none", color:"black"}} onClick={handleFilter}>Apply Filters</Button>
-          
-          </Stack>
-      {userType === 'player' ? <div>{filteredPlayers && <PlayerList players={filteredPlayers} />}</div> : <div>{filteredReferees && <RefereeList referees={filteredReferees} />}</div>}     
+      <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={userType === 'player' ? players.map(player=>player.p_name) : referees.map(referee=>referee.r_name)}
+    
+            renderInput={(params) => <TextField {...params} 
+            label="Search by name"
+            onSelect={handleInput}
+            sx={{
+            
+            }} />}
+          />    
+      </Stack>
+      {userType === 'player' ? <div>{filteredPlayers && <FilterPlayers searchstring={input} list={filteredPlayers} />}</div> : <div>{filteredReferees && <FilterReferees searchstring={input} list={filteredReferees} />}</div>}     
     </div> 
   );
 }
