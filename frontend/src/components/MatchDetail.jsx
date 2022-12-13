@@ -20,8 +20,8 @@ const MatchDetail = (inVal) => {
     var date = new Date(match.m_date);
     
     var year = date.getFullYear().toString() ;
-    var month = (date.getMonth().toString() + " /");
-    var day = (date.getDay().toString() + " /");
+    var month = ((date.getMonth()+1).toString() + " /");
+    var day = (date.getDate().toString() + " /");
 
     var hr = date.getHours();
     var min = date.getMinutes();
@@ -63,7 +63,7 @@ const MatchDetail = (inVal) => {
           </Typography>
           <Typography variant="h4" gutterBottom color = 'white'>
             Maç Günü:  
-            {" " }{day} {month} {year} 
+            {" " }{day + month + year}
           </Typography>
           <Typography variant="h4" gutterBottom color = 'white'>
             saati:  

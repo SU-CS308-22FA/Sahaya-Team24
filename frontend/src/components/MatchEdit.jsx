@@ -136,7 +136,7 @@ const MatchEdit = (val) => {
 
         <>Hakem atansın istiyorum</>
         <Switch
-          defaultValue={m.m_needRefree}
+          defaultChecked={m.m_needRefree}
           inputProps={{ 'aria-label': 'controlled' }}
           onChange ={ handleRefreeChange }
          />
