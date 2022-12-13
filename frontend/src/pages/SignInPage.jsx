@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -23,7 +23,12 @@ const SignInPage = () => {
     let navigate = useNavigate();
 
     const [uType, setUType] = useState('player');
-    const {userType, setUserType} = useContext(UserDataContext);
+
+    useEffect(() => {
+      window.localStorage.setItem('user_type', uType);
+      console.log(uType);
+    }, [uType])
+
     const {setUserId} = useContext(UserIdContext);
 
     const navigateToHome = () => {
@@ -88,7 +93,7 @@ const SignInPage = () => {
 
             <FormControl>
               <FormLabel id="demo-row-radio-buttons-group-label">Type of user</FormLabel>
-              <RadioGroup row value={uType} onChange={(e) => setUType(e.target.value)}>
+              <RadioGroup row defaultValue={uType} value={uType} onChange={(e) => setUType(e.target.value)}>
                 <FormControlLabel value="player" control={<Radio />} label="Player" />
                 <FormControlLabel value="referee" control={<Radio />} label="Referee" />
               </RadioGroup>
