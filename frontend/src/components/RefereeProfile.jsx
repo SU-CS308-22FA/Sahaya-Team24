@@ -37,6 +37,10 @@ const RefereeProfile = () => {
     const response = await DatesDataService.create(data)
     console.log(response.data);
   }
+
+  const deleteDate = async () => {
+    await DatesDataService.delete(dateValue);
+  }
   /* End of date picker for referee functions */
 
   const getBody = () => {
@@ -97,6 +101,9 @@ const RefereeProfile = () => {
           <Button  className={classes.button} variant="contained" onClick={()=>{
             addDateToDB()
           }}>Add date</Button>
+          <Button  className={classes.button} variant="contained" onClick={()=>{
+            deleteDate()
+          }}>Delete date</Button>
         </div>
       </div>
 

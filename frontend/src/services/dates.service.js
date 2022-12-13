@@ -8,6 +8,10 @@ class DatesDataService {
   getAll() {
     return http.get("/dates");
   }
+
+  delete(date) {
+    return http.delete(`/dates/${date}`);
+  }
 }
 
 export default new DatesDataService();

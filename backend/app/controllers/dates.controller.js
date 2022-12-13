@@ -38,6 +38,31 @@ exports.create = (req, res) => {
     });
 };
 
+// Delete date functionality
+exports.delete = (req, res) => {
+  const date = req.params.date;
+  console.log(date);
+  Date.destroy({
+    where: { date: date}
+  })
+  .then(num => {
+    if (num == 1) {
+      res.send({
+        message: "Date deleted successfully"
+      });
+    } else {
+      res.send({
+        message: `Cannot delete Date with date=${date}. Maybe Date was not found!`
+      });
+    }
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: "Could not delete Date with date" + date
+    });
+  });
+}
+
 exports.findAll = (req, res) => {
   var condition = req ? req : null;
   Date.findAll({ where: condition })
