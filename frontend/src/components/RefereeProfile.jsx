@@ -9,10 +9,23 @@ import Layout from './layout/Layout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
 
+// imports for date
+import dayjs from 'dayjs';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
 const RefereeProfile = () => {
   const [referee, setReferee] = useState(null);
   const [key, setKey] = useState("")
   const [value, setValue] = useState("")
+  const [dateValue, setDateValue] = useState(dayjs());
+
+  const handleDatePick = (newDateValue) => {
+    setDateValue(newDateValue);
+    console.log("date set");
+  }
+
   const getBody = () => {
     let newBody = referee
     newBody[key] = value
@@ -55,6 +68,25 @@ const RefereeProfile = () => {
       <div>Location:{referee != null ? referee.r_location : null}</div>
       </Card>
       </Layout>
+
+      {/* Date picker for referee */}
+      <div className="referee-date">
+        <div style={{margin: 'auto', display: 'block', width: 'fit-content'}}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DesktopDatePicker
+              label="Pick a date"
+              inputFormat="MM/DD/YYYY"
+              value={dateValue}
+              onChange={handleDatePick}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+          <Button  className={classes.button} variant="contained" onClick={()=>{
+            console.log(dateValue);
+          }}>Add date</Button>
+        </div>
+      </div>
+
       <Card className = {classes.card}>
       <FormControl fullWidth>
         <InputLabel id="which_to_change">Select</InputLabel>
