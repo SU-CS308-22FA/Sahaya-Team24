@@ -22,6 +22,7 @@ const SignInPage = () => {
     const [uPassword, setUPassword] = useState("");
     let navigate = useNavigate();
 
+    const [uType, setUType] = useState('player');
     const {userType, setUserType} = useContext(UserDataContext);
     const {setUserId} = useContext(UserIdContext);
 
@@ -87,7 +88,7 @@ const SignInPage = () => {
 
             <FormControl>
               <FormLabel id="demo-row-radio-buttons-group-label">Type of user</FormLabel>
-              <RadioGroup row value={userType} onChange={(e) => setUserType(e.target.value)}>
+              <RadioGroup row value={uType} onChange={(e) => setUType(e.target.value)}>
                 <FormControlLabel value="player" control={<Radio />} label="Player" />
                 <FormControlLabel value="referee" control={<Radio />} label="Referee" />
               </RadioGroup>
