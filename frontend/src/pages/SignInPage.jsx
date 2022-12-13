@@ -93,7 +93,7 @@ const SignInPage = () => {
 
             <FormControl>
               <FormLabel id="demo-row-radio-buttons-group-label">Type of user</FormLabel>
-              <RadioGroup row value={uType} onChange={(e) => setUType(e.target.value)}>
+              <RadioGroup row defaultValue={uType} value={uType} onChange={(e) => setUType(e.target.value)}>
                 <FormControlLabel value="player" control={<Radio />} label="Player" />
                 <FormControlLabel value="referee" control={<Radio />} label="Referee" />
               </RadioGroup>
