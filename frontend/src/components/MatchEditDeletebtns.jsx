@@ -8,13 +8,14 @@ const MatchEditDeletebtns = (data) => {
 
     let match = data.passedValue._match
     const handleDeleteMatch = async () => {
-       try{
+        if(window.confirm("Bu maç lobisini silmek üzeresiniz. Sildiğiniz maçlar geri alınamaz, silmek istediğinize emin misiniz?")){
+        try{
         await MatchDataService.delete(match.m_id);
         }catch (err) {
             console.log(err);
           }
           navigate('../HomePage');
-          
+        }
     }
 
     const navigateToEdit =(e) =>{
