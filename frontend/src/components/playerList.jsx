@@ -1,16 +1,40 @@
-import { Link } from "react-router-dom";
+import React, {useEffect, useState} from "react";
 import './css/playerList.css';
 
+import {TextField, Autocomplete} from '@mui/material'
+import FilterPlayers from "./filterPlayers";
+
 const PlayerList = ({ players }) => {
+  const [input, setInput] = useState('')
+  const [list, setList]= useState([]);
+
+  useEffect(() => {
+    setList(players);
+  }, [])
+
+  const handleInput = (e)=>{
+    //console.log(e.target.value)
+    setInput(e.target.value.toLowerCase())
+  }
+
   return (
     <div className="player-list">
-      {players.map(player => (
-        <div className="player-preview" key={player.p_id} >
-          <h1>{ player.p_name }</h1>
-          <p> Location: { player.p_location }</p>
-          <Link to='/Player' state={{uID: player.p_id, uType: 'player'}}><button>Profile</button></Link>
-        </div>
-      ))}
+      <div className="searchbar">
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={list.map(player=>player.p_name)}
+    
+            renderInput={(params) => <TextField {...params} 
+            label="Search player by name"
+            onSelect={handleInput}
+            sx={{
+            width: 350,
+            margin:'10px auto',
+            }} />}
+          />
+          <FilterPlayers searchstring={input} list={list} />
+      </div>
     </div>
   );
 }
