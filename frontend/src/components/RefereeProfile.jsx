@@ -14,17 +14,30 @@ import dayjs from 'dayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import DatesDataService from '../services/dates.service';
 
 const RefereeProfile = () => {
   const [referee, setReferee] = useState(null);
   const [key, setKey] = useState("")
   const [value, setValue] = useState("")
+
+  /* Date picker for referee functions */
   const [dateValue, setDateValue] = useState(dayjs());
 
   const handleDatePick = (newDateValue) => {
     setDateValue(newDateValue);
     console.log("date set");
   }
+
+  const addDateToDB = async () => {
+    var data = {
+      date: dateValue,
+      r_id: getAuth().currentUser.uid
+    }
+    const response = await DatesDataService.create(data)
+    console.log(response.data);
+  }
+  /* End of date picker for referee functions */
 
   const getBody = () => {
     let newBody = referee
@@ -82,7 +95,7 @@ const RefereeProfile = () => {
             />
           </LocalizationProvider>
           <Button  className={classes.button} variant="contained" onClick={()=>{
-            console.log(dateValue);
+            addDateToDB()
           }}>Add date</Button>
         </div>
       </div>

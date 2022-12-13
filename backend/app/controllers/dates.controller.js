@@ -19,14 +19,14 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Player
+  // Create a date
   const date = {
     r_id: req.body.r_id,
     date: req.body.date,
   };
 
-  // Save Referee in the database
-  Referee.create(date)
+  // Save Date in the database
+  Date.create(date)
     .then(data => {
       res.send(data);
     })
@@ -37,3 +37,17 @@ exports.create = (req, res) => {
       });
     });
 };
+
+exports.findAll = (req, res) => {
+  var condition = req ? req : null;
+  Date.findAll({ where: condition })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occured while retrieving dates"
+      });
+    });
+}

@@ -6,5 +6,7 @@ module.exports = app => {
   // Create a new date
   router.post("/", dates.create);
 
+  router.get("/", dates.findAll);
+
   app.use("/api/dates", router);
 };
