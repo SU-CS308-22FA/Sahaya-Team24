@@ -23,12 +23,15 @@ const RefereeProfile = () => {
 
   /* Date picker for referee functions */
   const [dateValue, setDateValue] = useState(dayjs());
+  const [dates, setDates] = useState([]);
 
+  // select date from textfield
   const handleDatePick = (newDateValue) => {
     setDateValue(newDateValue);
     console.log("date set");
   }
 
+  // add date
   const addDateToDB = async () => {
     var data = {
       date: dateValue,
@@ -36,11 +39,30 @@ const RefereeProfile = () => {
     }
     const response = await DatesDataService.create(data)
     console.log(response.data);
+    console.log("date added to the db");
   }
 
+  // delete date
   const deleteDate = async () => {
     await DatesDataService.delete(dateValue);
+    console.log("date deleted");
   }
+
+  // show dates
+  useEffect(() => {
+    const getDateData = async () => {
+      try {
+        const uID = getAuth().currentUser.uid;
+        const response = await DatesDataService.getAll(uID);
+        console.log(response.data);
+        setDates(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getDateData();
+  }, []);
+
   /* End of date picker for referee functions */
 
   const getBody = () => {
@@ -70,6 +92,7 @@ const RefereeProfile = () => {
         console.log(err);
       }
     };
+    
     getRefereeData();
   }, []);
   
@@ -85,6 +108,13 @@ const RefereeProfile = () => {
       <div>Location:{referee != null ? referee.r_location : null}</div>
       </Card>
       </Layout>
+
+      <div className="dates-list">
+        <h1>Available Dates</h1>
+        {dates.map((c_date, i) => (
+          <li key={i}>{c_date.date}</li>
+        ))}
+      </div>
 
       {/* Date picker for referee */}
       <div className="referee-date">

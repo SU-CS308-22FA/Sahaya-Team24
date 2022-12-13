@@ -9,6 +9,10 @@ class DatesDataService {
     return http.get("/dates");
   }
 
+  get(id) {
+    return http.get(`/dates/${id}`);
+  }
+
   delete(date) {
     return http.delete(`/dates/${date}`);
   }

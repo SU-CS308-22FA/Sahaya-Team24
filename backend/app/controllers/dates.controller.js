@@ -76,3 +76,19 @@ exports.findAll = (req, res) => {
       });
     });
 }
+
+exports.findWithID = (req, res) => {
+  var rID = req.params.r_id;
+  Date.findAll({
+    where: { r_id: rID}
+  })
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occured while retrieving dates"
+    });
+  })
+}

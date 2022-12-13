@@ -8,6 +8,8 @@ module.exports = app => {
 
   router.get("/", dates.findAll);
 
+  router.get("/:id", dates.findWithID);
+
   router.delete("/:date", dates.delete);
 
   app.use("/api/dates", router);
