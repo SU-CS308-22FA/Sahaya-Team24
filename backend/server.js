@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
 require("./app/routes/player.routes")(app);
 require("./app/routes/match.routes")(app);
 require("./app/routes/referee.routes")(app);
-
+require("./app/routes/dates.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
