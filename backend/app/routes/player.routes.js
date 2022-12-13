@@ -23,6 +23,9 @@ module.exports = app => {
   
     // Delete all players
     router.delete("/", players.deleteAll);
-  
+
+    // Search players by name
+    router.get("/:name", players.searchAll);
+    
     app.use("/api/players", router);
   };

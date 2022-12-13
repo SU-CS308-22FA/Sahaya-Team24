@@ -60,6 +60,27 @@ exports.findAll = (req, res) => {
     });
 };
 
+// Search by player name
+exports.searchAll = (req, res) => {
+  var searchElement = req.params.p_name;
+  Player.findAll({
+    where: {
+      p_name: {
+        [Op.like]: searchElement
+      }
+    }
+  })
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving players."
+    });
+  })
+}
+
 // Find a single Player with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
