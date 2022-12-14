@@ -30,7 +30,7 @@ From github issues page by creating a new issue and linking it to this project y
 
 1. cd in to directory you want to work on
 2. clone the code
-3. open 2 therminals and write each;
+3. open 2 terminals and write each;
 
 ```ps
 cd backend
