@@ -10,11 +10,14 @@ const RefereeProfileInfoCard = (props) =>{
     const auth=getAuth();
     const [referee, setReferee] = useState(null);
 
+    const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
 
       useEffect(() => {
         const getRefereeData = async () => {
           try {
-            const uID = getAuth().currentUser.uid;
+            const userID = window.localStorage.getItem('user_id')
+            if (userID !== null) setUID(userID);
+            console.log(userID);
             const response = await RefereeDataService.get(uID);
             console.log(response.data);
             setReferee(response.data);

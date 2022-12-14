@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import PlayerProfile from '../components/PlayerProfile';
 import RefereeProfile from '../components/RefereeProfile';
 
-import {UserDataContext} from "../contexts/UserDataContext";
 
 const ProfilePage = () => {
   const [uType, setUType] = useState(window.localStorage.getItem('user_type'));
