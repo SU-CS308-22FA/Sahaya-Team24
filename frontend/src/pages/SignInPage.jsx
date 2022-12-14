@@ -29,8 +29,6 @@ const SignInPage = () => {
       console.log(uType);
     }, [uType])
 
-    const {setUserId} = useContext(UserIdContext);
-
     const navigateToHome = () => {
       navigate('./HomePage');
     };
@@ -42,9 +40,7 @@ const SignInPage = () => {
     const handleSubmit = async () => {
       try{
         const { user } = await signInWithEmailAndPassword(auth, uMail, uPassword);
-        setUserId(user.uid);
-        console.log(user.uid);
-        console.log(user.email);
+        window.localStorage.setItem('user_id', user.uid);
         navigateToHome();
       } catch (error) {
         if (error.code === "auth/wrong-password") {

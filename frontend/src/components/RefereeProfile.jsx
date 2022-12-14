@@ -21,6 +21,13 @@ const RefereeProfile = () => {
   const [key, setKey] = useState("")
   const [value, setValue] = useState("")
 
+  const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+  useEffect(() => {
+    const userID = window.localStorage.getItem('user_id')
+    if (userID !== null) setUID(userID);
+    console.log(userID);
+  }, [])
+
   /* Date picker for referee functions */
   const [dateValue, setDateValue] = useState(dayjs());
   const [dates, setDates] = useState([]);
@@ -35,7 +42,7 @@ const RefereeProfile = () => {
   const addDateToDB = async () => {
     var data = {
       date: dateValue,
-      r_id: getAuth().currentUser.uid
+      r_id: uID
     }
     const response = await DatesDataService.create(data)
     console.log(response.data);
@@ -52,7 +59,6 @@ const RefereeProfile = () => {
   useEffect(() => {
     const getDateData = async () => {
       try {
-        const uID = getAuth().currentUser.uid;
         const response = await DatesDataService.getAll(uID);
         console.log(response.data);
         setDates(response.data);
@@ -84,7 +90,6 @@ const RefereeProfile = () => {
   useEffect(() => {
     const getRefereeData = async () => {
       try {
-        const uID = getAuth().currentUser.uid;
         const response = await RefereeDataService.get(uID);
         console.log(response.data);
         setReferee(response.data);
