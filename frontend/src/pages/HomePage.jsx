@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-import {UserDataContext} from "../contexts/UserDataContext";
-import PlayerDataService from '../services/player.service';
 import MatchDataService from '../services/match.service';
 import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card, Autocomplete, TextField, Alert, Divider} from '@mui/material';
 import { Box } from '@mui/system';
@@ -22,7 +20,14 @@ const HomePage = () => {
   const [selectedLocations, setSelectedLocations] = useState(allLocations);
   const [selectedMatches, setSelectedMatches] = useState([]);
   const [matchesDb, setMatchesDb] = useState([]);
-  const {userType} = useContext(UserDataContext);
+
+  const [uType, setUType] = useState(window.localStorage.getItem('user_type'));
+
+  useEffect(() => {
+    const userType = window.localStorage.getItem('user_type')
+    if (userType !== null) setUType(userType);
+    console.log(uType);
+  }, []);
 
   
 
@@ -97,7 +102,7 @@ const HomePage = () => {
           <List spa="true" style={{borderColor:"black"}}>
           <ListItem key="PlayerInfoAtLeft">
           <Button style={{padding:"0", textTransform:"none"}} onClick={navigateToProfile}>
-          {userType === 'player' ? <PlayerProfileInfoCard passedValue={player}/> : <RefereeProfileInfoCard passedValue={player}/>}
+          {uType === 'player' ? <PlayerProfileInfoCard passedValue={player}/> : <RefereeProfileInfoCard passedValue={player}/>}
             
         </Button>
             </ListItem>

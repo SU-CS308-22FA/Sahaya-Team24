@@ -10,15 +10,19 @@ const PlayerProfileInfoCard = (props) =>{
     const auth=getAuth();
     const [player, setPlayer] = useState(null);
 
+    const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+  
+
     useEffect(() => {
         const getPlayerData = async () => {
           try {
             //console.log(getAuth().currentUser.uid);
             //const uID = getAuth().currentUser.uid;
             
-            const uID = auth.currentUser.uid;
-            console.log(uID);
-            const response = await PlayerDataService.get(uID);
+            const userID = window.localStorage.getItem('user_id')
+            if (userID !== null) setUID(userID);
+            console.log(userID);
+            const response = await PlayerDataService.get(userID);
             console.log(response.data);
             setPlayer(response.data);
           } catch (err) {
@@ -28,6 +32,8 @@ const PlayerProfileInfoCard = (props) =>{
         getPlayerData();
         
       }, []);
+
+      
 
     return(
         <Button>
