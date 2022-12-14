@@ -29,15 +29,18 @@ const PlayerProfile = () => {
       navigate('/');
   };
 
-  const {userId} = useContext(UserIdContext);
+  const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+  useEffect(() => {
+    const userID = window.localStorage.getItem('user_id')
+    if (userID !== null) setUID(userID);
+    console.log(userID);
+  }, [])
 
   useEffect(() => {
     const getPlayerData = async () => {
       try {
         //console.log(getAuth().currentUser.uid);
         //const uID = getAuth().currentUser.uid;
-        const uID = userId;
-        console.log(uID);
         const response = await PlayerDataService.get(uID);
         console.log(response.data);
         setPlayer(response.data);
