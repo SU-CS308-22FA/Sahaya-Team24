@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInAnonymously } from "firebase/auth";
 import { TextField, Button, Typography, Card  } from "@mui/material";
 
 import Radio from '@mui/material/Radio';
@@ -36,6 +36,18 @@ const SignInPage = () => {
     const navigateToReg = () => {
       navigate('/RegisterPage');
     };
+
+    const handleAnonymousSignIn = () =>{
+      setUType("anonymous");
+      signInAnonymously(auth).then(()=>{
+        navigateToHome();
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ...
+      });
+    }
 
     const handleSubmit = async () => {
       try{
@@ -101,6 +113,7 @@ const SignInPage = () => {
             <div>
               <Button onClick={navigateToReg}>Don't Have An Acccount?</Button>
             </div>
+            <Button onClick={handleAnonymousSignIn}>SignIn Anonymously</Button>
           </Card>          
         </Layout>
         </Card>
