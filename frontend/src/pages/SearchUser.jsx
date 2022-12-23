@@ -16,6 +16,10 @@ import { Autocomplete, Button, TextField } from '@mui/material';
 import FilterPlayers from "../components/filterPlayers";
 import FilterReferees from "../components/filterReferees";
 
+import { AppBar, Toolbar, Typography, Card} from '@mui/material';
+import { getAuth, signOut } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+
 const SearchUser = () => {
   const [userType, setUserType] = useState('player');
   const [players, setPlayers] = useState([]);
@@ -151,7 +155,48 @@ const SearchUser = () => {
     setInput(e.target.value.toLowerCase())
   }
 
+  const auth=getAuth();
+  let navigate = useNavigate();
+  const logout = async() => {
+    signOut(auth).then(()=>{
+      console.log("Sign-out successful.");
+      navigate('/');
+    }).catch((error) => {
+      console.log("An error happened while singout!");
+    });
+  }
+
+  const navigateToSearch = () => {
+    navigate('/search');
+  };
+
+  const navigateToProfile = () => {
+    navigate('/ProfilePage');
+  };
+
+  const navigateToCreateMatch = () =>{
+    navigate( '/matchcreation' )
+
+  }
+
+  const navigateToHome = () =>{
+    navigate( '/HomePage' )
+
+  }
+
   return (
+    <Card style={{height:"100%"}}>
+      <Box sx={{flexGrow: 1}}>
+    <AppBar position='static' style={{backgroundColor: "#00466e"}}>
+    <Toolbar>
+    <h1 style={{color: "#ffffff", flexGrow: "1"}}>SAHAYA</h1>
+    <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToHome}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Home Page</Typography></Button>
+    <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToProfile}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Profile</Typography></Button>
+    <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={logout}><Typography style={{color: "#00466e", fontWeight: "bold"}}>SignOut!</Typography></Button>
+    <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToCreateMatch}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Create New Match</Typography></Button>
+    </Toolbar>
+    </AppBar>
+    </Box>
     <div className='users'>
       <Box sx={{ minWidth: 120 }}>
         <FormControl >
@@ -242,6 +287,7 @@ const SearchUser = () => {
       </Stack>
       {userType === 'player' ? <div>{filteredPlayers && <FilterPlayers searchstring={input} list={filteredPlayers} />}</div> : <div>{filteredReferees && <FilterReferees searchstring={input} list={filteredReferees} />}</div>}     
     </div> 
+    </Card>
   );
 }
 
