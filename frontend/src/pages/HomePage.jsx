@@ -83,16 +83,21 @@ const HomePage = () => {
 
   }
 
-  if(getAuth().currentUser.emailVerified) return (
+  const navigateToSignIn = () =>{
+    navigate( '/' )
+
+  }
+
+  return(
     <Card style={{backgroundImage: "url('https://amplex.dk/wp-content/uploads/2016/08/iStock_000022325111Large.jpg')", backgroundSize:"cover", backgroundPosition:"center", height:"100%", borderRadius:"0"}}>
     <Box sx={{flexGrow: 1}}>
     <AppBar position='static' style={{backgroundColor: "#00466e"}}>
     <Toolbar>
     <h1 style={{color: "#ffffff", flexGrow: "1"}}>SAHAYA</h1>
-    <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToProfile}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Profile</Typography></Button>
-    <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={logout}><Typography style={{color: "#00466e", fontWeight: "bold"}}>SignOut!</Typography></Button>
-    <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToCreateMatch}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Create New Match</Typography></Button>
+    {uType=='anonymous'? null : <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToProfile}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Profile</Typography></Button>}
+    {uType=='anonymous'?null:<Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToCreateMatch}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Create New Match</Typography></Button>}
     <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToSearch}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Search Users</Typography></Button>
+    {uType=='anonymous'? <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToSignIn}><Typography style={{color: "#00466e", fontWeight: "bold"}}>SignIn</Typography></Button>:<Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={logout}><Typography style={{color: "#00466e", fontWeight: "bold"}}>SignOut!</Typography></Button>}
     </Toolbar>
     </AppBar>
     </Box>
@@ -102,7 +107,7 @@ const HomePage = () => {
           <List spa="true" style={{borderColor:"black"}}>
           <ListItem key="PlayerInfoAtLeft">
           <Button style={{padding:"0", textTransform:"none"}} onClick={navigateToProfile}>
-          {uType === 'player' ? <PlayerProfileInfoCard passedValue={player}/> : <RefereeProfileInfoCard passedValue={player}/>}
+          {uType === 'anonymous' ? null : uType === 'player' ? <PlayerProfileInfoCard passedValue={player}/> : <RefereeProfileInfoCard passedValue={player}/>}
             
         </Button>
             </ListItem>
@@ -151,15 +156,7 @@ const HomePage = () => {
     
 
   </Card>
-    )
-  else {
-    return(
-      <div >
-        <Alert severity='error'>Please verify your email and re-login!</Alert>
-        <Button style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={logout}><Typography style={{color: "#00466e", fontWeight: "bold"}}>LOGOUT!</Typography></Button>
-      </div>
-    )
-  }
+  )
   
 }
 

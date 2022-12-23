@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import MatchCreate from '../components/MatchCreate'
 
 import { Button, AppBar, Toolbar, Typography, Card} from '@mui/material';
@@ -7,6 +7,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 const MatchCreateP = () => {
+  const [uType, setUType] = useState(window.localStorage.getItem('user_type'));
 
   const auth=getAuth();
   let navigate = useNavigate();
@@ -39,9 +40,9 @@ const MatchCreateP = () => {
     <Toolbar>
     <h1 style={{color: "#ffffff", flexGrow: "1"}}>SAHAYA</h1>
     <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToHome}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Home Page</Typography></Button>
-    <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToProfile}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Profile</Typography></Button>
-    <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={logout}><Typography style={{color: "#00466e", fontWeight: "bold"}}>SignOut!</Typography></Button>
+    {uType=='anonymous'? null : <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToProfile}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Profile</Typography></Button>}
     <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToSearch}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Search Users</Typography></Button>
+    {uType=='anonymous'? null:<Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={logout}><Typography style={{color: "#00466e", fontWeight: "bold"}}>SignOut!</Typography></Button>}
     </Toolbar>
     </AppBar>
     </Box>
