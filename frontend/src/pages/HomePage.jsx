@@ -20,6 +20,7 @@ const HomePage = () => {
   const [selectedLocations, setSelectedLocations] = useState(allLocations);
   const [selectedMatches, setSelectedMatches] = useState([]);
   const [matchesDb, setMatchesDb] = useState([]);
+  const [selectedMatchName, setSelectedMatchName] = useState("");
 
   const [uType, setUType] = useState(window.localStorage.getItem('user_type'));
 
@@ -51,14 +52,28 @@ const HomePage = () => {
 
   const handleFilter = () => {
     if(selectedLocations.length == 0){
-      setSelectedMatches(matchesDb);
-      matchesDb.forEach((elemt) => console.log(elemt));
+      if(selectedMatchName==null){
+        setSelectedMatches(matchesDb);
+        matchesDb.forEach((elemt) => console.log(elemt));
+      }
+      else{
+        let dummy = matchesDb.filter((match) => match.m_name.toLowerCase().includes(selectedMatchName.trim()));
+        setSelectedMatches(dummy);
+      }
     }
     else{
-      let dummy = matchesDb.filter((match) => selectedLocations.indexOf(match.m_location) > -1);
+      if(selectedMatchName==null){
+        let dummy = matchesDb.filter((match) => selectedLocations.indexOf(match.m_location) > -1);
       setSelectedMatches(dummy);
+      }
+      else{
+        let dummy = matchesDb.filter((match) => selectedLocations.indexOf(match.m_location) > -1);
+        dummy = dummy.filter((match) => match.m_name.toLowerCase().includes(selectedMatchName.trim()));
+        setSelectedMatches(dummy);
+      }
     }
-    
+    console.log(selectedLocations);
+    console.log(selectedMatchName);
   }
 
   const logout = async() => {
@@ -132,7 +147,15 @@ const HomePage = () => {
           placeholder="Locations"
         />
       )}/>
-      <Button style={{textTransform:"none", color:"white"}} onClick={handleFilter}>Apply Filters</Button>
+      <TextField
+              id="input_match_search"
+              type="email"
+              label="Match Name"
+              variant="outlined"
+              value={selectedMatchName}
+              onChange={(event) => setSelectedMatchName(event.target.value)}
+            />
+      <Button style={{textTransform:"none", color:"white"}} onClick={handleFilter}>Apply Filters/Search</Button>
           {selectedMatches.map((value) => (
             
               <MatchListItem key={value.m_id} passedValue={value}/>

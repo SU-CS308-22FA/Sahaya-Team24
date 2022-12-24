@@ -8,7 +8,7 @@ import MatchEditDeletebtns from './MatchEditDeletebtns'
 
 
 const MatchDetail = (inVal) => {
-
+  const [uType, setUType] = useState(window.localStorage.getItem('user_type'));
     let match = inVal.passedValue.sentVal;
     let nref;
     if(match.m_needRefree){
@@ -80,7 +80,7 @@ const MatchDetail = (inVal) => {
             {match.m_curPlayer} 
           </Typography>
           </Box>
-            <Button style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>
+            {uType=="anonymous" ? null:<Button style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>}
             <MatchEditDeletebtns passedValue = {data}/>
           </Box>
     </Card>
