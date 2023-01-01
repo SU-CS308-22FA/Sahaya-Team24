@@ -1,3 +1,4 @@
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize, Sequelize) => {
     const Player = sequelize.define("player", {
@@ -25,6 +26,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       p_location: {
         type: Sequelize.STRING
+      },
+      p_notification: {
+        type: DataTypes.ARRAY(DataTypes.JSON)
       }
     });
   
