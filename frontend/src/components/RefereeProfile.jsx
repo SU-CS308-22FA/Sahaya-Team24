@@ -108,7 +108,9 @@ const RefereeProfile = () => {
   const getBodyALoc = () => {
     let newBody = referee;
     let newArray = newBody.available_locations;
-    if (!newArray.includes(availableLoc)) {
+    if (newArray.includes(availableLoc)) {
+      alert("Cannot add the location. There is already a location called " + availableLoc);
+    } else {
       newArray.push(availableLoc);
     }
     newBody["available_locations"] = newArray
@@ -124,6 +126,7 @@ const RefereeProfile = () => {
     let newBody = referee;
     let newArray = newBody.available_locations;
     if (!newArray.includes(availableLoc)) {
+      alert("Cannot delete the location. There is no available location called " + availableLoc);
       return newBody;
     } else {
       let index = newArray.indexOf(availableLoc);
