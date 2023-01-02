@@ -30,5 +30,9 @@ module.exports = app => {
     //Push notification by name
     router.put("/notify/:id", players.pushNotification);
     
+    router.delete("/:pid/:nid", players.deleteNotification)
+
+    router.put("/:pid/:mid", players.addMatch)
+
     app.use("/api/players", router);
   };

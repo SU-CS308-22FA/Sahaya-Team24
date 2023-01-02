@@ -138,8 +138,7 @@ exports.pushNotification = (req,res) => {
   Player.findByPk(id)
     .then(data => {
       let array = data.dataValues.p_notification
-      const size = array.length
-      notif.index=size
+      notif.id="id" + Math.random().toString(16).slice(2)
       array.push(notif)
       data.dataValues.p_notification = array
       console.log(data.dataValues)
@@ -159,6 +158,54 @@ exports.pushNotification = (req,res) => {
     })
 }
 
+exports.deleteNotification = (req,res) => {
+  const pid = req.params.pid
+  const nid = req.params.nid
+  Player.findByPk(pid)
+    .then(data => {
+      let array = data.dataValues.p_notification
+      array.splice(array.findIndex(x => x.id === nid),1)
+      data.dataValues.p_notification = array
+      console.log(data.dataValues)
+      Player.update(data.dataValues, {
+        where: { p_id: pid }
+      }).then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Notification was deleted successfully."
+          });
+        } else {
+          res.send({
+            message: "Couldn't delete the notification"
+          });
+        }
+      })
+    })
+}
+
+exports.addMatch = (req,res) => {
+  const pid = req.params.pid
+  const mid = req.params.mid
+  Player.findByPk(pid)
+    .then(data => {
+      let array = data.dataValues.matches
+      array.push(mid)
+      data.dataValues.matches = array
+      Player.update(data.dataValues, {
+        where: { p_id: pid }
+      }).then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Player joined match successfully."
+          });
+        } else {
+          res.send({
+            message: "Player couldn't join the match."
+          });
+        }
+      })
+    })
+}
 
 // Delete a Player with the specified id in the request
 exports.delete = (req, res) => {

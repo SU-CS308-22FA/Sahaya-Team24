@@ -15,6 +15,9 @@ class MatchDataService {
       update(id, data) {
         return http.put(`/matches/${id}`, data);
       }
+      addPlayerToMatch(mid,pid) {
+        return http.put(`/matches/${mid}/${pid}`)
+      }
 }
 
 export default new MatchDataService();

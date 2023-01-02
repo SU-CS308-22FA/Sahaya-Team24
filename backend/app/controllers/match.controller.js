@@ -28,7 +28,8 @@ exports.create = (req, res) => {
         m_curPlayer: 0,
         m_needRefree: req.body.m_needRefree,
         m_date: req.body.m_date,
-        owner_id: req.body.owner_id
+        owner_id: req.body.owner_id,
+        players: [req.body.owner_id]
     };
   
     // Save Match in the database
@@ -43,6 +44,30 @@ exports.create = (req, res) => {
         });
       });
   };
+
+  exports.addPlayer = (req,res) => {
+    const pid = req.params.pid
+    const mid = req.params.mid
+    Match.findByPk(mid)
+      .then(data => {
+        let array = data.dataValues.players
+        array.push(pid)
+        data.dataValues.players = array
+        Match.update(data.dataValues, {
+          where: { m_id: mid }
+        }).then(num => {
+          if (num == 1) {
+            res.send({
+              message: "Player joined match successfully."
+            });
+          } else {
+            res.send({
+              message: "Player couldn't join the match."
+            });
+          }
+        })
+      })
+  }
 
   //finds matches under filter
   exports.findAll = (req, res) => {

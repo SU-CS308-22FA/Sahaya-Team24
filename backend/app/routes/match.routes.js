@@ -14,5 +14,7 @@ module.exports = app => {
     // Update a Match with id
     router.put("/:id", matches.update);
 
+    router.put("/:mid/:pid", matches.addPlayer)
+
     app.use("/api/matches", router);
   };
