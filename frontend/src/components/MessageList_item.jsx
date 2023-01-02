@@ -2,8 +2,10 @@ import React, {useState} from 'react'
 import {Button,Card, Box, Typography,Toolbar, ButtonGroup} from '@mui/material'
 import MatchDataService from '../services/match.service';
 import PlayerDataService from '../services/player.service';
+import { useNavigate } from "react-router-dom";
 
 const MessageList_item = (props) => {
+  let navigate = useNavigate();
   const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
   const acceptJoinRequest = async () => {
     await MatchDataService.addPlayerToMatch(props.passedValue.matchID, props.passedValue.senderID)
@@ -35,18 +37,22 @@ const MessageList_item = (props) => {
       
       </Card>
     )
-  }else 
+  }else if(props.passedValue.type == "RatePlayers")
   {
     return(
-      <Card style={{backgroundColor:"#00466e", margin:"1vh", width:"50vh", justifyContent:"center"}}>
-        <Box  sx={{flexGrow: 1, textAlign:"center"}}>
+      <Button style={{padding:"0", textTransform:"none"}} onClick={navigateToMatchDetail}>
+        <Card style={{backgroundColor:"#00466e", margin:"1vh", width:"50vh", justifyContent:"center"}}>
+          <Box  sx={{flexGrow: 1, textAlign:"center"}}>
             <Typography variant="h4" style={{color:"white", marginTop:"1vh"}}>{props.passedValue.header}</Typography>
-        </Box>
-        <Toolbar>
-          <Typography  style={{color:"white", textAlign:"start"}}>{props.passedValue.message}</Typography>
-        </Toolbar>
-      </Card>
+          </Box>
+          <Toolbar>
+            <Typography  style={{color:"white", textAlign:"start"}}>{props.passedValue.message}</Typography>
+          </Toolbar>
+        </Card>
+      </Button>
     )
+  }else{
+    return null;
   }
   
 }
