@@ -26,7 +26,8 @@ exports.create = (req, res) => {
     r_age: req.body.r_age,
     rr: 0,
     fpr: 0,
-    r_location: req.body.r_location
+    r_location: req.body.r_location,
+    available_locations: []
   };
 
   // Save Referee in the database

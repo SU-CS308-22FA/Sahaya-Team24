@@ -101,26 +101,72 @@ const RefereeProfile = () => {
     getRefereeData();
   }, []);
   
+  /* available locations */
+  const[availableLoc, setAvailableLoc] = useState("");
+
+  // add available location
+  const getBodyALoc = () => {
+    let newBody = referee;
+    let newArray = newBody.available_locations;
+    if (newArray.includes(availableLoc)) {
+      alert("Cannot add the location. There is already a location called " + availableLoc);
+    } else {
+      newArray.push(availableLoc);
+    }
+    newBody["available_locations"] = newArray
+    setReferee(referee => ({
+      ...referee,
+      ...newBody
+    }));
+    return newBody;
+  }
+
+  // delete available location
+  const getBodyALocDelete = () => {
+    let newBody = referee;
+    let newArray = newBody.available_locations;
+    if (!newArray.includes(availableLoc)) {
+      alert("Cannot delete the location. There is no available location called " + availableLoc);
+      return newBody;
+    } else {
+      let index = newArray.indexOf(availableLoc);
+      if (index > -1) {
+        newArray.splice(index, 1);
+        newBody["available_locations"] = newArray;
+        setReferee(referee => ({
+          ...referee,
+          ...newBody
+        }));
+        return newBody;
+      }
+    }
+  }
   return (
     <div>
       <Layout>
       <Card className = {classes.cardProfile}>
       <div><AccountCircleIcon fontSize="large"  /></div>
-      <div>Name:{referee != null ? referee.r_name : null}</div>
-      <div>Age:{referee != null ? referee.r_age : null}</div>
-      <div>Referee Rating:{referee != null ? referee.rr : null}</div>
-      <div>Fair Play Rating:{referee != null ? referee.fpr : null}</div>
-      <div>Location:{referee != null ? referee.r_location : null}</div>
+      <div>Name: {referee != null ? referee.r_name : null}</div>
+      <div>Age: {referee != null ? referee.r_age : null}</div>
+      <div>Referee Rating: {referee != null ? referee.rr : null}</div>
+      <div>Fair Play Rating: {referee != null ? referee.fpr : null}</div>
+      <div>Location: {referee != null ? referee.r_location : null}</div>
+      <div>Available locations: {referee != null ? referee.available_locations.map((loc, i) => (<li key={i}>{loc}</li>)) : null}</div>
+      <div>Available dates: {dates.map((c_date, i) => (
+          <li key={i}>{c_date.date}</li>
+        ))}</div>
       </Card>
       </Layout>
-
-      <div className="dates-list">
-        <h1>Available Dates</h1>
-        {dates.map((c_date, i) => (
-          <li key={i}>{c_date.date}</li>
-        ))}
+      {/* available locations */}
+      <div className="available-locations">
+        <TextField variant="outlined" onChange={(event) =>setAvailableLoc(event.target.value)}/>
+        <Button  className={classes.button} variant="contained" onClick={()=>{
+          updateReferee(getBodyALoc())
+        }}>Add available location</Button>
+        <Button  className={classes.button} variant="contained" onClick={()=>{
+          updateReferee(getBodyALocDelete())
+        }}>Delete available location</Button>
       </div>
-
       {/* Date picker for referee */}
       <div className="referee-date">
         <div style={{margin: 'auto', display: 'block', width: 'fit-content'}}>
