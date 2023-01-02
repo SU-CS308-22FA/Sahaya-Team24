@@ -9,7 +9,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { spacing } from '@mui/system';
 import nextId from "react-id-generator"; // npm i react-id-generator
 import { getAuth } from 'firebase/auth';
-
+import { LOCATION_ARRAY } from '../constants';
 // Also ıdk why but console logs comes one step back from the ffront end if you write "ege" to textfield it logs "eg"
 
 
@@ -140,14 +140,22 @@ const MatchCreate = () => {
         />
         </LocalizationProvider>
 
-        <div>Maç lokasyonu: </div>
-        <TextField
-          required
-          defaultValue="En iyi saha"
-          size='medium'
-          fullWidth = {true}
-          onChange={handleLocChange}
-        />
+        <div>
+        <FormControl style={{width:245}}>
+          <InputLabel id="input_location_label">Location</InputLabel>
+          <Select
+            id="input_location"
+            autoWidth
+            value={mLocation}
+            label="Location"
+            onChange={handleLocChange}
+          >
+          {LOCATION_ARRAY.map((location) => (
+            <MenuItem value={location} key = {location}>{location}</MenuItem>
+          ))}
+          </Select>
+        </FormControl>
+        </div>
 
         <FormControl fullWidth>  
         <InputLabel id="demo-simple-select-label">Oyuncu sayısı</InputLabel>
