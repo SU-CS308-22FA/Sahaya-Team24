@@ -6,14 +6,15 @@ import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card,
 import { Box } from '@mui/system';
 
 import MatchListItem from '../components/MatchListItem';
-
+import PlayerDataService from '../services/player.service'
 import { getAuth, signOut } from 'firebase/auth';
 import PlayerProfileInfoCard from '../components/PlayerProfileInfoCard';
 import RefereeProfileInfoCard from '../components/RefereeProfileInfoCard';
+import MessageList_item from '../components/MessageList_item';
 
 
 const HomePage = () => {
-  const auth=getAuth();
+  let auth=getAuth();
   let navigate = useNavigate();
   const [player, setPlayer] = useState(null);
   const [allLocations, setAllLocations] = useState([]);
@@ -21,22 +22,32 @@ const HomePage = () => {
   const [selectedMatches, setSelectedMatches] = useState([]);
   const [matchesDb, setMatchesDb] = useState([]);
   const [selectedMatchName, setSelectedMatchName] = useState("");
-
+  const [notifications, setNotifications] = useState([])
   const [uType, setUType] = useState(window.localStorage.getItem('user_type'));
+  const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
 
   useEffect(() => {
+
+    const setPlayerData = async () => {
+      const playerInfo = await PlayerDataService.get(uID)
+      setPlayer(playerInfo)
+    }
+    setPlayerData()
     const userType = window.localStorage.getItem('user_type')
     if (userType !== null) setUType(userType);
-    console.log(uType);
+    console.log("User Type:",uType);
   }, []);
 
+  useEffect(()=>{
+    if (player && player.data && player.data.p_notification) {
+      setNotifications(player.data.p_notification)
+    }
+  },[player])
   
-
   useEffect(() => {
     const getMatchesData = async () => {
       try {
         const response = await MatchDataService.getAll();
-        console.log(response.data.sort((a, b) => (a.m_date > b.m_date) ? 1 : -1));
         setMatchesDb(response.data.sort((a, b) => (a.m_date > b.m_date) ? 1 : -1));
         setSelectedMatches(response.data.sort((a, b) => (a.m_date > b.m_date) ? 1 : -1));
 
@@ -54,7 +65,6 @@ const HomePage = () => {
     if(selectedLocations.length == 0){
       if(selectedMatchName==null){
         setSelectedMatches(matchesDb);
-        matchesDb.forEach((elemt) => console.log(elemt));
       }
       else{
         let dummy = matchesDb.filter((match) => match.m_name.toLowerCase().includes(selectedMatchName.trim()));
@@ -72,8 +82,6 @@ const HomePage = () => {
         setSelectedMatches(dummy);
       }
     }
-    console.log(selectedLocations);
-    console.log(selectedMatchName);
   }
 
   const logout = async() => {
@@ -122,7 +130,7 @@ const HomePage = () => {
           <List spa="true" style={{borderColor:"black"}}>
           <ListItem key="PlayerInfoAtLeft">
           <Button style={{padding:"0", textTransform:"none"}} onClick={navigateToProfile}>
-          {uType === 'anonymous' ? null : uType === 'player' ? <PlayerProfileInfoCard passedValue={player}/> : <RefereeProfileInfoCard passedValue={player}/>}
+          {uType === 'anonymous' ? null : uType === 'player' ? <PlayerProfileInfoCard/> : <RefereeProfileInfoCard/>}
             
         </Button>
             </ListItem>
@@ -165,14 +173,17 @@ const HomePage = () => {
       </Grid>
       <Grid item xs={3}>
         <Box>
+        {notifications && notifications.length > 0? 
           <List spa="true" style={{borderColor:"black"}}>
-            <ListItem key="dummy3" >
-            <MatchListItem key="dummy3" passedValue={{m_name:"dummy3", m_location:"Sabanci", m_date:"Monday 22"}}/>
-            </ListItem>
-            <ListItem key="dummy4" >
-            <MatchListItem  key="dummy4" passedValue={{m_name:"dummy4", m_location:"Sabanci", m_date:"Monday 22"}}/>
-            </ListItem>
+              {notifications?.map((object) =>
+                  <MessageList_item 
+                    passedValue = {object}
+                  />
+              )}
           </List>
+          :
+          null
+        }  
         </Box>
       </Grid>
     </Grid>
