@@ -139,6 +139,7 @@ exports.create = (req, res) => {
   };
 
 
+  //sends messages to players of the match after 2hr from match date
   const handleMatchNotifications = ( m ) => {
     
     let matchDate = m.m_date;
@@ -198,6 +199,9 @@ exports.create = (req, res) => {
     })
 }
 
+//Send notification n to player with pid
+// n = json obj with type header mesage
+//pid is id of the user from database
 pushNotification_to = (pid , n) => {
   const id = pid;
   const notif = n
