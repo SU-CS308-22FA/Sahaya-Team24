@@ -32,6 +32,14 @@ class PlayerDataService {
   notify(id, data) {
     return http.put(`/players/notify/${id}`, data)
   }
+
+  deleteNotification(pid,nid) {
+    return http.delete(`/players/${pid}/${nid}`)
+  }
+
+  addMatchToPlayer(pid,mid) {
+    return http.put(`/players/${pid}/${mid}`)
+  }
 }
 
 export default new PlayerDataService();

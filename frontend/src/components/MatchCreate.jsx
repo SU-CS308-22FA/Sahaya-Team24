@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MatchDataService from '../services/match.service';
+import PlayerDataService from '../services/player.service'
 import dayjs, { Dayjs } from 'dayjs';
 import {Button, Select,  FormControl,MenuItem, InputLabel,TextField ,Card,Stack ,Box,Switch } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -111,7 +112,9 @@ const MatchCreate = () => {
     });
 
     if(matchID != "" && name != ""  && mLocation != "" && numofPlayers != "" && value != ""){
-      navigate('../HomePage');
+      PlayerDataService.addMatchToPlayer(uID,matchID).then(()=>{
+        navigate('../HomePage');
+      })
     }else{
       alert("Lütfen bütün boşlukları doldurunuz");
     }
