@@ -28,6 +28,10 @@ class PlayerDataService {
   findByTitle(title) {
     return http.get(`/players?title=${title}`);
   }
+
+  notify(id, data) {
+    return http.put(`/players/notify/${id}`, data)
+  }
 }
 
 export default new PlayerDataService();

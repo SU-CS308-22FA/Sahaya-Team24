@@ -29,6 +29,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       p_notification: {
         type: DataTypes.ARRAY(DataTypes.JSON)
+      },
+      matches: {
+        type: DataTypes.ARRAY(Sequelize.STRING)
       }
     });
   

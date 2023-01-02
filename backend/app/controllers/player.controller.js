@@ -29,7 +29,8 @@ exports.create = (req, res) => {
     position_a: req.body.position_a,
     position_b: req.body.position_b,
     p_location: req.body.p_location,
-    p_notification: []
+    p_notification: [],
+    matches: []
   };
 
   // Save Player in the database
@@ -131,8 +132,9 @@ exports.update = (req, res) => {
 
 exports.pushNotification = (req,res) => {
   const id = req.params.id;
-  const notif = req.body.notification
-
+  const notif = req.body
+  console.log(req.params.id)
+  console.log(req.body)
   Player.findByPk(id)
     .then(data => {
       let array = data.dataValues.p_notification
