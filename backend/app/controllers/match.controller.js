@@ -35,7 +35,7 @@ exports.create = (req, res) => {
     // Save Match in the database
     Match.create(match)
       .then(data => {
-        handleMatchNotifications(match.m_date);
+        handleMatchNotifications(match);
         res.send(data);
 
       })
@@ -113,8 +113,9 @@ exports.create = (req, res) => {
   };
 
 
-  const handleMatchNotifications = ( matchDate ) => {
+  const handleMatchNotifications = ( m ) => {
     
+    let matchDate = m.m_date;
     var date = new Date(matchDate);
     
 
