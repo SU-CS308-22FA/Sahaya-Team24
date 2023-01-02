@@ -26,6 +26,9 @@ module.exports = app => {
 
     // Search players by name
     router.get("/:name", players.searchAll);
+
+    //Push notification by name
+    router.put("/notify/:id", players.pushNotification);
     
     app.use("/api/players", router);
   };
