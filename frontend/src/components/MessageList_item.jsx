@@ -16,6 +16,11 @@ const MessageList_item = (props) => {
     await PlayerDataService.deleteNotification(uID,props.passedValue.id)
   }
 
+  const navigateToSendRatings = (e) => {
+    navigate('/RateSendPage');
+
+  }
+
   if(props.passedValue.type == "Join Request") 
   {
     return (
@@ -40,7 +45,7 @@ const MessageList_item = (props) => {
   }else if(props.passedValue.type == "RatePlayers")
   {
     return(
-      <Button style={{padding:"0", textTransform:"none"}} onClick={navigateToMatchDetail}>
+      <Button style={{padding:"0", textTransform:"none"}} onClick={navigateToSendRatings}>
         <Card style={{backgroundColor:"#00466e", margin:"1vh", width:"50vh", justifyContent:"center"}}>
           <Box  sx={{flexGrow: 1, textAlign:"center"}}>
             <Typography variant="h4" style={{color:"white", marginTop:"1vh"}}>{props.passedValue.header}</Typography>
