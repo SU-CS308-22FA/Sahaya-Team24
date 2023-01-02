@@ -101,12 +101,16 @@ const RefereeProfile = () => {
     getRefereeData();
   }, []);
   
-  // available locations
+  /* available locations */
   const[availableLoc, setAvailableLoc] = useState("");
+
+  // add available location
   const getBodyALoc = () => {
     let newBody = referee;
     let newArray = newBody.available_locations;
-    newArray.push(availableLoc);
+    if (!newArray.includes(availableLoc)) {
+      newArray.push(availableLoc);
+    }
     newBody["available_locations"] = newArray
     setReferee(referee => ({
       ...referee,
@@ -115,6 +119,25 @@ const RefereeProfile = () => {
     return newBody;
   }
 
+  // delete available location
+  const getBodyALocDelete = () => {
+    let newBody = referee;
+    let newArray = newBody.available_locations;
+    if (!newArray.includes(availableLoc)) {
+      return newBody;
+    } else {
+      let index = newArray.indexOf(availableLoc);
+      if (index > -1) {
+        newArray.splice(index, 1);
+        newBody["available_locations"] = newArray;
+        setReferee(referee => ({
+          ...referee,
+          ...newBody
+        }));
+        return newBody;
+      }
+    }
+  }
   return (
     <div>
       <Layout>
@@ -137,6 +160,9 @@ const RefereeProfile = () => {
         <Button  className={classes.button} variant="contained" onClick={()=>{
           updateReferee(getBodyALoc())
         }}>Add available location</Button>
+        <Button  className={classes.button} variant="contained" onClick={()=>{
+          updateReferee(getBodyALocDelete())
+        }}>Delete available location</Button>
       </div>
       {/* Date picker for referee */}
       <div className="referee-date">
