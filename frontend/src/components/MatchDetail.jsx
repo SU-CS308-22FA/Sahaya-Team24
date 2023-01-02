@@ -52,7 +52,8 @@ const MatchDetail = (inVal) => {
       const userInfo = await PlayerDataService.get(uID)
       const notification = {
         "type": "Join Request",
-        "Sender Id":`${uID}`,
+        "senderID":`${uID}`,
+        "matchID": `${match.m_id}`,
         "header": "New Join Request!",
         "message" : `User ${userInfo.data.p_name} wants to join your match ${match.m_name}!`
       }

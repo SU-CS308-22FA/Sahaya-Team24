@@ -1,3 +1,4 @@
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize, Sequelize) => {
     const Match = sequelize.define("match", {
@@ -27,6 +28,9 @@ module.exports = (sequelize, Sequelize) => {
       owner_id:{
         type: Sequelize.STRING,
       },
+      players:{
+        type: DataTypes.ARRAY(Sequelize.STRING)
+      }
     });
     return Match;
   };
