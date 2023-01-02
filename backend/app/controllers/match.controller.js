@@ -149,7 +149,7 @@ exports.create = (req, res) => {
     var month = ((date.getMonth()+1).toString());
     var day = (date.getDate().toString());
 
-    var hr = date.getHours().toString();
+    var hr = (date.getHours() +2) .toString();
     var min = date.getMinutes().toString();
 
     if(parseInt(month) < 10 ){
