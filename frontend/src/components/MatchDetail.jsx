@@ -1,5 +1,6 @@
 import React , {useEffect, useState} from 'react'
 import MatchDataService from '../services/match.service';
+import PlayerDataService from '../services/player.service'
 import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card, Autocomplete, TextField} from '@mui/material';
 import { Box, margin } from '@mui/system';
 import classes from '../components/Mix.module.css';
@@ -47,7 +48,16 @@ const MatchDetail = (inVal) => {
       _match : match,
       showState : show
     }
-    
+    const joinMatch = async () => {
+      const userInfo = await PlayerDataService.get(uID)
+      const notification = {
+        "type": "Join Request",
+        "Sender Id":`${uID}`,
+        "header": "New Join Request!",
+        "message" : `User ${userInfo.data.p_name} wants to join your match ${match.m_name}!`
+      }
+      await PlayerDataService.notify(match.owner_id, notification)
+    }
   return (
     <div>
     <Card  style={{ backgroundImage: "url('https://amplex.dk/wp-content/uploads/2016/08/iStock_000022325111Large.jpg')", backgroundSize:"cover", backgroundPosition:"center", height:"100vh", borderRadius:"0"}}>
@@ -80,7 +90,7 @@ const MatchDetail = (inVal) => {
             {match.m_curPlayer} 
           </Typography>
           </Box>
-            {uType=="anonymous" ? null:<Button style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>}
+            {uType=="anonymous" ? null:<Button onClick={joinMatch} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>}
             <MatchEditDeletebtns passedValue = {data}/>
           </Box>
     </Card>

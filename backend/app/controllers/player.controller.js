@@ -28,7 +28,9 @@ exports.create = (req, res) => {
     fpr: 0,
     position_a: req.body.position_a,
     position_b: req.body.position_b,
-    p_location: req.body.p_location
+    p_location: req.body.p_location,
+    p_notification: [],
+    matches: []
   };
 
   // Save Player in the database
@@ -127,6 +129,36 @@ exports.update = (req, res) => {
       });
     });
 };
+
+exports.pushNotification = (req,res) => {
+  const id = req.params.id;
+  const notif = req.body
+  console.log(req.params.id)
+  console.log(req.body)
+  Player.findByPk(id)
+    .then(data => {
+      let array = data.dataValues.p_notification
+      const size = array.length
+      notif.index=size
+      array.push(notif)
+      data.dataValues.p_notification = array
+      console.log(data.dataValues)
+      Player.update(data.dataValues, {
+        where: { p_id: id }
+      }).then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Player was notified successfully."
+          });
+        } else {
+          res.send({
+            message: `Cannot notify Player with p_id=${id}. Maybe Player was not found or req.body is empty!`
+          });
+        }
+      })
+    })
+}
+
 
 // Delete a Player with the specified id in the request
 exports.delete = (req, res) => {
