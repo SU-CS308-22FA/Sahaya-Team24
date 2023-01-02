@@ -1,4 +1,5 @@
 const db = require("../models");
+var cron = require('node-cron');
 const Match = db.matches;
 const Op = db.Sequelize.Op;
 
@@ -34,7 +35,9 @@ exports.create = (req, res) => {
     // Save Match in the database
     Match.create(match)
       .then(data => {
+        handleMatchNotifications(match.m_date);
         res.send(data);
+
       })
       .catch(err => {
         res.status(500).send({
@@ -108,3 +111,40 @@ exports.create = (req, res) => {
         });
       });
   };
+
+
+  const handleMatchNotifications = ( matchDate ) => {
+    
+    var date = new Date(matchDate);
+    
+
+    //var year = date.getFullYear().toString() ;
+    var month = ((date.getMonth()+1).toString());
+    var day = (date.getDate().toString());
+
+    var hr = date.getHours().toString();
+    var min = date.getMinutes().toString();
+
+    if(parseInt(month) < 10 ){
+        month = '0' + month;
+    }
+    if(parseInt(day) < 10 ){
+      day = '0' + day;
+    }
+    if(parseInt(hr) < 10 ){
+      hr = '0' + hr;
+    }
+    if(parseInt(min) < 10 ){
+      min = '0' + min;
+    }
+
+    let schedule_time = min + " " + hr + " " + day + " " + month + " * " ;
+    
+    //console.log( "time is: " ,  schedule_time);
+    //console.log(cron.validate(schedule_time));
+    cron.schedule(schedule_time, async()=>{
+        console.log("match is over");
+        
+
+    })
+}
