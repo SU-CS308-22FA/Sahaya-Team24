@@ -178,8 +178,8 @@ exports.create = (req, res) => {
           "type": "RatePlayers",
           "senderID":`${m.owner_id}`,
           "matchID": `${m.m_id}`,
-          "header": "Match",
-          "message" : `You can reach rating page for ${m.m_name}`
+          "header": "Now you can Rate!",
+          "message" : `You can submit your raitngs for the players in ${m.m_name} lobby`
         }
         
        for (let index = 0; index < ps.length; index++) {
