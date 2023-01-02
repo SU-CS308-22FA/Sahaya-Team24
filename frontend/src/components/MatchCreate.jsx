@@ -57,7 +57,7 @@ const MatchCreate = () => {
 
     
     //----------------for switch--------------------------
-    const [checked, setRefree] = React.useState(true);
+    const [checked, setRefree] = React.useState(false);
     const handleRefreeChange = (event) => {
       setRefree(event.target.checked);
       console.log("checked: ",checked);
