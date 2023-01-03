@@ -138,6 +138,22 @@ exports.create = (req, res) => {
       });
   };
 
+  //finds the match with given id
+  exports.findById = (req, res) =>{
+    const id = req.params.id;
+    Match.findAll({ where: {m_id: id} })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving players."
+      });
+    });
+
+  }
+
 
   //sends messages to players of the match after 2hr from match date
   const handleMatchNotifications = ( m ) => {
