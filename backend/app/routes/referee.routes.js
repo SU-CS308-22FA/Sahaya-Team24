@@ -21,5 +21,7 @@ module.exports = app => {
   // Delete all referees
   router.delete("/", referees.deleteAll);
 
+  router.put("/:rid/:mid", referees.addMatch);
+
   app.use("/api/referees", router);
 };

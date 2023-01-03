@@ -1,6 +1,9 @@
 import React , {useEffect, useState} from 'react'
+
 import MatchDataService from '../services/match.service';
 import PlayerDataService from '../services/player.service'
+import RefereeDataService from '../services/referee.service';
+
 import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card, Autocomplete, TextField} from '@mui/material';
 import { Box, margin } from '@mui/system';
 import classes from '../components/Mix.module.css';
@@ -29,8 +32,14 @@ const MatchDetail = (inVal) => {
    
     
     //---------------getCurrentuserID------------------
-    const auth=getAuth();
-    const uID = auth.currentUser.uid;
+    const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+    useEffect(() => {
+      const userID = window.localStorage.getItem('user_id')
+      if (userID !== null) setUID(userID);
+      console.log(userID);
+    }, [])
+    //const auth=getAuth();
+    //const uID = auth.currentUser.uid;
     //-------------------------------------------------
    
     let show;
@@ -49,15 +58,28 @@ const MatchDetail = (inVal) => {
       showState : show
     }
     const joinMatch = async () => {
-      const userInfo = await PlayerDataService.get(uID)
-      const notification = {
-        "type": "Join Request",
-        "senderID":`${uID}`,
-        "matchID": `${match.m_id}`,
-        "header": "New Join Request!",
-        "message" : `User ${userInfo.data.p_name} wants to join your match ${match.m_name}!`
+      let userInfo;
+      if (uType === 'player') {
+        userInfo = await PlayerDataService.get(uID)
+        const notification = {
+          "type": "Join Request",
+          "senderID":`${uID}`,
+          "matchID": `${match.m_id}`,
+          "header": "New Join Request!",
+          "message" : `User ${userInfo.data.p_name} wants to join your match ${match.m_name}!`
+        }
+        await PlayerDataService.notify(match.owner_id, notification)
+      } else {
+        userInfo = await RefereeDataService.get(uID)
+        const notification = {
+          "type": "Join Request",
+          "senderID":`${uID}`,
+          "matchID": `${match.m_id}`,
+          "header": "New Join Request!",
+          "message" : `User ${userInfo.data.r_name} wants to join your match ${match.m_name}!`
+        }
+        await PlayerDataService.notify(match.owner_id, notification)
       }
-      await PlayerDataService.notify(match.owner_id, notification)
     }
   return (
     <div>

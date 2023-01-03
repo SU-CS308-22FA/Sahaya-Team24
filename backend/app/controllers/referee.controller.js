@@ -149,3 +149,28 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
+
+// Add match
+exports.addMatch = (req, res) => {
+  const rid = req.params.rid
+  const mid = req.params.mid
+  Referee.findByPk(rid)
+    .then(data => {
+      let array = data.dataValues.matches
+      array.push(mid)
+      data.dataValues.matches = array
+      Referee.update(data.dataValues, {
+        where: { r_id: rid }
+      }).then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Referee joined match successfully."
+          });
+        } else {
+          res.send({
+            message: "Referee couldn't join the match."
+          });
+        }
+      })
+    })
+}
