@@ -6,9 +6,20 @@ import PlayerDataService from '../services/player.service';
 const MessageList_item = (props) => {
   const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
   const acceptJoinRequest = async () => {
-    await MatchDataService.addPlayerToMatch(props.passedValue.matchID, props.passedValue.senderID)
-    await PlayerDataService.addMatchToPlayer(props.passedValue.senderID, props.passedValue.matchID)
-    await PlayerDataService.deleteNotification(uID,props.passedValue.id)
+    const player = await PlayerDataService.get(props.passedValue.senderID)
+    console.log(player)
+    if(player){
+      console.log("hi")
+      await MatchDataService.addPlayerToMatch(props.passedValue.matchID, props.passedValue.senderID)
+      await PlayerDataService.addMatchToPlayer(props.passedValue.senderID, props.passedValue.matchID)
+      let res = await PlayerDataService.deleteNotification(uID,props.passedValue.id)
+      console.log(res)
+    }
+    else
+    {
+      alert("Üzgünüz kullanıcı hesabını silmiş.")
+    }
+    
   }
   const refuseJoinRequest = async () => {
     await PlayerDataService.deleteNotification(uID,props.passedValue.id)

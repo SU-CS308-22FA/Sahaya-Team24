@@ -183,6 +183,8 @@ exports.deleteNotification = (req,res) => {
     })
 }
 
+
+
 exports.addMatch = (req,res) => {
   const pid = req.params.pid
   const mid = req.params.mid
@@ -201,6 +203,30 @@ exports.addMatch = (req,res) => {
         } else {
           res.send({
             message: "Player couldn't join the match."
+          });
+        }
+      })
+    })
+}
+
+exports.deleteMatch = (req,res) => {
+  const pid = req.params.pid
+  const mid = req.params.mid
+  Player.findByPk(pid)
+    .then(data => {
+      let array = data.dataValues.matches
+      array.splice(array.indexOf(mid),1)
+      data.dataValues.matches = array
+      Player.update(data.dataValues, {
+        where: { p_id: pid }
+      }).then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Player exited match successfully."
+          });
+        } else {
+          res.send({
+            message: "Player couldn't exit the match."
           });
         }
       })
