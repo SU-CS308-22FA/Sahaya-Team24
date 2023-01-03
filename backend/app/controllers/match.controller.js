@@ -157,7 +157,7 @@ exports.create = (req, res) => {
 
   //sends messages to players of the match after 2hr from match date
   const handleMatchNotifications = ( m ) => {
-    
+    console.log("handling not")
     let matchDate = m.m_date;
     var date = new Date(matchDate);
   
@@ -165,7 +165,7 @@ exports.create = (req, res) => {
     var month = ((date.getMonth()+1).toString());
     var day = (date.getDate().toString());
 
-    var hr = (date.getHours() +2) .toString();
+    var hr = ((date.getHours() +2)%24) .toString();
     var min = date.getMinutes().toString();
 
     if(parseInt(month) < 10 ){
@@ -183,7 +183,7 @@ exports.create = (req, res) => {
 
     let schedule_time = min + " " + hr + " " + day + " " + month + " * " ;
     
-    //console.log( "time is: " ,  schedule_time);
+    console.log( "time is: " ,  schedule_time);
     //console.log(cron.validate(schedule_time));
     cron.schedule(schedule_time, async ()=>{
         console.log("match is over");
