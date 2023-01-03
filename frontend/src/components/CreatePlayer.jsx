@@ -1,11 +1,11 @@
 
 import PlayerDataService from '../services/player.service';
-import { TextField, Button , Card } from "@mui/material";
+import { TextField, Button , Card, InputLabel, FormControl, MenuItem,Select } from "@mui/material";
 import React, { Component } from "react";
 import { getAuth } from "firebase/auth";
 import classes from '../components/Mix.module.css';
 import { withRouter } from './withRouter';
-
+import { LOCATION_ARRAY } from '../constants';
 
 class AddPlayer extends Component{ 
   constructor(props) {
@@ -101,6 +101,11 @@ class AddPlayer extends Component{
       p_location: ""
     });
   }
+
+  buttonClick() {
+
+  }
+  
   render(){
   return (
     <Card className={classes.card}>
@@ -147,17 +152,23 @@ class AddPlayer extends Component{
       />
       </div>
       <div className={classes.textFieldCss}>
-      <TextField
-        id="input_location"
-        required
-        label="Location"
-        variant="outlined"
-        value={this.state.p_location}
-        onChange={this.onChangeLocation}
-      />
+      <FormControl style={{width:245}}>
+        <InputLabel id="input_location_label">Location</InputLabel>
+        <Select
+          id="input_location"
+          autoWidth
+          value={this.state.p_location}
+          label="Location"
+          onChange={this.onChangeLocation}
+        >
+        {LOCATION_ARRAY.map((location) => (
+          <MenuItem value={location} key = {location}>{location}</MenuItem>
+        ))}
+        </Select>
+      </FormControl>
       </div>
 
-      <Button variant="contained" onClick={()=>{
+      <Button variant="contained" disabled={!(this.state.p_name != "" && this.state.p_age != 0 && this.state.position_a != "" && this.state.position_b != "" && this.state.p_location != "")} onClick={()=>{
         this.savePlayer()
         this.navigation()
         }}>

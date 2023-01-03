@@ -38,6 +38,19 @@ const HomePage = () => {
     console.log("User Type:",uType);
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const playerInfo = await PlayerDataService.get(uID)
+      setPlayer(playerInfo)
+    };
+  
+    const timer = setInterval(() => {
+      fetchData();
+    }, 3000);
+  
+    return () => clearInterval(timer);
+  }, []);
+
   useEffect(()=>{
     if (player && player.data && player.data.p_notification) {
       setNotifications(player.data.p_notification)
@@ -177,6 +190,7 @@ const HomePage = () => {
           <List spa="true" style={{borderColor:"black"}}>
               {notifications?.map((object) =>
                   <MessageList_item 
+                    key = {object.id}
                     passedValue = {object}
                   />
               )}
