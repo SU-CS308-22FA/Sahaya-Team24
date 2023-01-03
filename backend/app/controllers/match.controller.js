@@ -160,12 +160,14 @@ exports.create = (req, res) => {
     console.log("handling not")
     let matchDate = m.m_date;
     var date = new Date(matchDate);
-  
+    date.setHours(date.getHours() + 2);
+
     //var year = date.getFullYear().toString() ;
     var month = ((date.getMonth()+1).toString());
+    
     var day = (date.getDate().toString());
 
-    var hr = ((date.getHours() +2)%24) .toString();
+    var hr = (date.getHours()) .toString();
     var min = date.getMinutes().toString();
 
     if(parseInt(month) < 10 ){
