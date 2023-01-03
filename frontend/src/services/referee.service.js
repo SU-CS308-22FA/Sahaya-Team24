@@ -24,6 +24,10 @@ class RefereeDataService {
   deleteAll() {
     return http.delete(`/referees`);
   }
+
+  addMatchToReferee(rid, mid) {
+    return http.put(`/referees/${rid}/${mid}`)
+  }
 }
 
 export default new RefereeDataService();
