@@ -1,8 +1,8 @@
 import http from "../api/http-common";
 
 class PlayerDataService {
-  getAll() {
-    return http.get("/players");
+  getAll(where) {
+    return http.get("/players",where);
   }
 
   get(id) {
@@ -29,16 +29,20 @@ class PlayerDataService {
     return http.get(`/players?title=${title}`);
   }
 
+
   notify(id, data) {
     return http.put(`/players/notify/${id}`, data)
   }
-
   deleteNotification(pid,nid) {
-    return http.delete(`/players/${pid}/${nid}`)
+    return http.delete(`/players/notify/${pid}/${nid}`)
   }
+
 
   addMatchToPlayer(pid,mid) {
     return http.put(`/players/${pid}/${mid}`)
+  }
+  deleteMatchFromPlayer(pid,mid) {
+    return http.delete(`/players/${pid}/${mid}`)
   }
 }
 

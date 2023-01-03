@@ -21,18 +21,26 @@ const MessageList_item = (props) => {
   }
 
   const acceptJoinRequest = async () => {
-    const type = await handleUserType(props.passedValue.senderID);
-    console.log(type)
-    if (type === 'referee') {
-      console.log("hey")
-      await RefereeDataService.addMatchToReferee(props.passedValue.senderID, props.passedValue.matchID)
-      const res = await RefereeDataService.get(props.passedValue.senderID)
-      console.log(res)
-    } else {
+  const type = await handleUserType(props.passedValue.senderID);
+  console.log(type)
+  if (type === 'referee') {
+    await RefereeDataService.addMatchToReferee(props.passedValue.senderID, props.passedValue.matchID)
+    const res = await RefereeDataService.get(props.passedValue.senderID)
+    console.log(res)
+  } else {
+    let player
+    try
+    {
+      player = await PlayerDataService.get(props.passedValue.senderID)
+      await MatchDataService.addPlayerToMatch(props.passedValue.matchID, props.passedValue.senderID)
       await PlayerDataService.addMatchToPlayer(props.passedValue.senderID, props.passedValue.matchID)
+    }catch(error) 
+    {
+      alert("Üzgünüz kullanıcı hesabını silmiş.")
     }
-    await MatchDataService.addPlayerToMatch(props.passedValue.matchID, props.passedValue.senderID)
-    await PlayerDataService.deleteNotification(uID,props.passedValue.id)
+  }
+
+  await PlayerDataService.deleteNotification(uID,props.passedValue.id)
   }
   const refuseJoinRequest = async () => {
     await PlayerDataService.deleteNotification(uID,props.passedValue.id)

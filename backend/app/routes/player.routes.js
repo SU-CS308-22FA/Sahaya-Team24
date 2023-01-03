@@ -9,9 +9,6 @@ module.exports = app => {
     // Retrieve all players
     router.get("/", players.findAll);
   
-    // Retrieve all published players
-    router.get("/published", players.findAllPublished);
-  
     // Retrieve a single Tutorial with id
     router.get("/:id", players.findOne);
   
@@ -24,13 +21,15 @@ module.exports = app => {
     // Delete all players
     router.delete("/", players.deleteAll);
 
+    router.delete("/:pid/:mid", players.deleteMatch)
+
     // Search players by name
     router.get("/:name", players.searchAll);
 
     //Push notification by name
     router.put("/notify/:id", players.pushNotification);
     
-    router.delete("/:pid/:nid", players.deleteNotification)
+    router.delete("/notify/:pid/:nid", players.deleteNotification)
 
     router.put("/:pid/:mid", players.addMatch)
 

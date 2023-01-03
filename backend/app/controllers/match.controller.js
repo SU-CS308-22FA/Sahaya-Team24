@@ -93,6 +93,32 @@ exports.create = (req, res) => {
       })
   }
 
+  exports.deletePlayer = (req,res) => {
+    const pid = req.params.pid
+    const mid = req.params.mid
+    Match.findByPk(mid)
+      .then(data => {
+        console.log(mid,data)
+        let array = data.dataValues.players
+        array.splice(array.indexOf(pid),1)
+        data.dataValues.players = array
+        data.dataValues.m_curPlayer = data.dataValues.m_curPlayer-1
+        Match.update(data.dataValues, {
+          where: { m_id: mid }
+        }).then(num => {
+          if (num == 1) {
+            res.send({
+              message: "Player deleted from match successfully."
+            });
+          } else {
+            res.send({
+              message: "Player couldn't get deleted from the match."
+            });
+          }
+        })
+      })
+  }
+
   exports.addWaiting = (req,res) => {
     const pid = req.params.pid
     const mid = req.params.mid
@@ -116,10 +142,33 @@ exports.create = (req, res) => {
         })
       })
   }
+  exports.deleteWaiting = (req,res) => {
+    const pid = req.params.pid
+    const mid = req.params.mid
+    Match.findByPk(mid)
+      .then(data => {
+        let array = data.dataValues.waitingList
+        array.splice(array.indexOf(pid),1)
+        data.dataValues.waitingList = array
+        Match.update(data.dataValues, {
+          where: { m_id: mid }
+        }).then(num => {
+          if (num == 1) {
+            res.send({
+              message: "Player deleted from waiting list successfully."
+            });
+          } else {
+            res.send({
+              message: "Player couldn't delete from the waiting list."
+            });
+          }
+        })
+      })
+  }
 
   //finds matches under filter
   exports.findAll = (req, res) => {
-    console.log("CONTROLLER FINDALL");
+    console.log("req:",req);
     var condition = req ? req : null;
     Match.findAll({ where: condition })
       .then(data => {
@@ -157,6 +206,8 @@ exports.create = (req, res) => {
       });
     });
   };
+
+
 
   exports.update = (req, res) => {
     const id = req.params.id;
