@@ -19,7 +19,6 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Player
   const referee = {
     r_id: req.body.r_id,
     r_name: req.body.r_name,
@@ -27,7 +26,9 @@ exports.create = (req, res) => {
     rr: 0,
     fpr: 0,
     r_location: req.body.r_location,
-    available_locations: []
+    available_locations: [],
+    dates: [],
+    matches: []
   };
 
   // Save Referee in the database
