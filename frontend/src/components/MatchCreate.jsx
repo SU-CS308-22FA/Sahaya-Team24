@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import MatchDataService from '../services/match.service';
 import PlayerDataService from '../services/player.service'
+import RefereeDataService from '../services/referee.service';
+
 import dayjs, { Dayjs } from 'dayjs';
 import {Button, Select,  FormControl,MenuItem, InputLabel,TextField ,Card,Stack ,Box,Switch } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -18,9 +21,16 @@ import { LOCATION_ARRAY } from '../constants';
 const MatchCreate = () => {
   //idea this functions wil be addded as modal to hompage so that site will be much cooler
   const matchID = nextId("Match-Lobby-");
-
-
-
+  
+  //match location
+  const [mLocation, setLoc] = React.useState('');
+  const handleLocChange = (event) => {
+    setLoc(event.target.value);
+    setChecked(false)
+    console.log("loc: ",mLocation);
+  };
+  //----------------------------------------------------------
+  
   //-------------functions for text fields-------------------------
   //matchname
     const [name, setName] = React.useState('Güzel bir lobi ismi');
@@ -28,13 +38,7 @@ const MatchCreate = () => {
     setName(event.target.value);
     console.log("name: " , name);
   };
-  //match location
-  const [mLocation, setLoc] = React.useState('');
-  const handleLocChange = (event) => {
-    setLoc(event.target.value);
-    console.log("loc: ",mLocation);
-  };
-  //----------------------------------------------------------
+  
 
 
     //-------------functions for Date time picker--------------------------
@@ -58,14 +62,45 @@ const MatchCreate = () => {
 
     
     //----------------for switch--------------------------
-    const [checked, setRefree] = React.useState(false);
+    const [checked, setChecked] = useState(false);
+
     const handleRefreeChange = (event) => {
-      setRefree(event.target.checked);
-      console.log("checked: ",checked);
-      
-  };
+      setChecked(event.target.checked);
+      handleFilterRefereeData()
+    };
     //-------------------------------------------------
 
+    // referee add
+    const [referees, setReferees] = useState([]); // all referees
+    const [referee, setReferee] = useState('');
+    const [filteredR, setFilteredR] = useState([]);
+
+    // get all referees data and set it to referees array
+    const getRefereeData = async () => {
+      try {
+        const response = await RefereeDataService.getAll();
+        setReferees(response.data);
+        console.log(referees)
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    useEffect(() => {
+      getRefereeData() // get all referees
+    }, [])
+
+    const handleFilterRefereeData = () => {
+      let fTemp = [];
+      for (let i = 0; i < referees.length; i++) {
+        const temp = referees[i]['available_locations']
+        if (temp.find(e => e === mLocation)) {
+          fTemp.push(referees[i]);
+        }
+      }
+      setFilteredR(fTemp)
+    }
+    
 
     //---------------getCurrentuserID------------------
     const auth=getAuth();
@@ -181,11 +216,27 @@ const MatchCreate = () => {
         </FormControl>
 
         <>Hakem atansın istiyorum</>
+        
         <Switch
           inputProps={{ 'aria-label': 'controlled' }}
           onChange ={ handleRefreeChange }
+          checked = {checked}
          />
-        <div></div>
+        <div>{checked === true  ? <div>{filteredR.length > 0 ? 
+          <FormControl style={{width:245}}>
+            <InputLabel id="input_location_label">Referee</InputLabel>
+            <Select
+              id="input_location"
+              autoWidth
+              value={referee}
+              label="Location"
+              onChange={(event) => setReferee(event.target.value)}
+            >
+            {filteredR.map((r) => (
+              <MenuItem value={r.r_id} key = {r.r_id}>{r.r_name}</MenuItem>
+            ))}
+            </Select>
+          </FormControl> : <div>No referee available in this location</div>}</div> : null}</div>
         <Button color="success" variant="contained" onClick={handlecreateMatch} >Yayınla</Button>
         
         </Box>
