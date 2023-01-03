@@ -16,6 +16,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import DatesDataService from '../services/dates.service';
 
+import { LOCATION_ARRAY } from '../constants';
+
 const RefereeProfile = () => {
   const [referee, setReferee] = useState(null);
   const [key, setKey] = useState("")
@@ -27,49 +29,6 @@ const RefereeProfile = () => {
     if (userID !== null) setUID(userID);
     console.log(userID);
   }, [])
-
-  /* Date picker for referee functions */
-  const [dateValue, setDateValue] = useState(dayjs());
-  const [dates, setDates] = useState([]);
-
-  // select date from textfield
-  const handleDatePick = (newDateValue) => {
-    setDateValue(newDateValue);
-    console.log("date set");
-  }
-
-  // add date
-  const addDateToDB = async () => {
-    var data = {
-      date: dateValue,
-      r_id: uID
-    }
-    const response = await DatesDataService.create(data)
-    console.log(response.data);
-    console.log("date added to the db");
-  }
-
-  // delete date
-  const deleteDate = async () => {
-    await DatesDataService.delete(dateValue);
-    console.log("date deleted");
-  }
-
-  // show dates
-  useEffect(() => {
-    const getDateData = async () => {
-      try {
-        const response = await DatesDataService.getAll(uID);
-        console.log(response.data);
-        setDates(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getDateData();
-  }, []);
-
-  /* End of date picker for referee functions */
 
   const getBody = () => {
     let newBody = referee
@@ -141,6 +100,54 @@ const RefereeProfile = () => {
       }
     }
   }
+
+  /* referee dates */
+  const[date, setDate] = useState(dayjs().add(2,'h').toString());
+
+  // select date from textfield
+  const handleDatePick = (newDateValue) => {
+    setDate(newDateValue);
+    console.log("date set");
+  }
+
+  const getBodyDate = () => {
+    let newBody = referee;
+    let newArray = newBody.dates;
+    if (newArray.includes(date)) {
+      alert("Cannot add the date. There is already a date " + date);
+    } else {
+      console.log("hey")
+      newArray.push(date);
+    }
+    newBody["dates"] = newArray
+    setReferee(referee => ({
+      ...referee,
+      ...newBody
+    }));
+    return newBody;
+  }
+
+  // delete date
+  const getBodyDateDelete = () => {
+    let newBody = referee;
+    let newArray = newBody.dates;
+    if (!newArray.includes(date)) {
+      alert("Cannot delete the date. There is no date " + date);
+      return newBody;
+    } else {
+      let index = newArray.indexOf(date);
+      if (index > -1) {
+        newArray.splice(index, 1);
+        newBody["dates"] = newArray;
+        setReferee(referee => ({
+          ...referee,
+          ...newBody
+        }));
+        return newBody;
+      }
+    }
+  }
+
   return (
     <div>
       <Layout>
@@ -152,14 +159,27 @@ const RefereeProfile = () => {
       <div>Fair Play Rating: {referee != null ? referee.fpr : null}</div>
       <div>Location: {referee != null ? referee.r_location : null}</div>
       <div>Available locations: {referee != null ? referee.available_locations.map((loc, i) => (<li key={i}>{loc}</li>)) : null}</div>
-      <div>Available dates: {dates.map((c_date, i) => (
-          <li key={i}>{c_date.date}</li>
-        ))}</div>
+      <div>Available dates: {referee != null ? referee.dates.map((c_date, i) => (
+          <li key={i}>{c_date}</li>
+        )): null}</div>
       </Card>
       </Layout>
       {/* available locations */}
       <div className="available-locations">
-        <TextField variant="outlined" onChange={(event) =>setAvailableLoc(event.target.value)}/>
+        <FormControl style={{width:245}}>
+          <InputLabel id="input_location_label">Location</InputLabel>
+          <Select
+            id="input_location"
+            autoWidth
+            value={availableLoc}
+            label="Location"
+            onChange={(event) => setAvailableLoc(event.target.value)}
+          >
+          {LOCATION_ARRAY.map((location) => (
+            <MenuItem value={location} key = {location}>{location}</MenuItem>
+          ))}
+          </Select>
+        </FormControl>
         <Button  className={classes.button} variant="contained" onClick={()=>{
           updateReferee(getBodyALoc())
         }}>Add available location</Button>
@@ -167,6 +187,8 @@ const RefereeProfile = () => {
           updateReferee(getBodyALocDelete())
         }}>Delete available location</Button>
       </div>
+
+      
       {/* Date picker for referee */}
       <div className="referee-date">
         <div style={{margin: 'auto', display: 'block', width: 'fit-content'}}>
@@ -174,16 +196,16 @@ const RefereeProfile = () => {
             <DesktopDatePicker
               label="Pick a date"
               inputFormat="MM/DD/YYYY"
-              value={dateValue}
+              value={date}
               onChange={handleDatePick}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
           <Button  className={classes.button} variant="contained" onClick={()=>{
-            addDateToDB()
+            updateReferee(getBodyDate())
           }}>Add date</Button>
           <Button  className={classes.button} variant="contained" onClick={()=>{
-            deleteDate()
+            updateReferee(getBodyDateDelete())
           }}>Delete date</Button>
         </div>
       </div>
