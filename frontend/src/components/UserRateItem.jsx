@@ -7,6 +7,7 @@ import PlayerDataService from"../services/player.service";
 const UserRateItem = (item) => {
 const [rating, setRating] = React.useState();
 const [fp_rating, setFp_rating] = React.useState();
+const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
 
 
 console.log("item:" ,item);
@@ -44,6 +45,11 @@ const HandleRates = () =>{
 
   }
 
+}
+
+if(uID === player.p_id){
+  console.log("From RateItem: This one is current user ")
+  return(null)
 
 }
 
