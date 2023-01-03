@@ -19,7 +19,6 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Player
   const referee = {
     r_id: req.body.r_id,
     r_name: req.body.r_name,
@@ -27,7 +26,9 @@ exports.create = (req, res) => {
     rr: 0,
     fpr: 0,
     r_location: req.body.r_location,
-    available_locations: []
+    available_locations: [],
+    dates: [],
+    matches: []
   };
 
   // Save Referee in the database
@@ -148,3 +149,28 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
+
+// Add match
+exports.addMatch = (req, res) => {
+  const rid = req.params.rid
+  const mid = req.params.mid
+  Referee.findByPk(rid)
+    .then(data => {
+      let array = data.dataValues.matches
+      array.push(mid)
+      data.dataValues.matches = array
+      Referee.update(data.dataValues, {
+        where: { r_id: rid }
+      }).then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Referee joined match successfully."
+          });
+        } else {
+          res.send({
+            message: "Referee couldn't join the match."
+          });
+        }
+      })
+    })
+}

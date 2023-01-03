@@ -1,6 +1,9 @@
 import React , {useEffect, useState} from 'react'
+
 import MatchDataService from '../services/match.service';
 import PlayerDataService from '../services/player.service'
+import RefereeDataService from '../services/referee.service';
+
 import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card, Autocomplete, TextField} from '@mui/material';
 import { Box, margin } from '@mui/system';
 import classes from '../components/Mix.module.css';
@@ -26,43 +29,57 @@ const MatchDetail = (inVal) => {
 
   var hr = date.getHours();
   var min = date.getMinutes();
-  
-  
-  //---------------getCurrentuserID------------------
-  const auth=getAuth();
-  const uID = auth.currentUser.uid;
-  //-------------------------------------------------
-  
-  let show;
-  //<MatchEditDeletebtns passedValue = {show}/>
-  if(match.owner_id !== uID){
-    console.log("wiever is not owner");
-    show = false;
     
-  }else{
-    console.log("wiever is owner");
-    show= true;
-  }
-
-  let data={
-    _match : match,
-    showState : show
-  }
-  console.log(match)
-  const joinMatch = async () => {
-    const userInfo = await PlayerDataService.get(uID)
-    const notification = {
-      "type": "Join Request",
-      "senderID":`${uID}`,
-      "matchID": `${match.m_id}`,
-      "header": "New Join Request!",
-      "message" : `User ${userInfo.data.p_name} wants to join your match ${match.m_name}!`
+    //---------------getCurrentuserID------------------
+    const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+    useEffect(() => {
+      const userID = window.localStorage.getItem('user_id')
+      if (userID !== null) setUID(userID);
+      console.log(userID);
+    }, [])
+    //const auth=getAuth();
+    //const uID = auth.currentUser.uid;
+    //-------------------------------------------------
+   
+    let show;
+    //<MatchEditDeletebtns passedValue = {show}/>
+    if(match.owner_id !== uID){
+      console.log("wiever is not owner");
+      show = false;
+     
+    }else{
+      console.log("wiever is owner");
+      show= true;
     }
-    await MatchDataService.addPlayerToWaiting(match.m_id, uID)
-    const matchInfo = await MatchDataService.get(match.m_id)
-    setMatch(matchInfo.data)
-    await PlayerDataService.notify(match.owner_id, notification)
-  }
+
+    let data={
+      _match : match,
+      showState : show
+    }
+    const joinMatch = async () => {
+      let userInfo;
+      if (uType === 'player') {
+        userInfo = await PlayerDataService.get(uID)
+        const notification = {
+          "type": "Join Request",
+          "senderID":`${uID}`,
+          "matchID": `${match.m_id}`,
+          "header": "New Join Request!",
+          "message" : `User ${userInfo.data.p_name} wants to join your match ${match.m_name}!`
+        }
+        await PlayerDataService.notify(match.owner_id, notification)
+      } else {
+        userInfo = await RefereeDataService.get(uID)
+        const notification = {
+          "type": "Join Request",
+          "senderID":`${uID}`,
+          "matchID": `${match.m_id}`,
+          "header": "New Join Request!",
+          "message" : `User ${userInfo.data.r_name} wants to join your match ${match.m_name}!`
+        }
+        await PlayerDataService.notify(match.owner_id, notification)
+      }
+    }
   return (
     <div>
     <Card  style={{ backgroundImage: "url('https://amplex.dk/wp-content/uploads/2016/08/iStock_000022325111Large.jpg')", backgroundSize:"cover", backgroundPosition:"center", height:"100vh", borderRadius:"0"}}>
