@@ -3,7 +3,7 @@ import React , {useEffect, useState} from 'react'
 import MatchDataService from '../services/match.service';
 import PlayerDataService from '../services/player.service'
 import RefereeDataService from '../services/referee.service';
-
+import { useNavigate } from 'react-router-dom';
 import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card, Autocomplete, TextField} from '@mui/material';
 import { Box, margin } from '@mui/system';
 import classes from '../components/Mix.module.css';
@@ -20,7 +20,11 @@ const MatchDetail = (inVal) => {
   }else{
     nref = "Hakem yok";
   }
+  let navigate = useNavigate();
+  const navigateToHome = () =>{
+    navigate( '/HomePage' )
 
+  }
   var date = new Date(match.m_date);
   
   var year = date.getFullYear().toString() ;
@@ -79,6 +83,9 @@ const MatchDetail = (inVal) => {
         }
         await PlayerDataService.notify(match.owner_id, notification)
       }
+      await MatchDataService.addPlayerToWaiting(match.m_id, uID)
+      const newMatch = await MatchDataService.get(match.m_id)
+      setMatch(newMatch.data)
     }
   return (
     <div>
@@ -112,7 +119,9 @@ const MatchDetail = (inVal) => {
             {match.m_maxPlayer} 
           </Typography>
           </Box>
-            {uType=="anonymous" || match.waitingList.includes(uID) || match.players.includes(uID) ? null:<Button onClick={joinMatch} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>}
+            {uType=="anonymous" || match.waitingList.includes(uID) || match.players.includes(uID) 
+            ?<Button onClick={navigateToHome} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Anasayfaya dön...</Typography></Button>
+            :<Button onClick={joinMatch} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>}
             <MatchEditDeletebtns passedValue = {data}/>
           </Box>
     </Card>
