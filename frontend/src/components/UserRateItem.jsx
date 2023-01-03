@@ -1,25 +1,76 @@
-import React from 'react'
+import React, { useEffect, useState, useContext } from "react";
 import Rating from '@mui/material/Rating';
 import { Button,  Typography, List, ListItem, Grid, Stack, Card, Box} from '@mui/material';
-
+import Divider from '@mui/material/Divider';
+import PlayerDataService from"../services/player.service";
 
 const UserRateItem = (item) => {
-const [value, setValue] = React.useState();
+const [rating, setRating] = React.useState();
+const [fp_rating, setFp_rating] = React.useState();
+
+
 console.log("item:" ,item);
 const player = item.passedValue;
-console.log("from: " , player, ", value is: " , value );
+console.log("from: " , player.p_name, ", rating is: " , rating );
+console.log("from: " , player.p_name, ", fp rating is: " , fp_rating );
+
+const currentRateing = player.p_rating;
+console.log("curr rateing" , currentRateing);
+let rateSend = false;
+
+const updatePlayer = async (body) => {
+  try{
+    await PlayerDataService.update(player.p_id, body);
+  }catch (err) {
+      console.log(err);
+  }
+}
+
+let newRateing = [0,0,0];
+const HandleRates = () =>{
+
+  if(!rateSend){
+  newRateing[0] =  currentRateing[0] + rating;
+  newRateing[1] =  currentRateing[1] + fp_rating;
+  newRateing[2] =  currentRateing[2] + 1;
+
+  player["p_rating"] = newRateing;
+  console.log("lastrateing: " , player.p_rating);
+  updatePlayer(player);
+  rateSend = true;
+
+  }else{
+    alert("Bu kullanıcıya zaten oy verdiniz");
+
+  }
+
+
+}
 
   return (
     <Box backgroundColor ='#00466e' >
-              <Typography noWrap variant="h4" style={{color:"white", marginTop:"1vh"}}>test</Typography>
+              <Typography noWrap variant="h4" style={{color:"white", marginTop:"1vh"}}>{player.p_name }</Typography>
+              <Typography  style={{color:"white", marginTop:"1vh"}}>{"posA: " + player.position_a + " /posB: " + player.position_b} </Typography>
+              <Typography  style={{color:"white", marginTop:"1vh"}}>Rating: </Typography>
                 <Rating
                   name="simple-controlled"
-                  //value={value}
                   precision={0.5}
                   onChange={(event, newValue) => {
-                  setValue(newValue);
+                    setRating(newValue);
                   }}
                 />
+                <Typography  style={{color:"white", marginTop:"1vh"}}>Fair play rating: </Typography>
+                <Rating
+                  name="simple-controlled2"
+                  precision={0.5}
+                  onChange={(event, newValue) => {
+                    setFp_rating(newValue);
+                  }}
+                />
+                <div>
+                  <Button onClick={HandleRates} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none"  }}   variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Oyla</Typography></Button>
+                </div>
+                <Divider variant="middle"/>
     </Box>
 
   )
