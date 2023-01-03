@@ -49,6 +49,7 @@ const MatchDetail = (inVal) => {
       showState : show
     }
     const joinMatch = async () => {
+      console.log("katıl");
       const userInfo = await PlayerDataService.get(uID)
       const notification = {
         "type": "Join Request",

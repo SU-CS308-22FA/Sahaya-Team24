@@ -46,14 +46,14 @@ const PlayerProfileInfoCard = (props) =>{
                 <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>Rating</Typography>
             </Box>
             <Box  sx={{flexGrow: 1, textAlign:"center"}}>
-                <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>{player != null ? player.pr : null}</Typography>
+                <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>{player != null && player.p_rating[2] ?  player.p_rating[0]/player.p_rating[2] : "No Ratings yet"}</Typography>
             </Box>
             <Divider style={{background:"white"}}/>
             <Box  sx={{flexGrow: 1, textAlign:"center"}}>
                 <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>Fair Play Rating</Typography>
             </Box>
             <Box  sx={{flexGrow: 1, textAlign:"center"}}>
-                <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>{player != null ? player.fpr : null}</Typography>
+                <Typography noWrap variant="h6" style={{color:"white", margin:"1vh"}}>{player != null && player.p_rating[2] ?  player.p_rating[1]/player.p_rating[2] : "No Ratings yet"}</Typography>
             </Box>
             <Divider style={{background:"white"}}/>
             <Box  sx={{flexGrow: 1, textAlign:"center"}}>

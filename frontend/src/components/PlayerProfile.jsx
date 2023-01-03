@@ -60,8 +60,8 @@ const PlayerProfile = () => {
       <div><AccountCircleIcon fontSize="large"  /></div>
       <div>Name:{player != null ? player.p_name : null}</div>
       <div>Age:{player != null ? player.p_age : null}</div>
-      <div>Player Rating:{player != null ? player.pr : null}</div>
-      <div>Fair Play Rating:{player != null ? player.fpr : null}</div>
+      <div>Player Rating:{player != null && player.p_rating[2] ?  player.p_rating[0]/player.p_rating[2] : "No Ratings yet"}</div>
+      <div>Fair Play Rating:{player != null && player.p_rating[2] ? player.p_rating[1]/player.p_rating[2] : "No Ratings yet"}</div>
       <div>Position A:{player != null ? player.position_a : null}</div>
       <div>Position B:{player != null ? player.position_b : null}</div>
       <div>Location:{player != null ? player.p_location : null}</div>
