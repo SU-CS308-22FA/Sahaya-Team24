@@ -16,5 +16,9 @@ module.exports = app => {
 
     router.put("/:mid/:pid", matches.addPlayer)
 
+    router.put("/waiting/:mid/:pid", matches.addWaiting)
+
+    router.get("/:id", matches.findOne);
+
     app.use("/api/matches", router);
   };

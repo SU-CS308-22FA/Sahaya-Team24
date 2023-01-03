@@ -19,17 +19,19 @@ exports.create = (req, res) => {
       return;
     }
   
+    
     // Create a Match
     const match = {
         m_id: req.body.m_id,
         m_name: req.body.m_name,
         m_location: req.body.m_location,
         m_maxPlayer: req.body.m_maxPlayer,
-        m_curPlayer: 0,
+        m_curPlayer: 1,
         m_needRefree: req.body.m_needRefree,
         m_date: req.body.m_date,
         owner_id: req.body.owner_id,
-        players: [req.body.owner_id]
+        players: [req.body.owner_id],
+        waitingList:[]
     };
   
     // Save Match in the database
@@ -45,6 +47,27 @@ exports.create = (req, res) => {
       });
   };
 
+  exports.findOne = (req, res) => {
+    const id = req.params.id;
+  
+    Match.findByPk(id)
+      .then(data => {
+        console.log(data);
+        if (data) {
+          res.send(data);
+        } else {
+          res.status(404).send({
+            message: `Cannot find Match with m_id=${id}.`
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error retrieving Match with m_id=" + id
+        });
+      });
+  };
+
   exports.addPlayer = (req,res) => {
     const pid = req.params.pid
     const mid = req.params.mid
@@ -53,6 +76,7 @@ exports.create = (req, res) => {
         let array = data.dataValues.players
         array.push(pid)
         data.dataValues.players = array
+        data.dataValues.m_curPlayer = data.dataValues.m_curPlayer+1
         Match.update(data.dataValues, {
           where: { m_id: mid }
         }).then(num => {
@@ -63,6 +87,30 @@ exports.create = (req, res) => {
           } else {
             res.send({
               message: "Player couldn't join the match."
+            });
+          }
+        })
+      })
+  }
+
+  exports.addWaiting = (req,res) => {
+    const pid = req.params.pid
+    const mid = req.params.mid
+    Match.findByPk(mid)
+      .then(data => {
+        let array = data.dataValues.waitingList
+        array.push(pid)
+        data.dataValues.waitingList = array
+        Match.update(data.dataValues, {
+          where: { m_id: mid }
+        }).then(num => {
+          if (num == 1) {
+            res.send({
+              message: "Player joined waiting list successfully."
+            });
+          } else {
+            res.send({
+              message: "Player couldn't join the waiting list."
             });
           }
         })

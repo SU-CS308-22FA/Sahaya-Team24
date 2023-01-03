@@ -13,23 +13,22 @@ import MatchEditDeletebtns from './MatchEditDeletebtns'
 
 const MatchDetail = (inVal) => {
   const [uType, setUType] = useState(window.localStorage.getItem('user_type'));
-    let match = inVal.passedValue.sentVal;
-    let nref;
-    if(match.m_needRefree){
-      nref = "Hakem var";
-    }else{
-      nref = "Hakem yok";
-    }
+  const [match, setMatch] = useState(inVal.passedValue.sentVal)
+  let nref;
+  if(match.m_needRefree){
+    nref = "Hakem var";
+  }else{
+    nref = "Hakem yok";
+  }
 
-    var date = new Date(match.m_date);
-    
-    var year = date.getFullYear().toString() ;
-    var month = ((date.getMonth()+1).toString() + " /");
-    var day = (date.getDate().toString() + " /");
+  var date = new Date(match.m_date);
+  
+  var year = date.getFullYear().toString() ;
+  var month = ((date.getMonth()+1).toString() + " /");
+  var day = (date.getDate().toString() + " /");
 
-    var hr = date.getHours();
-    var min = date.getMinutes();
-   
+  var hr = date.getHours();
+  var min = date.getMinutes();
     
     //---------------getCurrentuserID------------------
     const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
@@ -108,12 +107,12 @@ const MatchDetail = (inVal) => {
           </Typography>
           <Typography variant="h4" gutterBottom color = 'white'>
             Maçtaki kişi sayısı: 
-            {" " }{match.m_maxPlayer}
+            {" " }{match.m_curPlayer}
             /
-            {match.m_curPlayer} 
+            {match.m_maxPlayer} 
           </Typography>
           </Box>
-            {uType=="anonymous" ? null:<Button onClick={joinMatch} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>}
+            {uType=="anonymous" || match.waitingList.includes(uID) || match.players.includes(uID) ? null:<Button onClick={joinMatch} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>}
             <MatchEditDeletebtns passedValue = {data}/>
           </Box>
     </Card>
