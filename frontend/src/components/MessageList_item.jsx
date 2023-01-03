@@ -18,7 +18,8 @@ const MessageList_item = (props) => {
   }
 
   const navigateToSendRatings = (e) => {
-    navigate('/RateSendPage');
+    console.log("props from mli: " , props.passedValue);
+    navigate('/HomePage/RateSendPage',{state: {sentVal: props.passedValue,},});
 
   }
 
