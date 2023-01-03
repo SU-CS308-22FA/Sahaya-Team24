@@ -29,6 +29,11 @@ const PlayerProfile = () => {
       navigate('/');
   };
 
+  const deleteFunc = async () => {
+    await Delete(uID)
+    navigateToSignIn()
+  }
+
   const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
   useEffect(() => {
     const userID = window.localStorage.getItem('user_id')
@@ -92,10 +97,7 @@ const PlayerProfile = () => {
       </div>
       </Card>
       
-      <Button className = {classes.button} variant="contained" onClick={()=>{
-        Delete()
-        navigateToSignIn()
-        }}>DELETE profile</Button>
+      <Button className = {classes.button} variant="contained" onClick={deleteFunc}>DELETE profile</Button>
     
     </div>
     )

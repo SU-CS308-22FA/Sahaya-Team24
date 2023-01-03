@@ -27,15 +27,31 @@ const HomePage = () => {
   const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
 
   useEffect(() => {
-
-    const setPlayerData = async () => {
-      const playerInfo = await PlayerDataService.get(uID)
-      setPlayer(playerInfo)
-    }
-    setPlayerData()
     const userType = window.localStorage.getItem('user_type')
     if (userType !== null) setUType(userType);
     console.log("User Type:",uType);
+
+    if (uType === 'player') {
+      const setPlayerData = async () => {
+        const playerInfo = await PlayerDataService.get(uID)
+        setPlayer(playerInfo)
+      }
+      setPlayerData()
+    }
+  }, []);
+
+  useEffect(() => {
+    if (uType === 'player') {
+      const fetchData = async () => {
+        const playerInfo = await PlayerDataService.get(uID)
+        setPlayer(playerInfo)
+      };
+      const timer = setInterval(() => {
+        fetchData();
+      }, 3000);
+    
+      return () => clearInterval(timer);
+    }
   }, []);
 
   useEffect(()=>{
@@ -177,7 +193,7 @@ const HomePage = () => {
           <List spa="true" style={{borderColor:"black"}}>
               {notifications?.map((object) =>
                   <MessageList_item 
-                    key ={object.id}
+                    key = {object.id}
                     passedValue = {object}
                   />
               )}

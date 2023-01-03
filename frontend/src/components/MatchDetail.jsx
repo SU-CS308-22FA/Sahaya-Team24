@@ -1,6 +1,9 @@
 import React , {useEffect, useState} from 'react'
+
 import MatchDataService from '../services/match.service';
 import PlayerDataService from '../services/player.service'
+import RefereeDataService from '../services/referee.service';
+import { useNavigate } from 'react-router-dom';
 import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card, Autocomplete, TextField} from '@mui/material';
 import { Box, margin } from '@mui/system';
 import classes from '../components/Mix.module.css';
@@ -10,27 +13,36 @@ import MatchEditDeletebtns from './MatchEditDeletebtns'
 
 const MatchDetail = (inVal) => {
   const [uType, setUType] = useState(window.localStorage.getItem('user_type'));
-    let match = inVal.passedValue.sentVal;
-    let nref;
-    if(match.m_needRefree){
-      nref = "Hakem var";
-    }else{
-      nref = "Hakem yok";
-    }
+  const [match, setMatch] = useState(inVal.passedValue.sentVal)
+  let nref;
+  if(match.m_needRefree){
+    nref = "Hakem var";
+  }else{
+    nref = "Hakem yok";
+  }
+  let navigate = useNavigate();
+  const navigateToHome = () =>{
+    navigate( '/HomePage' )
 
-    var date = new Date(match.m_date);
-    
-    var year = date.getFullYear().toString() ;
-    var month = ((date.getMonth()+1).toString() + " /");
-    var day = (date.getDate().toString() + " /");
+  }
+  var date = new Date(match.m_date);
+  
+  var year = date.getFullYear().toString() ;
+  var month = ((date.getMonth()+1).toString() + " /");
+  var day = (date.getDate().toString() + " /");
 
-    var hr = date.getHours();
-    var min = date.getMinutes();
-   
+  var hr = date.getHours();
+  var min = date.getMinutes();
     
     //---------------getCurrentuserID------------------
-    const auth=getAuth();
-    const uID = auth.currentUser.uid;
+    const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+    useEffect(() => {
+      const userID = window.localStorage.getItem('user_id')
+      if (userID !== null) setUID(userID);
+      console.log(userID);
+    }, [])
+    //const auth=getAuth();
+    //const uID = auth.currentUser.uid;
     //-------------------------------------------------
    
     let show;
@@ -49,16 +61,31 @@ const MatchDetail = (inVal) => {
       showState : show
     }
     const joinMatch = async () => {
-      console.log("katıl");
-      const userInfo = await PlayerDataService.get(uID)
-      const notification = {
-        "type": "Join Request",
-        "senderID":`${uID}`,
-        "matchID": `${match.m_id}`,
-        "header": "New Join Request!",
-        "message" : `User ${userInfo.data.p_name} wants to join your match ${match.m_name}!`
+      let userInfo;
+      if (uType === 'player') {
+        userInfo = await PlayerDataService.get(uID)
+        const notification = {
+          "type": "Join Request",
+          "senderID":`${uID}`,
+          "matchID": `${match.m_id}`,
+          "header": "New Join Request!",
+          "message" : `User ${userInfo.data.p_name} wants to join your match ${match.m_name}!`
+        }
+        await PlayerDataService.notify(match.owner_id, notification)
+      } else {
+        userInfo = await RefereeDataService.get(uID)
+        const notification = {
+          "type": "Join Request",
+          "senderID":`${uID}`,
+          "matchID": `${match.m_id}`,
+          "header": "New Join Request!",
+          "message" : `User ${userInfo.data.r_name} wants to join your match ${match.m_name}!`
+        }
+        await PlayerDataService.notify(match.owner_id, notification)
       }
-      await PlayerDataService.notify(match.owner_id, notification)
+      await MatchDataService.addPlayerToWaiting(match.m_id, uID)
+      const newMatch = await MatchDataService.get(match.m_id)
+      setMatch(newMatch.data)
     }
   return (
     <div>
@@ -87,12 +114,14 @@ const MatchDetail = (inVal) => {
           </Typography>
           <Typography variant="h4" gutterBottom color = 'white'>
             Maçtaki kişi sayısı: 
-            {" " }{match.m_maxPlayer}
+            {" " }{match.m_curPlayer}
             /
-            {match.m_curPlayer} 
+            {match.m_maxPlayer} 
           </Typography>
           </Box>
-            {uType=="anonymous" ? null:<Button onClick={joinMatch} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>}
+            {uType=="anonymous" || match.waitingList.includes(uID) || match.players.includes(uID) 
+            ?<Button onClick={navigateToHome} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Anasayfaya dön...</Typography></Button>
+            :<Button onClick={joinMatch} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button>}
             <MatchEditDeletebtns passedValue = {data}/>
           </Box>
     </Card>

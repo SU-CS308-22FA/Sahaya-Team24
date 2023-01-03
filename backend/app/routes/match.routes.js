@@ -18,6 +18,12 @@ module.exports = app => {
     router.put("/:id", matches.update);
 
     router.put("/:mid/:pid", matches.addPlayer)
+    router.delete("/:mid/:pid", matches.deletePlayer)
+
+    router.put("/waiting/:mid/:pid", matches.addWaiting)
+    router.delete("/waiting/:mid/:id", matches.deleteWaiting);
+
+    router.get("/:id", matches.findOne);
 
     app.use("/api/matches", router);
   };

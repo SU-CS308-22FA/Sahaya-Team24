@@ -18,6 +18,15 @@ module.exports = (sequelize, Sequelize) => {
     },
     r_location: {
       type: Sequelize.STRING
+    },
+    available_locations: {
+      type: Sequelize.ARRAY(Sequelize.STRING)
+    },
+    dates: {
+      type: Sequelize.ARRAY(Sequelize.DATEONLY)
+    },
+    matches: {
+      type: Sequelize.ARRAY(Sequelize.STRING)
     }
   });
 

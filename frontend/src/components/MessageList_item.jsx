@@ -3,15 +3,47 @@ import React, {useState} from 'react'
 import {Button,Card, Box, Typography,Toolbar, ButtonGroup} from '@mui/material'
 import MatchDataService from '../services/match.service';
 import PlayerDataService from '../services/player.service';
+import RefereeDataService from '../services/referee.service';
 import { useNavigate } from "react-router-dom";
 
 const MessageList_item = (props) => {
   let navigate = useNavigate();
   const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+
+  const handleUserType = async (uID) => {
+    let type;
+    try {
+      console.log("waiting response");
+      const response = await RefereeDataService.get(uID);
+      console.log(response)
+      type = 'referee';
+      return type;
+    } catch (error) {
+      console.log(error); 
+    }       
+  }
+
   const acceptJoinRequest = async () => {
-    await MatchDataService.addPlayerToMatch(props.passedValue.matchID, props.passedValue.senderID)
-    await PlayerDataService.addMatchToPlayer(props.passedValue.senderID, props.passedValue.matchID)
-    await PlayerDataService.deleteNotification(uID,props.passedValue.id)
+  const type = await handleUserType(props.passedValue.senderID);
+  console.log(type)
+  if (type === 'referee') {
+    await RefereeDataService.addMatchToReferee(props.passedValue.senderID, props.passedValue.matchID)
+    const res = await RefereeDataService.get(props.passedValue.senderID)
+    console.log(res)
+  } else {
+    let player
+    try
+    {
+      player = await PlayerDataService.get(props.passedValue.senderID)
+      await MatchDataService.addPlayerToMatch(props.passedValue.matchID, props.passedValue.senderID)
+      await PlayerDataService.addMatchToPlayer(props.passedValue.senderID, props.passedValue.matchID)
+    }catch(error) 
+    {
+      alert("Üzgünüz kullanıcı hesabını silmiş.")
+    }
+  }
+
+  await PlayerDataService.deleteNotification(uID,props.passedValue.id)
   }
   const refuseJoinRequest = async () => {
     await PlayerDataService.deleteNotification(uID,props.passedValue.id)
