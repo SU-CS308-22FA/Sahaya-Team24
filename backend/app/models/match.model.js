@@ -30,6 +30,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       players:{
         type: DataTypes.ARRAY(Sequelize.STRING)
+      },
+      waitingList:{
+        type: DataTypes.ARRAY(Sequelize.STRING)
       }
     });
     return Match;

@@ -9,6 +9,10 @@ class MatchDataService {
         return http.get("/matches");
       }
 
+      get(id) {
+        return http.get(`/matches/${id}`)
+      }
+
       delete(id) {
         return http.delete(`/matches/${id}`);
       }
@@ -17,6 +21,9 @@ class MatchDataService {
       }
       addPlayerToMatch(mid,pid) {
         return http.put(`/matches/${mid}/${pid}`)
+      }
+      addPlayerToWaiting(mid,pid) {
+        return http.put(`/matches/waiting/${mid}/${pid}`)
       }
 }
 
