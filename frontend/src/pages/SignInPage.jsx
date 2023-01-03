@@ -16,18 +16,14 @@ import Layout from '../components/layout/Layout';
 import { UserDataContext } from "../contexts/UserDataContext";
 import { UserIdContext } from "../contexts/UserIdContext";
 
+import RefereeDataService from '../services/referee.service';
+import PlayerDataService from '../services/player.service';
+
 const SignInPage = () => {
     const auth = getAuth();
     const [uMail, setUMail] = useState("");
     const [uPassword, setUPassword] = useState("");
     let navigate = useNavigate();
-
-    const [uType, setUType] = useState('player');
-
-    useEffect(() => {
-      window.localStorage.setItem('user_type', uType);
-      console.log(uType);
-    }, [uType])
 
     const navigateToHome = () => {
       navigate('./HomePage');
@@ -38,7 +34,7 @@ const SignInPage = () => {
     };
 
     const handleAnonymousSignIn = () =>{
-      setUType("anonymous");
+      window.localStorage.setItem('user_type', 'anonymous');  
       signInAnonymously(auth).then(()=>{
         navigateToHome();
       })
@@ -48,11 +44,31 @@ const SignInPage = () => {
         // ...
       });
     }
+    
+    const handleUserType = async (uID) => {
+      let type;
+      try {
+        console.log("waiting response");
+        const response = await RefereeDataService.get(uID);
+        type = 'referee';
+        return type;
+      } catch (error) {
+        console.log(error); 
+      }       
+    }
 
     const handleSubmit = async () => {
       try{
         const { user } = await signInWithEmailAndPassword(auth, uMail, uPassword);
         window.localStorage.setItem('user_id', user.uid);
+        const type = await handleUserType(user.uid);
+        
+        if (type == 'referee') {
+          window.localStorage.setItem('user_type', type);   
+        } else {
+          window.localStorage.setItem('user_type', 'player');
+        }
+        
         navigateToHome();
       } catch (error) {
         if (error.code === "auth/wrong-password") {
@@ -99,13 +115,13 @@ const SignInPage = () => {
             />
             </div>
 
-            <FormControl>
+            {/*<FormControl>
               <FormLabel id="demo-row-radio-buttons-group-label">Type of user</FormLabel>
               <RadioGroup row defaultValue={uType} value={uType} onChange={(e) => setUType(e.target.value)}>
                 <FormControlLabel value="player" control={<Radio />} label="Player" />
                 <FormControlLabel value="referee" control={<Radio />} label="Referee" />
               </RadioGroup>
-            </FormControl>
+    </FormControl>*/}
 
             <Button style={{margin:"5px"  }} variant="contained" onClick={() => handleSubmit()}>
               SignIn
