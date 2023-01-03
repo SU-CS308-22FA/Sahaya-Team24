@@ -12,11 +12,8 @@ module.exports = (sequelize, Sequelize) => {
       p_age: {
         type: Sequelize.INTEGER
       },
-      pr: {
-        type: Sequelize.INTEGER
-      },
-      fpr: {
-        type: Sequelize.INTEGER
+      p_rating:{
+        type: DataTypes.ARRAY(Sequelize.INTEGER)//0:total rating 1:total fprating 2:#ofratings
       },
       position_a: {
         type: Sequelize.STRING
