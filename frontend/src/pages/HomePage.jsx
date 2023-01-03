@@ -177,6 +177,7 @@ const HomePage = () => {
           <List spa="true" style={{borderColor:"black"}}>
               {notifications?.map((object) =>
                   <MessageList_item 
+                    key ={object.id}
                     passedValue = {object}
                   />
               )}
