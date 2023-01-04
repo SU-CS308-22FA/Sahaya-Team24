@@ -29,7 +29,6 @@ const HomePage = () => {
   useEffect(() => {
     const userType = window.localStorage.getItem('user_type')
     if (userType !== null) setUType(userType);
-    console.log("User Type:",uType);
 
     if (uType === 'player') {
       const setPlayerData = async () => {
