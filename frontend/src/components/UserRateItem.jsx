@@ -7,7 +7,7 @@ import PlayerDataService from"../services/player.service";
 const UserRateItem = (item) => {
 const [rating, setRating] = React.useState();
 const [fp_rating, setFp_rating] = React.useState();
-const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
 
 
 console.log("item:" ,item);
@@ -29,20 +29,18 @@ const updatePlayer = async (body) => {
 
 let newRateing = [0,0,0];
 const HandleRates = () =>{
-  if(window.confirm("Bu kullanıcıya bir daha oy veremezsiniz, emin misiniz?")){
   if(!rateSend){
-  newRateing[0] =  currentRateing[0] + rating;
-  newRateing[1] =  currentRateing[1] + fp_rating;
-  newRateing[2] =  currentRateing[2] + 1;
-
-  player["p_rating"] = newRateing;
-  console.log("lastrateing: " , player.p_rating);
-  updatePlayer(player);
-  rateSend = true;
-
+    if(window.confirm("Bu kullanıcıya bir daha oy veremezsiniz, emin misiniz?")){
+      newRateing[0] =  currentRateing[0] + rating;
+      newRateing[1] =  currentRateing[1] + fp_rating;
+      newRateing[2] =  currentRateing[2] + 1;
+      player["p_rating"] = newRateing;
+      console.log("lastrateing: " , player.p_rating);
+      updatePlayer(player);
+      rateSend = true;
+    }
   }else{
     alert("Bu kullanıcıya zaten oy verdiniz");
-  }
   }
 }
 
