@@ -36,6 +36,12 @@ const HomePage = () => {
         setPlayer(playerInfo)
       }
       setPlayerData()
+    } else if (uType === 'referee') {
+      const setRefereeData = async () => {
+        const refereeInfo = await RefereeDataService.get(uID)
+        setReferee(refereeInfo)
+      }
+      setRefereeData()
     }
   }, []);
 
@@ -50,6 +56,16 @@ const HomePage = () => {
       }, 1000);
     
       return () => clearInterval(timer);
+    } else if (uType === 'referee') {
+      const fetchData = async () => {
+        const refereeInfo = await RefereeDataService.get(uID)
+        setReferee(refereeInfo)
+      };
+      const timer = setInterval(() => {
+        fetchData();
+      }, 3000);
+    
+      return () => clearInterval(timer);
     }
   }, []);
 
@@ -58,6 +74,12 @@ const HomePage = () => {
       setNotifications(player.data.p_notification)
     }
   },[player])
+  
+  useEffect(() => {
+    if (referee && referee.data && referee.data.r_notifications) {
+      setNotifications(referee.data.r_notifications)
+    }
+  }, [referee])
   
   useEffect(() => {
     const getMatchesData = async () => {
