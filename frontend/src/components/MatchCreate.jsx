@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import MatchDataService from '../services/match.service';
 import PlayerDataService from '../services/player.service'
