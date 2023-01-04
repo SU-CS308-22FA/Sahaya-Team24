@@ -83,7 +83,7 @@ const MessageList_item = (props) => {
     await MatchDataService.update(props.passedValue.matchID , match.data);
     
   const navigateToSendRatings = (e) => {
-    navigate('/HomePage/RateSendPage',{state: {sentVal: props.passedValue,},});
+    navigate('/RateSendPage',{state: {sentVal: props.passedValue,},});
 
   }
 
