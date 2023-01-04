@@ -157,7 +157,7 @@ const MatchEdit = (val) => {
             m_needRefree: checked,
             m_date: value,
             owner_id: m.owner_id,
-            referee: referee
+            referee: m.referee
           }
         }
           
