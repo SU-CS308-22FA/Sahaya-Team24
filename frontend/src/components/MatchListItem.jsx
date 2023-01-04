@@ -19,6 +19,8 @@ const MatchListItem = (props) =>{
 
     const navigateToMatchDetail = (e) => {
         navigate('/MatchDetail', {state: {sentVal: val,},});
+        console.log(auth.currentUser.email);
+        console.log(auth.currentUser.uid);
       };
 
     return(

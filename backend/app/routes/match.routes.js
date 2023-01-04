@@ -11,6 +11,9 @@ module.exports = app => {
 
     router.get("/", matches.findAll);
 
+    //retruns match with id
+    router.get("/:id", matches.findById);
+
     // Update a Match with id
     router.put("/:id", matches.update);
 

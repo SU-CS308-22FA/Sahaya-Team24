@@ -7,7 +7,6 @@ import { Box } from '@mui/system';
 
 import MatchListItem from '../components/MatchListItem';
 import PlayerDataService from '../services/player.service'
-import RefereeDataService from '../services/referee.service'
 import { getAuth, signOut } from 'firebase/auth';
 import PlayerProfileInfoCard from '../components/PlayerProfileInfoCard';
 import RefereeProfileInfoCard from '../components/RefereeProfileInfoCard';
@@ -18,7 +17,6 @@ const HomePage = () => {
   let auth=getAuth();
   let navigate = useNavigate();
   const [player, setPlayer] = useState(null);
-  const [referee, setReferee] = useState(null);
   const [allLocations, setAllLocations] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState(allLocations);
   const [selectedMatches, setSelectedMatches] = useState([]);
@@ -26,7 +24,7 @@ const HomePage = () => {
   const [selectedMatchName, setSelectedMatchName] = useState("");
   const [notifications, setNotifications] = useState([])
   const [uType, setUType] = useState(window.localStorage.getItem('user_type'));
-  const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
+  const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
 
   useEffect(() => {
     const userType = window.localStorage.getItem('user_type')
@@ -39,12 +37,6 @@ const HomePage = () => {
         setPlayer(playerInfo)
       }
       setPlayerData()
-    } else if (uType === 'referee') {
-      const setRefereeData = async () => {
-        const refereeInfo = await RefereeDataService.get(uID)
-        setReferee(refereeInfo)
-      }
-      setRefereeData()
     }
   }, []);
 
@@ -53,16 +45,6 @@ const HomePage = () => {
       const fetchData = async () => {
         const playerInfo = await PlayerDataService.get(uID)
         setPlayer(playerInfo)
-      };
-      const timer = setInterval(() => {
-        fetchData();
-      }, 1000);
-    
-      return () => clearInterval(timer);
-    } else if (uType === 'referee') {
-      const fetchData = async () => {
-        const refereeInfo = await RefereeDataService.get(uID)
-        setReferee(refereeInfo)
       };
       const timer = setInterval(() => {
         fetchData();
@@ -78,12 +60,6 @@ const HomePage = () => {
     }
   },[player])
   
-  useEffect(() => {
-    if (referee && referee.data && referee.data.r_notifications) {
-      setNotifications(referee.data.r_notifications)
-    }
-  }, [referee])
-
   useEffect(() => {
     const getMatchesData = async () => {
       try {

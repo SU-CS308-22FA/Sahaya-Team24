@@ -1,5 +1,6 @@
-import React, { useEffect, useState} from "react";
-import {Button, Select, MenuItem, FormControl, InputLabel,TextField ,Card} from '@mui/material'
+import React, { useEffect, useState, useContext } from "react";
+import { getAuth } from "firebase/auth";
+import {Button, Select, MenuItem, FormControl, InputLabel,TextField ,Card,Stack} from '@mui/material'
 import PlayerDataService from '../services/player.service';
 import Delete from "./Delete";
 import updatePlayer from "./updatePlayer";
@@ -7,13 +8,11 @@ import classes from './PlayerProfile.module.css';
 import Layout from './layout/Layout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
+import { UserIdContext } from "../contexts/UserIdContext";
 const PlayerProfile = () => {
   const [player, setPlayer] = useState(null);
   const [key, setKey] = useState("")
   const [value, setValue] = useState("")
-  const currentUser = JSON.parse(window.localStorage.getItem('currentUser'))
-
-
   const getBody = () => {
     let newBody = player
     newBody[key] = value
@@ -31,17 +30,23 @@ const PlayerProfile = () => {
   };
 
   const deleteFunc = async () => {
-    await Delete(currentUser.uid)
+    await Delete(uID)
     navigateToSignIn()
   }
 
+  const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+  useEffect(() => {
+    const userID = window.localStorage.getItem('user_id')
+    if (userID !== null) setUID(userID);
+    console.log(userID);
+  }, [])
 
   useEffect(() => {
     const getPlayerData = async () => {
       try {
         //console.log(getAuth().currentUser.uid);
         //const uID = getAuth().currentUser.uid;
-        const response = await PlayerDataService.get(currentUser.uid);
+        const response = await PlayerDataService.get(uID);
         console.log(response.data);
         setPlayer(response.data);
       } catch (err) {
@@ -60,8 +65,8 @@ const PlayerProfile = () => {
       <div><AccountCircleIcon fontSize="large"  /></div>
       <div>Name:{player != null ? player.p_name : null}</div>
       <div>Age:{player != null ? player.p_age : null}</div>
-      <div>Player Rating:{player != null ? player.pr : null}</div>
-      <div>Fair Play Rating:{player != null ? player.fpr : null}</div>
+      <div>Player Rating:{player != null && player.p_rating[2] ?  player.p_rating[0]/player.p_rating[2] : "No Ratings yet"}</div>
+      <div>Fair Play Rating:{player != null && player.p_rating[2] ? player.p_rating[1]/player.p_rating[2] : "No Ratings yet"}</div>
       <div>Position A:{player != null ? player.position_a : null}</div>
       <div>Position B:{player != null ? player.position_b : null}</div>
       <div>Location:{player != null ? player.p_location : null}</div>
