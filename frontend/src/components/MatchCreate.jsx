@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import MatchDataService from '../services/match.service';
 import PlayerDataService from '../services/player.service'
+import RefereeDataService from '../services/referee.service';
+
 import dayjs, { Dayjs } from 'dayjs';
 import {Button, Select,  FormControl,MenuItem, InputLabel,TextField ,Card,Stack ,Box,Switch } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -61,12 +64,41 @@ const MatchCreate = () => {
     const [checked, setRefree] = React.useState(false);
     const handleRefreeChange = (event) => {
       setRefree(event.target.checked);
+      handleFilterRefereeData()
       console.log("checked: ",checked);
       
   };
     //-------------------------------------------------
-
-
+    // referee add
+    const [referees, setReferees] = useState([]); // all referees
+    const [referee, setReferee] = useState('');
+    const [filteredR, setFilteredR] = useState([]);
+    
+    // get all referees data and set it to referees array
+    const getRefereeData = async () => {
+      try {
+        const response = await RefereeDataService.getAll();
+        setReferees(response.data);
+        console.log(referees)
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    useEffect(() => {
+      getRefereeData() // get all referees
+    }, [])
+    
+    const handleFilterRefereeData = () => {
+      let fTemp = [];
+      for (let i = 0; i < referees.length; i++) {
+        const temp = referees[i]['available_locations']
+        if (temp.find(e => e === mLocation)) {
+          fTemp.push(referees[i]);
+        }
+      }
+      setFilteredR(fTemp)
+    }
     //---------------getCurrentuserID------------------
     const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
     //-------------------------------------------------
@@ -86,7 +118,8 @@ const MatchCreate = () => {
       m_curPlayer: 0,
       m_needRefree: checked,
       m_date: value,
-      owner_id: uID
+      owner_id: uID,
+      referee: ''
     }
 
     //send data to database
@@ -100,7 +133,8 @@ const MatchCreate = () => {
         m_curPlayer: response.data.m_curPlayer,
         m_needRefree: response.data.m_needRefree,
         m_date: response.data.m_date,
-        owner_id: response.data.owner_id
+        owner_id: response.data.owner_id,
+        referee: response.data.referee
       });
       console.log(response.data);
     }).catch(err => {
@@ -112,14 +146,45 @@ const MatchCreate = () => {
 
     if(matchID != "" && name != ""  && mLocation != "" && numofPlayers != "" && value != ""){
       PlayerDataService.addMatchToPlayer(uID,matchID).then(()=>{
-        navigate('../HomePage');
+        refereeInvite().then(() => {
+          navigate('/HomePage');
+        })    
       })
     }else{
       alert("Lütfen bütün boşlukları doldurunuz");
     }
   }
   //---------------------------------------------------
-
+  const [player, setPlayer] = useState(null);
+  useEffect(() => {
+    const getPlayerData = async () => {
+      try {
+        //console.log(getAuth().currentUser.uid);
+        //const uID = getAuth().currentUser.uid;
+        const response = await PlayerDataService.get(uID);
+        console.log(response.data);
+        setPlayer(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getPlayerData();
+    
+  }, []);
+  
+  const refereeInvite = async () => {
+    
+    const notification = {
+      "type": "Referee Invite",
+      "matchID": `${matchID}`,
+      "header": "New match invite!",
+      "message" : `Owner ${player.p_name} wants you to join his/her match ${name}!`
+    }
+    console.log(referee);
+    console.log(player);
+    await RefereeDataService.notify(referee, notification)
+  }
+  
   return (
     <Box m = {20} pt = {5}>
     <Card>
@@ -183,8 +248,23 @@ const MatchCreate = () => {
         <Switch
           inputProps={{ 'aria-label': 'controlled' }}
           onChange ={ handleRefreeChange }
+          checked = {checked}
          />
-        <div></div>
+        <div>{checked === true  ? <div>{filteredR.length > 0 ? 
+          <FormControl style={{width:245}}>
+            <InputLabel id="input_location_label">Referee</InputLabel>
+            <Select
+              id="input_location"
+              autoWidth
+              value={referee}
+              label="Location"
+              onChange={(event) => setReferee(event.target.value)}
+            >
+            {filteredR.map((r) => (
+              <MenuItem value={r.r_id} key = {r.r_id}>{r.r_name}</MenuItem>
+            ))}
+            </Select>
+          </FormControl> : <div>No referee available in this location</div>}</div> : null}</div>
         <Button color="success" variant="contained" onClick={handlecreateMatch} >Yayınla</Button>
         
         </Box>
