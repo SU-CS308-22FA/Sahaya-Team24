@@ -103,8 +103,7 @@ const MatchCreate = () => {
     
 
     //---------------getCurrentuserID------------------
-    const auth=getAuth();
-    const uID = auth.currentUser.uid;
+    const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
     //-------------------------------------------------
 
 
@@ -122,7 +121,8 @@ const MatchCreate = () => {
       m_curPlayer: 0,
       m_needRefree: checked,
       m_date: value,
-      owner_id: uID
+      owner_id: uID,
+      referee: ''
     }
 
     //send data to database
@@ -136,7 +136,8 @@ const MatchCreate = () => {
         m_curPlayer: response.data.m_curPlayer,
         m_needRefree: response.data.m_needRefree,
         m_date: response.data.m_date,
-        owner_id: response.data.owner_id
+        owner_id: response.data.owner_id,
+        referee: response.data.referee
       });
       console.log(response.data);
     }).catch(err => {
@@ -148,13 +149,44 @@ const MatchCreate = () => {
 
     if(matchID != "" && name != ""  && mLocation != "" && numofPlayers != "" && value != ""){
       PlayerDataService.addMatchToPlayer(uID,matchID).then(()=>{
-        navigate('../HomePage');
+        refereeInvite().then(() => {
+          navigate('../HomePage');
+        })    
       })
     }else{
       alert("Lütfen bütün boşlukları doldurunuz");
     }
   }
   //---------------------------------------------------
+  const [player, setPlayer] = useState(null);
+  useEffect(() => {
+    const getPlayerData = async () => {
+      try {
+        //console.log(getAuth().currentUser.uid);
+        //const uID = getAuth().currentUser.uid;
+        const response = await PlayerDataService.get(uID);
+        console.log(response.data);
+        setPlayer(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getPlayerData();
+    
+  }, []);
+
+  const refereeInvite = async () => {
+    
+    const notification = {
+      "type": "Referee Invite",
+      "matchID": `${matchID}`,
+      "header": "New match invite!",
+      "message" : `Owner ${player.p_name} wants you to join his/her match ${name}!`
+    }
+    console.log(referee);
+    console.log(player);
+    await RefereeDataService.notify(referee, notification)
+  }
 
   return (
     <Box m = {20} pt = {5}>

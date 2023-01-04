@@ -21,7 +21,14 @@ module.exports = app => {
   // Delete all referees
   router.delete("/", referees.deleteAll);
 
+  // Notification
+  router.put("/notify/:id", referees.pushNotification);
+
+  router.delete("/:rid/:mid", referees.deleteMatch)
+  // Match
   router.put("/:rid/:mid", referees.addMatch);
+
+  router.delete("/notify/:rid/:nid", referees.deleteNotification)
 
   app.use("/api/referees", router);
 };

@@ -46,6 +46,18 @@ const MessageList_item = (props) => {
     await PlayerDataService.deleteNotification(uID,props.passedValue.id)
   }
 
+  const refereeRefuseJoinRequest = async () => {
+    await RefereeDataService.deleteNotification(uID, props.passedValue.id)
+  }
+
+  const refereeAcceptJoinRequest = async () => {
+    await RefereeDataService.addMatchToReferee(uID, props.passedValue.matchID)
+    await RefereeDataService.deleteNotification(uID, props.passedValue.id)
+    let match = await MatchDataService.get(props.passedValue.matchID)
+    match.data.referee = uID
+    await MatchDataService.update(props.passedValue.matchID , match.data);
+  }
+
   if(props.passedValue.type == "Join Request") 
   {
     return (
@@ -67,7 +79,27 @@ const MessageList_item = (props) => {
       
       </Card>
     )
-  }else 
+  } else if(props.passedValue.type == "Referee Invite") {
+    return (
+      <Card style={{backgroundColor:"#00466e", margin:"1vh", width:"50vh", justifyContent:"center"}}>
+      <Box  sx={{flexGrow: 1, textAlign:"center"}}>
+          <Typography variant="h4" style={{color:"white", marginTop:"1vh"}}>{props.passedValue.header}</Typography>
+      </Box>
+      <Toolbar>
+      <Typography  style={{color:"white", textAlign:"start"}}>{props.passedValue.message}</Typography>
+      </Toolbar>
+      <ButtonGroup variant = "contained">
+        <Button onClick={refereeAcceptJoinRequest}>
+          Accept
+        </Button>
+        <Button onClick={refereeRefuseJoinRequest}>
+          Decline
+        </Button>
+      </ButtonGroup>
+      
+      </Card>
+    )
+  } else 
   {
     return(
       <Card style={{backgroundColor:"#00466e", margin:"1vh", width:"50vh", justifyContent:"center"}}>

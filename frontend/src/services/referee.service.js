@@ -28,6 +28,18 @@ class RefereeDataService {
   addMatchToReferee(rid, mid) {
     return http.put(`/referees/${rid}/${mid}`)
   }
+
+  deleteMatchFromReferee(rid, mid) {
+    return http.delete(`/referees/${rid}/${mid}`)
+  }
+
+  notify(id, data) {
+    return http.put(`/referees/notify/${id}`, data)
+  }
+
+  deleteNotification(rid, nid) {
+    return http.delete(`/referees/notify/${rid}/${nid}`)
+  }
 }
 
 export default new RefereeDataService();
