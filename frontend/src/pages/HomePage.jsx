@@ -24,7 +24,7 @@ const HomePage = () => {
   const [selectedMatchName, setSelectedMatchName] = useState("");
   const [notifications, setNotifications] = useState([])
   const [uType, setUType] = useState(window.localStorage.getItem('user_type'));
-  const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+  const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
 
   useEffect(() => {
     const userType = window.localStorage.getItem('user_type')
@@ -48,7 +48,7 @@ const HomePage = () => {
       };
       const timer = setInterval(() => {
         fetchData();
-      }, 3000);
+      }, 1000);
     
       return () => clearInterval(timer);
     }

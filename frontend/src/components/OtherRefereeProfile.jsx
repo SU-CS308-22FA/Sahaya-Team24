@@ -15,7 +15,6 @@ const OtherRefereeProfile = () => {
     const getRefereeData = async () => {
       try {
         const response = await RefereeDataService.get(uID);
-        console.log(response.data);
         setReferee(response.data);
       } catch (err) {
         console.log(err);
