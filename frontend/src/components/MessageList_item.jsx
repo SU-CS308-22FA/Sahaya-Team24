@@ -116,10 +116,7 @@ const MessageList_item = (props) => {
         </Card>
       </Button>
     )
-  }else{
-    return null;
-  }
-  
 }
 
+}
 export default MessageList_item
