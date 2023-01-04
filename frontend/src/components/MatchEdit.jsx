@@ -1,15 +1,12 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import MatchDataService from '../services/match.service';
-import RefereeDataService from '../services/referee.service';
-import PlayerDataService from '../services/player.service';
 import dayjs, { Dayjs } from 'dayjs';
 import {Button, Select,  FormControl,MenuItem, InputLabel,TextField ,Card,Stack ,Box,Switch } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { spacing } from '@mui/system';
-import { LOCATION_ARRAY } from '../constants';
 
 const MatchEdit = (val) => {
     let navigate = useNavigate();
@@ -28,7 +25,6 @@ const MatchEdit = (val) => {
     const [mLocation, setLoc] = React.useState(m.m_location);
     const handleLocChange = (event) => {
         setLoc(event.target.value);
-        setRefree(false)
         console.log("loc: ",mLocation);
     };
     //----------------------------------------------------------
@@ -64,12 +60,12 @@ const MatchEdit = (val) => {
       console.log("checked: ",checked);
       
     };
-
+    
     useEffect(() => {
       getRefereeData() // get all referees
       getCurrentReferee()
     }, [])
-
+    
     // referee
     const [referees, setReferees] = useState([]); // all referees
     const [referee, setReferee] = useState('');
@@ -85,7 +81,7 @@ const MatchEdit = (val) => {
         console.log(error);
       }
     };
-
+    
     const getCurrentReferee = async () => {
       try {
         const response = await RefereeDataService.get(m.referee);
@@ -94,7 +90,7 @@ const MatchEdit = (val) => {
         console.log(error);
       }
     }
-
+    
     const handleFilterRefereeData = () => {
       let fTemp = [];
       for (let i = 0; i < referees.length; i++) {
@@ -135,7 +131,7 @@ const MatchEdit = (val) => {
       console.log(player);
       await RefereeDataService.notify(referee, notification)
     }
-
+    
     //-------------------------------------------------
     const handleUpdateMatch=async()=>{
         if (referee === m.referee) {
@@ -162,7 +158,7 @@ const MatchEdit = (val) => {
         }
           
           if( name != ""  && mLocation != "" && numofPlayers != "" && value != ""){
-              try{
+            try{
                 console.log("trying to update");
                 await MatchDataService.update(m.m_id , data);
                 if (referee != m.referee) {
@@ -203,23 +199,14 @@ const MatchEdit = (val) => {
         />
         </LocalizationProvider>
 
-        <div>
-        <FormControl style={{width:245}}>
-          <InputLabel id="input_location_label">Location</InputLabel>
-          <Select
-            id="input_location"
-            autoWidth
-            value={mLocation}
-            defaultValue={m.m_location}
-            label="Location"
-            onChange={handleLocChange}
-          >
-          {LOCATION_ARRAY.map((location) => (
-            <MenuItem value={location} key = {location}>{location}</MenuItem>
-          ))}
-          </Select>
-        </FormControl>
-        </div>
+        <div>Maç lokasyonu: </div>
+        <TextField
+          required
+          defaultValue={m.m_location}
+          size='medium'
+          fullWidth = {true}
+          onChange={handleLocChange}
+        />
 
         <FormControl fullWidth>  
         <InputLabel id="demo-simple-select-label">Oyuncu sayısı</InputLabel>
