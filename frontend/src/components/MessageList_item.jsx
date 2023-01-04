@@ -5,7 +5,7 @@ import PlayerDataService from '../services/player.service';
 import RefereeDataService from '../services/referee.service';
 
 const MessageList_item = (props) => {
-  const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+  const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
 
   const handleUserType = async (uID) => {
     let type;

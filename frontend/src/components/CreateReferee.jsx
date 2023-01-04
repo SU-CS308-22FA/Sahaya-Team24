@@ -15,7 +15,7 @@ class AddReferee extends Component{
     this.saveReferee = this.saveReferee.bind(this);
     this.newReferee = this.newReferee.bind(this);
     this.navigation = this.navigation.bind(this);
-    let uId = this.props.uID;
+    let uId = props.uID;
     console.log(uId);
     this.state = {
       //r_id: getAuth().currentUser.uid,
