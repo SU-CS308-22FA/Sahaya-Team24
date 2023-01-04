@@ -13,7 +13,8 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER
       },
       p_rating:{
-        type: DataTypes.ARRAY(Sequelize. DOUBLE)//0:total rating 1:total fprating 2:#ofratings
+        type: DataTypes.ARRAY(Sequelize. DOUBLE),
+        decimalPlaces: 2//0:total rating 1:total fprating 2:#ofratings
       },
       position_a: {
         type: Sequelize.STRING
