@@ -9,6 +9,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { spacing } from '@mui/system';
+import { LOCATION_ARRAY } from '../constants';
 
 const MatchEdit = (val) => {
     let navigate = useNavigate();
@@ -203,13 +204,23 @@ const MatchEdit = (val) => {
         </LocalizationProvider>
 
         <div>Maç lokasyonu: </div>
-        <TextField
-          required
-          defaultValue={m.m_location}
-          size='medium'
-          fullWidth = {true}
-          onChange={handleLocChange}
-        />
+        <div>
+        <FormControl style={{width:245}}>
+          <InputLabel id="input_location_label">Location</InputLabel>
+          <Select
+            id="input_location"
+            autoWidth
+            value={mLocation}
+            defaultValue={m.m_location}
+            label="Location"
+            onChange={handleLocChange}
+          >
+          {LOCATION_ARRAY.map((location) => (
+            <MenuItem value={location} key = {location}>{location}</MenuItem>
+          ))}
+          </Select>
+        </FormControl>
+        </div>
 
         <FormControl fullWidth>  
         <InputLabel id="demo-simple-select-label">Oyuncu sayısı</InputLabel>
