@@ -7,11 +7,9 @@ import {
 } from "../utils/firebase";
 import { sendEmailVerification } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-
 import classes from "../components/Mix.module.css";
 import Layout from '../components/layout/Layout';
 import { auth } from "../utils/firebaseConfig";
-import { UserIdContext } from "../contexts/UserIdContext";
 
 const RegisterPage = () => {
   const [uMail, setUMail] = useState("");
@@ -19,15 +17,12 @@ const RegisterPage = () => {
   const [uCPassword, setUCPassword] = useState("");
   
   let navigate = useNavigate();
-  const {setUserId} = useContext(UserIdContext);
 
   const handleSubmit = async () => {
    
     try {
       const { user } = await registerWithEmailAndPassword(uMail, uPassword);
       await sendEmailVerification(user.auth.currentUser)
-      setUserId(user.uid);
-      console.log(user);
       navigateToCP();
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
@@ -41,7 +36,7 @@ const RegisterPage = () => {
   
   
   const navigateToCP = () => {
-    navigate('/RegisterP/CreateProfile');
+    navigate('/CreateProfile');
     };
 
     const navigateToSign = () => {
