@@ -1,10 +1,10 @@
 import RefereeDataService from '../services/referee.service';
-import { TextField, Button , Card } from "@mui/material";
+import { TextField, Button , Card, InputLabel, FormControl, MenuItem,Select } from "@mui/material";
 import React, { Component } from "react";
 import { getAuth } from "firebase/auth";
 import classes from '../components/Mix.module.css';
 import { withRouter } from './withRouter';
-
+import { LOCATION_ARRAY } from '../constants';
 
 class AddReferee extends Component{ 
   constructor(props) {
@@ -108,14 +108,20 @@ class AddReferee extends Component{
       />
       </div>
       <div className={classes.textFieldCss}>
-      <TextField
-        id="input_location"
-        required
-        label="Location"
-        variant="outlined"
-        value={this.state.r_location}
-        onChange={this.onChangeLocation}
-      />
+      <FormControl style={{width:245}}>
+        <InputLabel id="input_location_label">Location</InputLabel>
+        <Select
+          id="input_location"
+          autoWidth
+          value={this.state.r_location}
+          label="Location"
+          onChange={this.onChangeLocation}
+        >
+        {LOCATION_ARRAY.map((location) => (
+          <MenuItem value={location} key = {location}>{location}</MenuItem>
+        ))}
+        </Select>
+      </FormControl>
       </div>
 
       <Button variant="contained" onClick={()=>{
