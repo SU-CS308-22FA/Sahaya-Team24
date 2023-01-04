@@ -7,7 +7,7 @@ import PlayerDataService from"../services/player.service";
 const UserRateItem = (item) => {
 const [rating, setRating] = React.useState();
 const [fp_rating, setFp_rating] = React.useState();
-const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
 
 
 console.log("item:" ,item);
