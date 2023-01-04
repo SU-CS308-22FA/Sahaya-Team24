@@ -15,6 +15,7 @@ const OtherRefereeProfile = () => {
     const getRefereeData = async () => {
       try {
         const response = await RefereeDataService.get(uID);
+        console.log(response.data);
         setReferee(response.data);
       } catch (err) {
         console.log(err);
@@ -28,11 +29,12 @@ const OtherRefereeProfile = () => {
     <Layout>
       <Card className = {classes.cardProfile}>
       <div><AccountCircleIcon fontSize="large"  /></div>
-      <div>Name:{referee != null ? referee.r_name : null}</div>
-      <div>Age:{referee != null ? referee.r_age : null}</div>
-      <div>Referee Rating:{referee != null ? referee.rr : null}</div>
-      <div>Fair Play Rating:{referee != null ? referee.fpr : null}</div>
-      <div>Location:{referee != null ? referee.r_location : null}</div>
+      <div>Name: {referee != null ? referee.r_name : null}</div>
+      <div>Age: {referee != null ? referee.r_age : null}</div>
+      <div>Referee Rating: {referee != null ? referee.rr : null}</div>
+      <div>Fair Play Rating: {referee != null ? referee.fpr : null}</div>
+      <div>Location: {referee != null ? referee.r_location : null}</div>
+      <div>Available Locations: {referee != null && referee.available_locations.length > 0 ? referee.available_locations.map((loc, i) => (<li key={i}>{loc}</li>)): null}</div>
     </Card>
     </Layout>
   )

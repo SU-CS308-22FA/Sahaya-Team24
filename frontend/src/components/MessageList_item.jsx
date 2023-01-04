@@ -1,10 +1,14 @@
 import React, {useState} from 'react'
+
 import {Button,Card, Box, Typography,Toolbar, ButtonGroup} from '@mui/material'
 import MatchDataService from '../services/match.service';
 import PlayerDataService from '../services/player.service';
 import RefereeDataService from '../services/referee.service';
+import { useNavigate } from "react-router-dom";
 
 const MessageList_item = (props) => {
+
+  let navigate = useNavigate();
   const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
   const handleUserType = async (uID) => {
     let type;
@@ -24,8 +28,9 @@ const MessageList_item = (props) => {
   console.log(type)
   if (type === 'referee') {
     await RefereeDataService.addMatchToReferee(props.passedValue.senderID, props.passedValue.matchID)
-    const res = await RefereeDataService.get(props.passedValue.senderID)
-    console.log(res)
+    let match = await MatchDataService.get(props.passedValue.matchID)
+    match.data.referee = props.passedValue.senderID
+    await MatchDataService.update(props.passedValue.matchID , match.data);
   } else {
     let player
     try
@@ -76,6 +81,10 @@ const MessageList_item = (props) => {
     let match = await MatchDataService.get(props.passedValue.matchID)
     match.data.referee = uID
     await MatchDataService.update(props.passedValue.matchID , match.data);
+    
+  const navigateToSendRatings = (e) => {
+    navigate('/HomePage/RateSendPage',{state: {sentVal: props.passedValue,},});
+
   }
 
   if(props.passedValue.type == "Join Request") 
@@ -135,22 +144,21 @@ const MessageList_item = (props) => {
         </Box>
       </Card>
     )
-    
-  }
-  else 
+  }else if(props.passedValue.type == "RatePlayers")
   {
     return(
-      <Card style={{backgroundColor:"#00466e", margin:"1vh", width:"50vh", justifyContent:"center"}}>
-        <Box  sx={{flexGrow: 1, textAlign:"center"}}>
+      <Button style={{padding:"0", textTransform:"none"}} onClick={navigateToSendRatings}>
+        <Card style={{backgroundColor:"#00466e", margin:"1vh", width:"50vh", justifyContent:"center"}}>
+          <Box  sx={{flexGrow: 1, textAlign:"center"}}>
             <Typography variant="h4" style={{color:"white", marginTop:"1vh"}}>{props.passedValue.header}</Typography>
-        </Box>
-        <Toolbar>
-          <Typography  style={{color:"white", textAlign:"start"}}>{props.passedValue.message}</Typography>
-        </Toolbar>
-      </Card>
+          </Box>
+          <Toolbar>
+            <Typography  style={{color:"white", textAlign:"start"}}>{props.passedValue.message}</Typography>
+          </Toolbar>
+        </Card>
+      </Button>
     )
-  }
-  
 }
 
+}
 export default MessageList_item

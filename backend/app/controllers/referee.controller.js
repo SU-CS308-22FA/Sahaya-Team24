@@ -26,10 +26,9 @@ exports.create = (req, res) => {
     rr: 0,
     fpr: 0,
     r_location: req.body.r_location,
-    available_locations: [],
+    available_locations: req.body.available_locations,
     dates: [],
-    matches: [],
-    r_notifications: []
+    matches: []
   };
 
   // Save Referee in the database
@@ -47,7 +46,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Referees from the database.
 exports.findAll = (req, res) => {
-  var condition = req ? req : null;
+  const title = req.query.title;
+  var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
 
   Referee.findAll({ where: condition })
     .then(data => {
@@ -56,7 +56,7 @@ exports.findAll = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          "Some error occurred while retrieving referees."
+          err.message || "Some error occurred while retrieving referees."
       });
     });
 };
@@ -150,60 +150,6 @@ exports.deleteAll = (req, res) => {
     });
 };
 
-exports.pushNotification = (req, res) => {
-  console.log("hey");
-  const id = req.params.id;
-  const notif = req.body
-
-  Referee.findByPk(id)
-    .then(data => {
-      let array = data.dataValues.r_notifications
-      notif.id = "id" + Math.random().toString(16).slice(2)
-      array.push(notif)
-      data.dataValues.r_notifications = array
-
-      Referee.update(data.dataValues, {
-        where: { r_id: id }
-      }).then(num => {
-        console.log("hey");
-        if (num == 1) {
-          res.send({
-            message: "Referee was notified successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot notify Referee with r_id=${id}. Maybe Referee was not found or req.body is empty!`
-          });
-        }
-      })
-    })
-}
-
-exports.deleteNotification = (req, res) => {
-  const rid = req.params.rid
-  const nid = req.params.nid
-  Referee.findByPk(rid)
-    .then(data => {
-      let array = data.dataValues.r_notifications
-      array.splice(array.findIndex(x => x.id === nid), 1)
-      data.dataValues.r_notifications = array
-
-      Referee.update(data.dataValues, {
-        where: { r_id: rid }
-      }).then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Notification was deleted successfully."
-          });
-        } else {
-          res.send({
-            message: "Couldn't delete the notification"
-          });
-        }
-      })
-    })
-}
-
 // Add match
 exports.addMatch = (req, res) => {
   const rid = req.params.rid
@@ -223,30 +169,6 @@ exports.addMatch = (req, res) => {
         } else {
           res.send({
             message: "Referee couldn't join the match."
-          });
-        }
-      })
-    })
-}
-
-exports.deleteMatch = (req, res) => {
-  const rid = req.params.rid
-  const mid = req.params.mid
-  Referee.findByPk(rid)
-    .then(data => {
-      let array = data.dataValues.matches
-      array.splice(array.indexOf(mid), 1)
-      data.dataValues.matches = array
-      Referee.update(data.dataValues, {
-        where: { r_id: rid }
-      }).then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Referee exited match successfully."
-          });
-        } else {
-          res.send({
-            message: "Referee couldn't exit the match."
           });
         }
       })

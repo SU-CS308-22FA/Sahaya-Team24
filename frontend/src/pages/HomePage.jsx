@@ -7,7 +7,6 @@ import { Box } from '@mui/system';
 
 import MatchListItem from '../components/MatchListItem';
 import PlayerDataService from '../services/player.service'
-import RefereeDataService from '../services/referee.service'
 import { getAuth, signOut } from 'firebase/auth';
 import PlayerProfileInfoCard from '../components/PlayerProfileInfoCard';
 import RefereeProfileInfoCard from '../components/RefereeProfileInfoCard';
@@ -18,7 +17,6 @@ const HomePage = () => {
   let auth=getAuth();
   let navigate = useNavigate();
   const [player, setPlayer] = useState(null);
-  const [referee, setReferee] = useState(null);
   const [allLocations, setAllLocations] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState(allLocations);
   const [selectedMatches, setSelectedMatches] = useState([]);
@@ -26,7 +24,7 @@ const HomePage = () => {
   const [selectedMatchName, setSelectedMatchName] = useState("");
   const [notifications, setNotifications] = useState([])
   const [uType, setUType] = useState(window.localStorage.getItem('user_type'));
-  const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
+  const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
 
   useEffect(() => {
     const userType = window.localStorage.getItem('user_type')
@@ -38,12 +36,6 @@ const HomePage = () => {
         setPlayer(playerInfo)
       }
       setPlayerData()
-    } else if (uType === 'referee') {
-      const setRefereeData = async () => {
-        const refereeInfo = await RefereeDataService.get(uID)
-        setReferee(refereeInfo)
-      }
-      setRefereeData()
     }
   }, []);
 
@@ -52,16 +44,6 @@ const HomePage = () => {
       const fetchData = async () => {
         const playerInfo = await PlayerDataService.get(uID)
         setPlayer(playerInfo)
-      };
-      const timer = setInterval(() => {
-        fetchData();
-      }, 1000);
-    
-      return () => clearInterval(timer);
-    } else if (uType === 'referee') {
-      const fetchData = async () => {
-        const refereeInfo = await RefereeDataService.get(uID)
-        setReferee(refereeInfo)
       };
       const timer = setInterval(() => {
         fetchData();
@@ -77,12 +59,6 @@ const HomePage = () => {
     }
   },[player])
   
-  useEffect(() => {
-    if (referee && referee.data && referee.data.r_notifications) {
-      setNotifications(referee.data.r_notifications)
-    }
-  }, [referee])
-
   useEffect(() => {
     const getMatchesData = async () => {
       try {
@@ -157,7 +133,7 @@ const HomePage = () => {
     <Toolbar>
     <h1 style={{color: "#ffffff", flexGrow: "1"}}>SAHAYA</h1>
     {uType=='anonymous'? null : <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToProfile}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Profile</Typography></Button>}
-    {uType=='anonymous'?null:<Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToCreateMatch}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Create New Match</Typography></Button>}
+    {uType != 'player'?null:<Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToCreateMatch}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Create New Match</Typography></Button>}
     <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToSearch}><Typography style={{color: "#00466e", fontWeight: "bold"}}>Search Users</Typography></Button>
     {uType=='anonymous'? <Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={navigateToSignIn}><Typography style={{color: "#00466e", fontWeight: "bold"}}>SignIn</Typography></Button>:<Button  style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained" onClick={logout}><Typography style={{color: "#00466e", fontWeight: "bold"}}>SignOut!</Typography></Button>}
     </Toolbar>

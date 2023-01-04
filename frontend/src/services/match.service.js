@@ -8,6 +8,9 @@ class MatchDataService {
       getAll() {
         return http.get("/matches");
       }
+      getByid(id){
+        return http.get(`/matches/${id}`);
+      }
 
       get(id) {
         return http.get(`/matches/${id}`)

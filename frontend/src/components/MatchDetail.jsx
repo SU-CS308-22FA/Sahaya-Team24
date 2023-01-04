@@ -14,6 +14,7 @@ import MatchEditDeletebtns from './MatchEditDeletebtns'
 const MatchDetail = (inVal) => {
   const [uType, setUType] = useState(window.localStorage.getItem('user_type'));
   const [match, setMatch] = useState(inVal.passedValue.sentVal)
+  const [referee, setReferee] = useState(null);
   let nref;
   if(match.m_needRefree){
     nref = "Hakem var";
@@ -82,6 +83,21 @@ const MatchDetail = (inVal) => {
       const newMatch = await MatchDataService.get(match.m_id)
       setMatch(newMatch.data)
     }
+
+    useEffect(() => {
+      getRefereeData()
+    }, [])
+
+    const getRefereeData = async () => {
+      try {
+        const response = await RefereeDataService.get(match.referee);
+        console.log(response.data);
+        setReferee(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
   return (
     <div>
     <Card  style={{ backgroundImage: "url('https://amplex.dk/wp-content/uploads/2016/08/iStock_000022325111Large.jpg')", backgroundSize:"cover", backgroundPosition:"center", height:"100vh", borderRadius:"0"}}>
@@ -105,7 +121,7 @@ const MatchDetail = (inVal) => {
           </Typography>
           <Typography variant="h4" gutterBottom color = 'white'>
             Hakem:  
-            {" " }{nref} 
+            {" " }{referee && match.referee != '' ? referee.r_name : "Hakem yok"}
           </Typography>
           <Typography variant="h4" gutterBottom color = 'white'>
             Maçtaki kişi sayısı: 
