@@ -27,6 +27,7 @@ const MatchEdit = (val) => {
     const [mLocation, setLoc] = React.useState(m.m_location);
     const handleLocChange = (event) => {
         setLoc(event.target.value);
+        setRefree(false)
         console.log("loc: ",mLocation);
     };
     //----------------------------------------------------------
