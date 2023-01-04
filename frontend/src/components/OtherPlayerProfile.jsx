@@ -15,6 +15,7 @@ const OtherPlayerProfile = () => {
     const getPlayerData = async () => {
       try {
         const response = await PlayerDataService.get(uID);
+        console.log(response.data);
         setPlayer(response.data);
       } catch (err) {
         console.log(err);

@@ -46,7 +46,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Referees from the database.
 exports.findAll = (req, res) => {
-  var condition = req ? req : null;
+  const title = req.query.title;
+  var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
 
   Referee.findAll({ where: condition })
     .then(data => {
@@ -55,7 +56,7 @@ exports.findAll = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          "Some error occurred while retrieving referees."
+          err.message || "Some error occurred while retrieving referees."
       });
     });
 };
