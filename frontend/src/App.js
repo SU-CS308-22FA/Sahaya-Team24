@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignInPage from "./pages/SignInPage";
 import classes from "./App.module.css";
 import { PrivateRoute } from "./components/PrivateRoute";
+import RateP from "./pages/RateP";
 import HomePage from "./pages/HomePage";
 import AddPlayerP from "./pages/AddPlayerP";
 import ProfilePage from "./pages/ProfilePage";
@@ -46,6 +47,7 @@ const App = () => {
               <Route path="/matchcreation" element={<MatchCreateP />} />
               <Route path="/matchDetail" element={<MatchDetailPage />} />
               <Route path="/matchDetail/editMatch" element={<MatchEditPage/>} />
+              <Route path="/RateSendPage" element={<RateP/>} />
             </Route>
           </Routes>
         </div>
