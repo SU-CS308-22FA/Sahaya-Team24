@@ -33,6 +33,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       waitingList:{
         type: DataTypes.ARRAY(Sequelize.STRING)
+      },
+      referee: {
+        type: Sequelize.STRING
       }
     });
     return Match;
