@@ -11,8 +11,7 @@ module.exports = app => {
 
     router.get("/", matches.findAll);
 
-    //retruns match with id
-    router.get("/:id", matches.findById);
+    
 
     // Update a Match with id
     router.put("/:id", matches.update);
@@ -23,6 +22,7 @@ module.exports = app => {
     router.put("/waiting/:mid/:pid", matches.addWaiting)
     router.delete("/waiting/:mid/:id", matches.deleteWaiting);
 
+    //retruns match with id
     router.get("/:id", matches.findOne);
 
     app.use("/api/matches", router);

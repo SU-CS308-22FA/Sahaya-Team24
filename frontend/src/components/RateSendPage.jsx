@@ -22,14 +22,15 @@ const RateSendPage = (props) => {
   //------getting match from database---------------
   // match retrived from the data base is variable match
   const passedMatchId = msg.matchID;
-  const curMatch = await MatchDataService.getByid(passedMatchId);
-  const m = curMatch.data[0];
+  const curMatch = await MatchDataService.get(passedMatchId);
+  const m = curMatch.data;
 //----------------------------------------------------
 
 
 //-----------retrive users in match from found match----------------
 //array of user ids is in the variable users
   let allUsers = m.players;
+  console.log("allusers:" , allUsers );
 //------------------------------------------------------------------
 
 const userIdToObj = async (id) =>{
@@ -49,7 +50,6 @@ for (let index = 0; index < allUsers.length; index++) {
     }
   setUsers(u);
 
-
   console.log("msg is:" , msg);
   console.log("mid is:" , passedMatchId);
   console.log("rating match is: ", m );
@@ -59,7 +59,7 @@ for (let index = 0; index < allUsers.length; index++) {
 
 React.useEffect( () => {
   const getData = async()=>{
-    await Retrive_from_database(msg)
+    await Retrive_from_database(msg);
   }
   getData();
   console.log("Users: ", users);
@@ -74,8 +74,6 @@ const navigateToHomepage = ()=>{
       console.log(error);
     }
     navigate('../HomePage');
-
-
   }
 
   

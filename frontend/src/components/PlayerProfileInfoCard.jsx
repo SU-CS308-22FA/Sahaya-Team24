@@ -10,13 +10,20 @@ const PlayerProfileInfoCard = (props) =>{
     const auth=getAuth();
     const [player, setPlayer] = useState(null);
 
-    const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
+    const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
   
 
     useEffect(() => {
         const getPlayerData = async () => {
           try {
-            const response = await PlayerDataService.get(uID);
+            //console.log(getAuth().currentUser.uid);
+            //const uID = getAuth().currentUser.uid;
+            
+            const userID = window.localStorage.getItem('user_id')
+            if (userID !== null) setUID(userID);
+            console.log(userID);
+            const response = await PlayerDataService.get(userID);
+            console.log(response.data);
             setPlayer(response.data);
           } catch (err) {
             console.log(err);

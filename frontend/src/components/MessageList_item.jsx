@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const MessageList_item = (props) => {
   let navigate = useNavigate();
-  const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
+  const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
 
   const handleUserType = async (uID) => {
     let type;

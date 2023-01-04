@@ -39,6 +39,8 @@ exports.create = (req, res) => {
     // Save Match in the database
     Match.create(match)
       .then(data => {
+        console.log("match create: " , data);
+        console.log('hi\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
         handleMatchNotifications(match);
         res.send(data);
 
@@ -256,7 +258,7 @@ exports.create = (req, res) => {
 
   //sends messages to players of the match after 2hr from match date
   const handleMatchNotifications = ( m ) => {
-    console.log("handling not")
+    console.log("handling not");
     let matchDate = m.m_date;
     var date = new Date(matchDate);
     date.setHours(date.getHours() + 2);

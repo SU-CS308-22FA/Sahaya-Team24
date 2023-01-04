@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useState}from 'react';
 import { useNavigate } from 'react-router-dom';
 import MatchDataService from '../services/match.service';
 import PlayerDataService from '../services/player.service'
@@ -68,8 +68,7 @@ const MatchCreate = () => {
 
 
     //---------------getCurrentuserID------------------
-    const auth=getAuth();
-    const uID = auth.currentUser.uid;
+    const [uID, setUID] = useState( JSON.parse(window.localStorage.getItem('currentUser')).uid);
     //-------------------------------------------------
 
 

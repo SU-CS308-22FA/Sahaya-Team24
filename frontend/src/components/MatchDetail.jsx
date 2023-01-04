@@ -35,12 +35,7 @@ const MatchDetail = (inVal) => {
   var min = date.getMinutes();
     
     //---------------getCurrentuserID------------------
-    const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
-    useEffect(() => {
-      const userID = window.localStorage.getItem('user_id')
-      if (userID !== null) setUID(userID);
-      console.log(userID);
-    }, [])
+    const [uID, setUID] = useState( JSON.parse(window.localStorage.getItem('currentUser')).uid);
     //const auth=getAuth();
     //const uID = auth.currentUser.uid;
     //-------------------------------------------------
@@ -84,7 +79,7 @@ const MatchDetail = (inVal) => {
         await PlayerDataService.notify(match.owner_id, notification)
       }
       await MatchDataService.addPlayerToWaiting(match.m_id, uID)
-      const newMatch = await MatchDataService.get(match.m_id)
+      const newMatch = await MatchDataService.getByid(match.m_id)
       setMatch(newMatch.data)
     }
   return (
