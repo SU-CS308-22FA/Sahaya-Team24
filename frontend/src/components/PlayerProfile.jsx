@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
-import { getAuth } from "firebase/auth";
-import {Button, Select, MenuItem, FormControl, InputLabel,TextField ,Card,Stack} from '@mui/material'
+import React, { useEffect, useState} from "react";
+import {Button, Select, MenuItem, FormControl, InputLabel,TextField ,Card} from '@mui/material'
 import PlayerDataService from '../services/player.service';
 import Delete from "./Delete";
 import updatePlayer from "./updatePlayer";
@@ -8,11 +7,13 @@ import classes from './PlayerProfile.module.css';
 import Layout from './layout/Layout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
-import { UserIdContext } from "../contexts/UserIdContext";
 const PlayerProfile = () => {
   const [player, setPlayer] = useState(null);
   const [key, setKey] = useState("")
   const [value, setValue] = useState("")
+  const currentUser = JSON.parse(window.localStorage.getItem('currentUser'))
+
+
   const getBody = () => {
     let newBody = player
     newBody[key] = value
@@ -30,23 +31,17 @@ const PlayerProfile = () => {
   };
 
   const deleteFunc = async () => {
-    await Delete(uID)
+    await Delete(currentUser.uid)
     navigateToSignIn()
   }
 
-  const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
-  useEffect(() => {
-    const userID = window.localStorage.getItem('user_id')
-    if (userID !== null) setUID(userID);
-    console.log(userID);
-  }, [])
 
   useEffect(() => {
     const getPlayerData = async () => {
       try {
         //console.log(getAuth().currentUser.uid);
         //const uID = getAuth().currentUser.uid;
-        const response = await PlayerDataService.get(uID);
+        const response = await PlayerDataService.get(currentUser.uid);
         console.log(response.data);
         setPlayer(response.data);
       } catch (err) {

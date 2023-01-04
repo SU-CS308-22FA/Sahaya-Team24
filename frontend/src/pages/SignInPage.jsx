@@ -13,25 +13,23 @@ import FormLabel from '@mui/material/FormLabel';
 import classes from '../components/Mix.module.css';
 import Layout from '../components/layout/Layout';
 
-import { UserDataContext } from "../contexts/UserDataContext";
-import { UserIdContext } from "../contexts/UserIdContext";
-
 import RefereeDataService from '../services/referee.service';
 import PlayerDataService from '../services/player.service';
 
 const SignInPage = () => {
-    const auth = getAuth();
+    const auth = getAuth()
     const [uMail, setUMail] = useState("");
     const [uPassword, setUPassword] = useState("");
-    let navigate = useNavigate();
 
+
+    let navigate = useNavigate();
     const navigateToHome = () => {
       navigate('./HomePage');
     };
-
     const navigateToReg = () => {
       navigate('/RegisterPage');
     };
+
 
     const handleAnonymousSignIn = () =>{
       window.localStorage.setItem('user_type', 'anonymous');  
@@ -44,31 +42,35 @@ const SignInPage = () => {
         // ...
       });
     }
-    
+
     const handleUserType = async (uID) => {
       let type;
       try {
-        console.log("waiting response");
         const response = await RefereeDataService.get(uID);
         type = 'referee';
         return type;
       } catch (error) {
-        console.log(error); 
+        try {
+          const response = await PlayerDataService.get(uID);
+          type = 'player';
+          return type;
+        } catch (error) {
+          console.log("user is not referee")
+        } 
       }       
     }
 
     const handleSubmit = async () => {
       try{
-        const { user } = await signInWithEmailAndPassword(auth, uMail, uPassword);
-        window.localStorage.setItem('user_id', user.uid);
+        await signInWithEmailAndPassword(auth, uMail, uPassword);
+        const user = JSON.parse(window.localStorage.getItem('currentUser'))
         const type = await handleUserType(user.uid);
         
-        if (type == 'referee') {
+        if (type == 'referee' || type == 'player') {
           window.localStorage.setItem('user_type', type);   
-        } else {
-          window.localStorage.setItem('user_type', 'player');
+        }else {
+          window.localStorage.setItem('user_type', '');
         }
-        
         navigateToHome();
       } catch (error) {
         if (error.code === "auth/wrong-password") {
