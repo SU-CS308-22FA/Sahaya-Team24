@@ -45,7 +45,6 @@ const App = () => {
               <Route path="/ProfilePage" element={<ProfilePage />} />
               <Route path="/matchcreation" element={<MatchCreateP />} />
               <Route path="/matchDetail" element={<MatchDetailPage />} />
-              <Route path="/RegisterP/CreateProfile/HomePage" element={<HomePage />} />
               <Route path="/matchDetail/editMatch" element={<MatchEditPage/>} />
             </Route>
           </Routes>
