@@ -1,11 +1,14 @@
 import React, {useState} from 'react'
+
 import {Button,Card, Box, Typography,Toolbar, ButtonGroup} from '@mui/material'
 import MatchDataService from '../services/match.service';
 import PlayerDataService from '../services/player.service';
 import RefereeDataService from '../services/referee.service';
+import { useNavigate } from "react-router-dom";
 
 const MessageList_item = (props) => {
-  const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
+  let navigate = useNavigate();
+  const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
 
   const handleUserType = async (uID) => {
     let type;
@@ -46,16 +49,10 @@ const MessageList_item = (props) => {
     await PlayerDataService.deleteNotification(uID,props.passedValue.id)
   }
 
-  const refereeRefuseJoinRequest = async () => {
-    await RefereeDataService.deleteNotification(uID, props.passedValue.id)
-  }
+  const navigateToSendRatings = (e) => {
+    console.log("props from mli: " , props.passedValue);
+    navigate('/HomePage/RateSendPage',{state: {sentVal: props.passedValue,},});
 
-  const refereeAcceptJoinRequest = async () => {
-    await RefereeDataService.addMatchToReferee(uID, props.passedValue.matchID)
-    await RefereeDataService.deleteNotification(uID, props.passedValue.id)
-    let match = await MatchDataService.get(props.passedValue.matchID)
-    match.data.referee = uID
-    await MatchDataService.update(props.passedValue.matchID , match.data);
   }
 
   if(props.passedValue.type == "Join Request") 
@@ -79,40 +76,21 @@ const MessageList_item = (props) => {
       
       </Card>
     )
-  } else if(props.passedValue.type == "Referee Invite") {
-    return (
-      <Card style={{backgroundColor:"#00466e", margin:"1vh", width:"50vh", justifyContent:"center"}}>
-      <Box  sx={{flexGrow: 1, textAlign:"center"}}>
-          <Typography variant="h4" style={{color:"white", marginTop:"1vh"}}>{props.passedValue.header}</Typography>
-      </Box>
-      <Toolbar>
-      <Typography  style={{color:"white", textAlign:"start"}}>{props.passedValue.message}</Typography>
-      </Toolbar>
-      <ButtonGroup variant = "contained">
-        <Button onClick={refereeAcceptJoinRequest}>
-          Accept
-        </Button>
-        <Button onClick={refereeRefuseJoinRequest}>
-          Decline
-        </Button>
-      </ButtonGroup>
-      
-      </Card>
-    )
-  } else 
+  }else if(props.passedValue.type == "RatePlayers")
   {
     return(
-      <Card style={{backgroundColor:"#00466e", margin:"1vh", width:"50vh", justifyContent:"center"}}>
-        <Box  sx={{flexGrow: 1, textAlign:"center"}}>
+      <Button style={{padding:"0", textTransform:"none"}} onClick={navigateToSendRatings}>
+        <Card style={{backgroundColor:"#00466e", margin:"1vh", width:"50vh", justifyContent:"center"}}>
+          <Box  sx={{flexGrow: 1, textAlign:"center"}}>
             <Typography variant="h4" style={{color:"white", marginTop:"1vh"}}>{props.passedValue.header}</Typography>
-        </Box>
-        <Toolbar>
-          <Typography  style={{color:"white", textAlign:"start"}}>{props.passedValue.message}</Typography>
-        </Toolbar>
-      </Card>
+          </Box>
+          <Toolbar>
+            <Typography  style={{color:"white", textAlign:"start"}}>{props.passedValue.message}</Typography>
+          </Toolbar>
+        </Card>
+      </Button>
     )
-  }
-  
 }
 
+}
 export default MessageList_item

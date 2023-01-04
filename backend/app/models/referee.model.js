@@ -23,13 +23,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.ARRAY(Sequelize.STRING)
     },
     dates: {
-      type: Sequelize.ARRAY(Sequelize.STRING)
+      type: Sequelize.ARRAY(Sequelize.DATEONLY)
     },
     matches: {
       type: Sequelize.ARRAY(Sequelize.STRING)
-    },
-    r_notifications: {
-      type: Sequelize.ARRAY(Sequelize.JSON)
     }
   });
 
