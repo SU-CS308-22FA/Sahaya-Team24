@@ -103,7 +103,7 @@ const MatchCreate = () => {
     
 
     //---------------getCurrentuserID------------------
-    const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+    const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
     //-------------------------------------------------
 
 
