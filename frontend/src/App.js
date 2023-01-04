@@ -14,7 +14,6 @@ import SearchUser from "./pages/SearchUser";
 import OtherPlayerProfile from "./components/OtherPlayerProfile";
 import OtherRefereeProfile from "./components/OtherRefereeProfile";
 import MatchEditPage from "./pages/MatchEditPage"
-import RateP from "./pages/RateP";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./utils/firebaseConfig";
 

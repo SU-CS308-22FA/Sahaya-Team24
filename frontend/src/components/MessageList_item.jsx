@@ -81,7 +81,7 @@ const MessageList_item = (props) => {
     let match = await MatchDataService.get(props.passedValue.matchID)
     match.data.referee = uID
     await MatchDataService.update(props.passedValue.matchID , match.data);
-    
+  }  
   const navigateToSendRatings = (e) => {
     navigate('/RateSendPage',{state: {sentVal: props.passedValue,},});
 
