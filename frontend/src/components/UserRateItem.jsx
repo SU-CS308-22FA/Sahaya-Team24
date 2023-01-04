@@ -29,7 +29,7 @@ const updatePlayer = async (body) => {
 
 let newRateing = [0,0,0];
 const HandleRates = () =>{
-
+  if(window.confirm("Bu kullanıcıya bir daha oy veremezsiniz, emin misiniz?")){
   if(!rateSend){
   newRateing[0] =  currentRateing[0] + rating;
   newRateing[1] =  currentRateing[1] + fp_rating;
@@ -42,9 +42,8 @@ const HandleRates = () =>{
 
   }else{
     alert("Bu kullanıcıya zaten oy verdiniz");
-
   }
-
+  }
 }
 
 if(uID === player.p_id){
