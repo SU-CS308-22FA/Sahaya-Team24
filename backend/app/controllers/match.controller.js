@@ -287,6 +287,10 @@ exports.create = (req, res) => {
     console.log( "time is: " ,  schedule_time);
     //console.log(cron.validate(schedule_time));
     cron.schedule(schedule_time, async ()=>{
+
+        Match.findByPk(m.m_id)
+        .then(async (newM)=>{  
+        m = newM;
         console.log("match is over");
         let ps = m.players;
         console.log(ps);
@@ -303,7 +307,7 @@ exports.create = (req, res) => {
           playerTosend = await Player.findAll({where:{
             p_id: ps[index]
         }})
-        console.log(playerTosend)
+        console.log("ptsis: " , playerTosend)
         try {
           pushNotification_to(ps[index],notification);
           console.log("message ha been sent to " ,ps[index], " in " , m.m_name )
@@ -312,7 +316,8 @@ exports.create = (req, res) => {
         }
           
        }
-
+       
+      })
     })
 }
 
