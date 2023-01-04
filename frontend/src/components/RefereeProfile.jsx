@@ -21,9 +21,9 @@ const RefereeProfile = () => {
   const [key, setKey] = useState("")
   const [value, setValue] = useState("")
 
-  const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+  const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
   useEffect(() => {
-    const userID = window.localStorage.getItem('user_id')
+    const userID = JSON.parse(window.localStorage.getItem('currentUser')).uid
     if (userID !== null) setUID(userID);
     console.log(userID);
   }, [])

@@ -28,8 +28,9 @@ const MessageList_item = (props) => {
   console.log(type)
   if (type === 'referee') {
     await RefereeDataService.addMatchToReferee(props.passedValue.senderID, props.passedValue.matchID)
-    const res = await RefereeDataService.get(props.passedValue.senderID)
-    console.log(res)
+    let match = await MatchDataService.get(props.passedValue.matchID)
+    match.data.referee = props.passedValue.senderID
+    await MatchDataService.update(props.passedValue.matchID , match.data);
   } else {
     let player
     try

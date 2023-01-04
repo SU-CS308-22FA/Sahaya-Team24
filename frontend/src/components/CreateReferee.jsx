@@ -18,11 +18,11 @@ class AddReferee extends Component{
     let uId = this.props.uID;
     console.log(uId);
     this.state = {
-      //r_id: getAuth().currentUser.uid,
       r_id: uId,
       r_name: "",
       r_age: 0,
-      r_location: ""
+      r_location: "",
+      available_locations: []
     };
     
   }
@@ -49,22 +49,28 @@ class AddReferee extends Component{
   
 
   saveReferee() {
-
+    this.state.available_locations.push(this.state.r_location)
+    /*this.setState({
+      available_locations: this.state.available_locations
+    })*/
+    console.log(this.state.available_locations)
     var data = {
       r_id: this.state.r_id,
       r_name: this.state.r_name,
       r_age: this.state.r_age,
       r_location: this.state.r_location,
+      available_locations: this.state.available_locations
     };
-    console.log("data:");
-    console.log(data);
+    //console.log("data:");
+    //console.log(data);
     RefereeDataService.create(data)
       .then(response => {
         this.setState({
           r_id: response.data.id,
           r_name: response.data.r_name,
           r_age: response.data.r_age,
-          r_location: response.data.r_location
+          r_location: response.data.r_location,
+          available_locations: response.data.available_locations
         });
         console.log(response.data);
       })
@@ -79,9 +85,11 @@ class AddReferee extends Component{
       r_id: this.props.uID,
       r_name: "",
       r_age: 0,
-      r_location: ""
+      r_location: "",
+      available_locations: []
     });
   }
+
   render(){
   return (
     <Card className={classes.card}>

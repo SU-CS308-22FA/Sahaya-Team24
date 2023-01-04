@@ -26,7 +26,7 @@ exports.create = (req, res) => {
     rr: 0,
     fpr: 0,
     r_location: req.body.r_location,
-    available_locations: [],
+    available_locations: req.body.available_locations,
     dates: [],
     matches: []
   };
