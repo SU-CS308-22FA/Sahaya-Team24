@@ -35,12 +35,7 @@ const MatchDetail = (inVal) => {
   var min = date.getMinutes();
     
     //---------------getCurrentuserID------------------
-    const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
-    useEffect(() => {
-      const userID = window.localStorage.getItem('user_id')
-      if (userID !== null) setUID(userID);
-      console.log(userID);
-    }, [])
+    const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
     //const auth=getAuth();
     //const uID = auth.currentUser.uid;
     //-------------------------------------------------
