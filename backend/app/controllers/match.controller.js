@@ -33,7 +33,8 @@ exports.create = (req, res) => {
         m_date: req.body.m_date,
         owner_id: req.body.owner_id,
         players: [req.body.owner_id],
-        waitingList:[]
+        waitingList:[],
+        referee: ''
     };
   
     // Save Match in the database
