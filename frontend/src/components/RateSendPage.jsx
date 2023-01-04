@@ -16,7 +16,7 @@ const RateSendPage = (props) => {
   let navigate = useNavigate();
   const msg = props.passedValue.sentVal;
   const [users, setUsers] = React.useState([]);
-  const [uID, setUID] = useState(window.localStorage.getItem('user_id'));
+  const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
   
   const Retrive_from_database = async (msg) =>{
   //------getting match from database---------------
@@ -31,6 +31,8 @@ const RateSendPage = (props) => {
 //array of user ids is in the variable users
   let allUsers = m.players;
 //------------------------------------------------------------------
+
+console.log("from RateSendPage: curMatch:" , m , "allusers: " , allUsers, "current user id: " , uID);
 
 const userIdToObj = async (id) =>{
   
