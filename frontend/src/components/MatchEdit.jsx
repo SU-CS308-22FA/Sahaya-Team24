@@ -4,7 +4,7 @@ import MatchDataService from '../services/match.service';
 import RefereeDataService from '../services/referee.service'
 import PlayerDataService from '../services/player.service';
 import dayjs, { Dayjs } from 'dayjs';
-import {Button, Select,  FormControl,MenuItem, InputLabel,TextField ,Card,Stack ,Box,Switch } from '@mui/material';
+import {Button, Select,  FormControl,MenuItem, InputLabel,TextField ,Card,Stack ,Box,Switch, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -15,21 +15,19 @@ const MatchEdit = (val) => {
     let navigate = useNavigate();
     let m = val.passedValue.sentVal;
 
-    console.log(m);
-
     //-------------functions for text fields-------------------------
     //matchname
     const [name, setName] = React.useState(m.name);
     const handleNameChange = (event) => {
         setName(event.target.value);
-        console.log("name: " , name);
+        //console.log("name: " , name);
     };
     //match location
     const [mLocation, setLoc] = React.useState(m.m_location);
     const handleLocChange = (event) => {
         setLoc(event.target.value);
-        setRefree(false)
-        console.log("loc: ",mLocation);
+        setCheckRChange(false)
+        //console.log("loc: ",mLocation);
     };
     //----------------------------------------------------------
 
@@ -37,7 +35,7 @@ const MatchEdit = (val) => {
     const [value, setValue] = React.useState(dayjs(m.m_date).toString()); //m.m_date .add(2,'h')
     const handleDateChange = (newValue) => {
       setValue(newValue);
-      console.log("date: ",value);
+      //console.log("date: ",value);
     };
     //--------------------------------------------------------------------
 
@@ -45,25 +43,31 @@ const MatchEdit = (val) => {
     const [numofPlayers, setNOP] = React.useState(m.m_maxPlayer);
 
     const handleplayerChange = (event) => {
-    setNOP(event.target.value);
-    console.log("numofPlayers: ",numofPlayers);
+      setNOP(event.target.value);
+      //console.log("numofPlayers: ",numofPlayers);
     };
     //------------------------------------------------------------------
     
-    //----------------for switch--------------------------
-    const [checked, setRefree] = React.useState(m.m_needRefree);
+    //----------------for hakem atansın istiyorum switch--------------------------
+    const [checR, setCheckR] = React.useState(m.m_needRefree);
     let newReferee = m.referee
     const handleRefreeChange = (event) => {
-      setRefree(event.target.checked);
+      setCheckR(event.target.checked);
       handleFilterRefereeData()
-      if (checked === false) {
+      if (checR === false) {
         newReferee = ''
       } else {
         newReferee = m.referee
       }
-      console.log("checked: ",checked);
-      
+      //console.log("checked: ",checked);
     };
+
+    // for referee change switch
+    const [checkRChange, setCheckRChange] = useState(false);
+    const handleRChange = (event) => {
+      setCheckRChange(event.target.checked);
+      handleFilterRefereeData()
+    }
     
     useEffect(() => {
       getRefereeData() // get all referees
@@ -75,12 +79,12 @@ const MatchEdit = (val) => {
     const [referee, setReferee] = useState('');
     const [filteredR, setFilteredR] = useState([]);
     const [currentR, setCurrentR] = useState();
+
     // get all referees data and set it to referees array
     const getRefereeData = async () => {
       try {
         const response = await RefereeDataService.getAll();
         setReferees(response.data);
-        console.log(referees)
       } catch (error) {
         console.log(error);
       }
@@ -108,19 +112,18 @@ const MatchEdit = (val) => {
     
     const [player, setPlayer] = useState(null);
     useEffect(() => {
-    const getPlayerData = async () => {
-      try {
-        //console.log(getAuth().currentUser.uid);
-        //const uID = getAuth().currentUser.uid;
-        const response = await PlayerDataService.get(m.owner_id);
-        console.log(response.data);
-        setPlayer(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getPlayerData();
-    
+      const getPlayerData = async () => {
+        try {
+          //console.log(getAuth().currentUser.uid);
+          //const uID = getAuth().currentUser.uid;
+          const response = await PlayerDataService.get(m.owner_id);
+          //console.log(response.data);
+          setPlayer(response.data);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      getPlayerData();
     }, []);
 
     const refereeInvite = async () => {
@@ -131,8 +134,6 @@ const MatchEdit = (val) => {
         "header": "New match invite!",
         "message" : `Owner ${player.p_name} wants you to join his/her match ${m.m_name}!`
       }
-      console.log(referee);
-      console.log(player);
       await RefereeDataService.notify(referee, notification)
     }
     
@@ -144,7 +145,7 @@ const MatchEdit = (val) => {
             m_location: mLocation,
             m_maxPlayer: numofPlayers,
             m_curPlayer: m.m_curPlayer,
-            m_needRefree: checked,
+            m_needRefree: checR,
             m_date: value,
             owner_id: m.owner_id,
           }
@@ -154,7 +155,7 @@ const MatchEdit = (val) => {
             m_location: mLocation,
             m_maxPlayer: numofPlayers,
             m_curPlayer: m.m_curPlayer,
-            m_needRefree: checked,
+            m_needRefree: checR,
             m_date: value,
             owner_id: m.owner_id,
             referee: m.referee
@@ -163,7 +164,6 @@ const MatchEdit = (val) => {
           
           if( name != ""  && mLocation != "" && numofPlayers != "" && value != ""){
             try{
-                console.log("trying to update");
                 await MatchDataService.update(m.m_id , data);
                 if (referee != m.referee) {
                   refereeInvite()
@@ -175,9 +175,6 @@ const MatchEdit = (val) => {
           }else{
             alert("bir hata oluştu lütfen daha sonra tekrar deneyiniz");
           }
-          
-          
-
     }
 
   return (
@@ -242,15 +239,25 @@ const MatchEdit = (val) => {
             <MenuItem value={22}>22</MenuItem>
         </Select>
         </FormControl>
-
+        <div>
+            Hakem:  
+            {" " }{currentR && m.referee != '' ? currentR.r_name : "Hakem yok"}
+        </div>
         <>Hakem atansın istiyorum</>
         <Switch
-          defaultChecked={m.m_needRefree}
           inputProps={{ 'aria-label': 'controlled' }}
           onChange ={ handleRefreeChange }
-          checked = {checked}
+          checked = {checR}
          />
-        <div>{checked === true  ? <div>{filteredR.length > 0 ? 
+        {checR === true ? <div>
+          <>Hakem değiştirmek istiyorum</>
+          <Switch
+            inputProps={{ 'aria-label': 'controlled' }}
+            onChange ={ handleRChange }
+            checked = {checkRChange}
+          />
+        </div> : null}
+        <div>{checkRChange === true  ? <div>{filteredR.length > 0 ? 
           <FormControl style={{width:245}}>
             <InputLabel id="input_location_label">Referee</InputLabel>
             <Select
