@@ -97,12 +97,21 @@ const MessageList_item = (props) => {
 
   const refereeAcceptJoinRequest = async () => {
     let match = await MatchDataService.get(props.passedValue.matchID)
-    
-    console.log("referee matches check result", referee.matches.includes(props.passedValue.matchID))
-    if (referee.matches.includes(props.passedValue.matchID) === false) {
-      await RefereeDataService.addMatchToReferee(uID, props.passedValue.matchID)
-    } 
 
+    let nArray = match.data[0];
+    console.log(nArray)
+    console.log("pre match referee", nArray.referee)
+
+    if (nArray.referee != '') {
+      console.log("hey")
+      await RefereeDataService.deleteMatchFromReferee(nArray.referee, nArray.m_id)
+    }
+
+    console.log("referee matches check result", referee.matches.includes(nArray.m_id))
+    if (referee.matches.includes(nArray.m_id) === false) {
+      await RefereeDataService.addMatchToReferee(uID, nArray.m_id)
+    } 
+    console.log("pre match referee", nArray.referee)
     var data = {
       m_name: match.data.m_name,
       m_location: match.data.m_location,
@@ -114,9 +123,9 @@ const MessageList_item = (props) => {
       referee: uID
     }
 
-    await MatchDataService.update(props.passedValue.matchID , data);
+    await MatchDataService.update(nArray.m_id , data);
     
-    match = await MatchDataService.get(props.passedValue.matchID)
+    match = await MatchDataService.get(nArray.m_id)
 
     await RefereeDataService.deleteNotification(uID, props.passedValue.id)
   }  

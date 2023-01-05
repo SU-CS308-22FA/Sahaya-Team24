@@ -53,6 +53,7 @@ const MatchEdit = (val) => {
     let newReferee = m.referee
     const handleRefreeChange = (event) => {
       setCheckR(event.target.checked);
+      setCheckRChange(false)
       handleFilterRefereeData()
       if (checR === false) {
         newReferee = ''
@@ -139,17 +140,11 @@ const MatchEdit = (val) => {
     
     //-------------------------------------------------
     const handleUpdateMatch=async()=>{
+      if (checR === false && m.referee != '') {
+        await RefereeDataService.deleteMatchFromReferee(m.referee, m.m_id)
+      }
+
         if (referee === m.referee) {
-          var data = {
-            m_name: name,
-            m_location: mLocation,
-            m_maxPlayer: numofPlayers,
-            m_curPlayer: m.m_curPlayer,
-            m_needRefree: checR,
-            m_date: value,
-            owner_id: m.owner_id,
-          }
-        } else {
           var data = {
             m_name: name,
             m_location: mLocation,
@@ -160,12 +155,34 @@ const MatchEdit = (val) => {
             owner_id: m.owner_id,
             referee: m.referee
           }
+        } else if (m.referee != '' && referee != m.referee) {
+          var data = {
+            m_name: name,
+            m_location: mLocation,
+            m_maxPlayer: numofPlayers,
+            m_curPlayer: m.m_curPlayer,
+            m_needRefree: checR,
+            m_date: value,
+            owner_id: m.owner_id,
+            referee: referee
+          }
+        } else {         
+          var data = {
+            m_name: name,
+            m_location: mLocation,
+            m_maxPlayer: numofPlayers,
+            m_curPlayer: m.m_curPlayer,
+            m_needRefree: checR,
+            m_date: value,
+            owner_id: m.owner_id,
+            referee: ''
+          }
         }
           
           if( name != ""  && mLocation != "" && numofPlayers != "" && value != ""){
             try{
                 await MatchDataService.update(m.m_id , data);
-                if (referee != m.referee) {
+                if (referee === '' || referee != m.referee) {
                   refereeInvite()
                 }
               }catch (err) {
