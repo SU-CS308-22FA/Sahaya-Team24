@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 import {Button,Card, Box, Typography,Toolbar, ButtonGroup} from '@mui/material'
 import MatchDataService from '../services/match.service';
@@ -72,13 +72,36 @@ const MessageList_item = (props) => {
     await PlayerDataService.deleteNotification(uID,props.passedValue.id)
   }
 
+  // Referee functions 
+
   const refereeRefuseJoinRequest = async () => {
     await RefereeDataService.deleteNotification(uID, props.passedValue.id)
   }
-  const refereeAcceptJoinRequest = async () => {
-    await RefereeDataService.addMatchToReferee(uID, props.passedValue.matchID)
 
+  const [referee, setReferee] = useState(null); // all referees
+    
+  // get all referees data and set it to referees array
+  const getRefereeData = async () => {
+    try {
+      const response = await RefereeDataService.get(uID);
+      setReferee(response.data);
+      console.log(referee)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  useEffect(() => {
+    getRefereeData() // get all referees
+  }, [])
+
+  const refereeAcceptJoinRequest = async () => {
     let match = await MatchDataService.get(props.passedValue.matchID)
+    
+    console.log("referee matches check result", referee.matches.includes(props.passedValue.matchID))
+    if (referee.matches.includes(props.passedValue.matchID) === false) {
+      await RefereeDataService.addMatchToReferee(uID, props.passedValue.matchID)
+    } 
 
     var data = {
       m_name: match.data.m_name,
