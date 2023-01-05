@@ -56,7 +56,7 @@ const MessageList_item = (props) => {
         "senderID":`${uID}`,
         "matchID": `${props.passedValue.matchID}`,
         "header": "Join Request Accepted!",
-        "message" : `Join request for match ${match.data.m_name} is accepted!`
+        "message" : `Join request for match ${match.data[0].m_name} is accepted!`
       }
       await PlayerDataService.notify(props.passedValue.senderID,response)
     }catch(error) 
@@ -75,7 +75,7 @@ const MessageList_item = (props) => {
       "senderID":`${uID}`,
       "matchID": `${props.passedValue.matchID}`,
       "header": "Join Request Refused!",
-      "message" : `Join request for match ${match.data.m_name} is refused!`
+      "message" : `Join request for match ${match.data[0].m_name} is refused!`
     }
     await PlayerDataService.notify(props.passedValue.senderID,response)
   }
