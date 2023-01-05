@@ -106,7 +106,7 @@ const HomePage = () => {
         setSelectedMatches(matchesDb);
       }
       else{
-        let dummy = matchesDb.filter((match) => match.m_name.toLowerCase().includes(selectedMatchName.trim()));
+        let dummy = matchesDb.filter((match) => match.m_name.toLowerCase().includes(selectedMatchName.toLocaleLowerCase().trim()));
         setSelectedMatches(dummy);
       }
     }
@@ -117,7 +117,7 @@ const HomePage = () => {
       }
       else{
         let dummy = matchesDb.filter((match) => selectedLocations.indexOf(match.m_location) > -1);
-        dummy = dummy.filter((match) => match.m_name.toLowerCase().includes(selectedMatchName.trim()));
+        dummy = dummy.filter((match) => match.m_name.toLowerCase().includes(selectedMatchName.toLocaleLowerCase().trim()));
         setSelectedMatches(dummy);
       }
     }
