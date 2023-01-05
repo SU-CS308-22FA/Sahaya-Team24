@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, AppBar, Toolbar, Typography, List, ListItem, Grid, Stack, Card, Autocomplete, TextField} from '@mui/material';
 import MatchDataService from '../services/match.service'
+import RefereeDataService from '../services/referee.service'
 import { useNavigate } from 'react-router-dom';
 
 const MatchEditDeletebtns = (data) => {
@@ -10,7 +11,12 @@ const MatchEditDeletebtns = (data) => {
     const handleDeleteMatch = async () => {
         if(window.confirm("Bu maç lobisini silmek üzeresiniz. Sildiğiniz maçlar geri alınamaz, silmek istediğinize emin misiniz?")){
         try{
-        await MatchDataService.delete(match.m_id);
+            if (match.referee != '') {
+                console.log(match.referee)
+                console.log(match.m_id)
+                await RefereeDataService.deleteMatchFromReferee(match.referee, match.m_id)
+            }
+            await MatchDataService.delete(match.m_id);
         }catch (err) {
             console.log(err);
           }

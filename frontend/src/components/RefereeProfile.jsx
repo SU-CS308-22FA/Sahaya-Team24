@@ -159,9 +159,9 @@ const RefereeProfile = () => {
       <div>Fair Play Rating: {referee != null ? referee.fpr : null}</div>
       <div>Location: {referee != null ? referee.r_location : null}</div>
       <div>Available locations: {referee != null ? referee.available_locations.map((loc, i) => (<li key={i}>{loc}</li>)) : null}</div>
-      <div>Available dates: {referee != null ? referee.dates.map((c_date, i) => (
+      {/*<div>Available dates: {referee != null ? referee.dates.map((c_date, i) => (
           <li key={i}>{c_date}</li>
-        )): null}</div>
+      )): null}</div>*/}
       </Card>
       </Layout>
       {/* available locations */}
@@ -187,7 +187,7 @@ const RefereeProfile = () => {
           updateReferee(getBodyALocDelete())
         }}>Delete available location</Button>
       </div>
-      {/* Date picker for referee */}
+      {/* Date picker for referee 
       <div className="referee-date">
         <div style={{margin: 'auto', display: 'block', width: 'fit-content'}}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -207,6 +207,7 @@ const RefereeProfile = () => {
           }}>Delete date</Button>
         </div>
       </div>
+      */}
 
       <Card className = {classes.card}>
       <FormControl fullWidth>
