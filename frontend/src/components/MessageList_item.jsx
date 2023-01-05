@@ -7,9 +7,9 @@ import RefereeDataService from '../services/referee.service';
 import { useNavigate } from "react-router-dom";
 
 const MessageList_item = (props) => {
-
   let navigate = useNavigate();
   const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
+
   const handleUserType = async (uID) => {
     let type;
     try {
@@ -77,10 +77,25 @@ const MessageList_item = (props) => {
   }
   const refereeAcceptJoinRequest = async () => {
     await RefereeDataService.addMatchToReferee(uID, props.passedValue.matchID)
-    await RefereeDataService.deleteNotification(uID, props.passedValue.id)
+
     let match = await MatchDataService.get(props.passedValue.matchID)
-    match.data.referee = uID
-    await MatchDataService.update(props.passedValue.matchID , match.data);
+
+    var data = {
+      m_name: match.data.m_name,
+      m_location: match.data.m_location,
+      m_maxPlayer: match.data.m_maxPlayer,
+      m_curPlayer: match.data.m_curPlayer,
+      m_needRefree: match.data.m_needRefree,
+      m_date: match.data.m_date,
+      owner_id: match.data.owner_id,
+      referee: uID
+    }
+
+    await MatchDataService.update(props.passedValue.matchID , data);
+    
+    match = await MatchDataService.get(props.passedValue.matchID)
+
+    await RefereeDataService.deleteNotification(uID, props.passedValue.id)
   }  
   const navigateToSendRatings = (e) => {
     navigate('/RateSendPage',{state: {sentVal: props.passedValue,},});

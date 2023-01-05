@@ -35,6 +35,7 @@ const MatchCreate = () => {
   const [mLocation, setLoc] = React.useState('');
   const handleLocChange = (event) => {
     setLoc(event.target.value);
+    setRefree(false) // when user changes location, this one closes switch
     console.log("loc: ",mLocation);
   };
   //----------------------------------------------------------
@@ -159,8 +160,6 @@ const MatchCreate = () => {
   useEffect(() => {
     const getPlayerData = async () => {
       try {
-        //console.log(getAuth().currentUser.uid);
-        //const uID = getAuth().currentUser.uid;
         const response = await PlayerDataService.get(uID);
         console.log(response.data);
         setPlayer(response.data);
@@ -173,15 +172,12 @@ const MatchCreate = () => {
   }, []);
   
   const refereeInvite = async () => {
-    
     const notification = {
       "type": "Referee Invite",
       "matchID": `${matchID}`,
       "header": "New match invite!",
       "message" : `Owner ${player.p_name} wants you to join his/her match ${name}!`
     }
-    console.log(referee);
-    console.log(player);
     await RefereeDataService.notify(referee, notification)
   }
   
