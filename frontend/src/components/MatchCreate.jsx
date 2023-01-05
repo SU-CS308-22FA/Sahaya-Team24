@@ -248,9 +248,9 @@ const MatchCreate = () => {
          />
         <div>{checked === true  ? <div>{filteredR.length > 0 ? 
           <FormControl style={{width:245}}>
-            <InputLabel id="input_location_label">Referee</InputLabel>
+            <InputLabel id="input_referee_label">Referee</InputLabel>
             <Select
-              id="input_location"
+              id="input_referee"
               autoWidth
               value={referee}
               label="Location"
