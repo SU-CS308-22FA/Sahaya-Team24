@@ -226,8 +226,9 @@ exports.deleteMatch = (req, res) => {
   Referee.findByPk(rid)
     .then(data => {
       let array = data.dataValues.matches
-      array.splice(array.indexOf(mid), 1)
-      data.dataValues.matches = array
+      let newarr = array.filter(a => a !== mid)
+      //array.splice(array.indexOf(mid), 1)
+      data.dataValues.matches = newarr
       Referee.update(data.dataValues, {
         where: { r_id: rid }
       }).then(num => {

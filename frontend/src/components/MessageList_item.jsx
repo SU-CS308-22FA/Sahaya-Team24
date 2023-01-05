@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 import {Button,Card, Box, Typography,Toolbar, ButtonGroup} from '@mui/material'
 import MatchDataService from '../services/match.service';
@@ -7,9 +7,9 @@ import RefereeDataService from '../services/referee.service';
 import { useNavigate } from "react-router-dom";
 
 const MessageList_item = (props) => {
-
   let navigate = useNavigate();
   const [uID, setUID] = useState(JSON.parse(window.localStorage.getItem('currentUser')).uid);
+
   const handleUserType = async (uID) => {
     let type;
     try {
@@ -72,15 +72,62 @@ const MessageList_item = (props) => {
     await PlayerDataService.deleteNotification(uID,props.passedValue.id)
   }
 
+  // Referee functions 
+
   const refereeRefuseJoinRequest = async () => {
     await RefereeDataService.deleteNotification(uID, props.passedValue.id)
   }
+
+  const [referee, setReferee] = useState(null); // all referees
+    
+  // get all referees data and set it to referees array
+  const getRefereeData = async () => {
+    try {
+      const response = await RefereeDataService.get(uID);
+      setReferee(response.data);
+      console.log(referee)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  useEffect(() => {
+    getRefereeData() // get all referees
+  }, [])
+
   const refereeAcceptJoinRequest = async () => {
-    await RefereeDataService.addMatchToReferee(uID, props.passedValue.matchID)
-    await RefereeDataService.deleteNotification(uID, props.passedValue.id)
     let match = await MatchDataService.get(props.passedValue.matchID)
-    match.data.referee = uID
-    await MatchDataService.update(props.passedValue.matchID , match.data);
+
+    let nArray = match.data[0];
+    console.log(nArray)
+    console.log("pre match referee", nArray.referee)
+
+    if (nArray.referee != '') {
+      console.log("hey")
+      await RefereeDataService.deleteMatchFromReferee(nArray.referee, nArray.m_id)
+    }
+
+    console.log("referee matches check result", referee.matches.includes(nArray.m_id))
+    if (referee.matches.includes(nArray.m_id) === false) {
+      await RefereeDataService.addMatchToReferee(uID, nArray.m_id)
+    } 
+    console.log("pre match referee", nArray.referee)
+    var data = {
+      m_name: match.data.m_name,
+      m_location: match.data.m_location,
+      m_maxPlayer: match.data.m_maxPlayer,
+      m_curPlayer: match.data.m_curPlayer,
+      m_needRefree: match.data.m_needRefree,
+      m_date: match.data.m_date,
+      owner_id: match.data.owner_id,
+      referee: uID
+    }
+
+    await MatchDataService.update(nArray.m_id , data);
+    
+    match = await MatchDataService.get(nArray.m_id)
+
+    await RefereeDataService.deleteNotification(uID, props.passedValue.id)
   }  
   const navigateToSendRatings = (e) => {
     navigate('/RateSendPage',{state: {sentVal: props.passedValue,},});
