@@ -132,7 +132,7 @@ const MatchDetail = (inVal) => {
           </Box>
             {uType=="anonymous" || match.waitingList.includes(uID) || match.players.includes(uID) 
             ?<Button onClick={navigateToHome} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Anasayfaya dön...</Typography></Button>
-            : <div>{match.referee === '' ? <Button onClick={joinMatch} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button> : <Button onClick={navigateToHome} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Anasayfaya dön...</Typography></Button>}</div>}
+            : <div>{uType=="player" || match.referee === '' ? <Button onClick={joinMatch} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Maça Katıl</Typography></Button> : <Button onClick={navigateToHome} style={{backgroundColor: "#ffffff", margin:"5px", textTransform:"none" }} variant="contained"><Typography style={{color: "#00466e", fontWeight: "bold"}}>Anasayfaya dön...</Typography></Button>}</div>}
             <MatchEditDeletebtns passedValue = {data}/>
           </Box>
     </Card>
