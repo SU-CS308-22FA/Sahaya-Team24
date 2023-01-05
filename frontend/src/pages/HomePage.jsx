@@ -189,6 +189,7 @@ const HomePage = () => {
       renderInput={(params) => (
         <TextField 
           {...params}
+          InputLabelProps={{ style: { color: "white" } }}
           variant="standard"
           label="Choose Locations"
           placeholder="Locations"
@@ -196,6 +197,7 @@ const HomePage = () => {
       )}/>
       <TextField
               id="input_match_search"
+              InputLabelProps={{ style: { color: "white" } }}
               type="email"
               label="Match Name"
               variant="outlined"
