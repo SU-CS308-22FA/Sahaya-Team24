@@ -82,6 +82,7 @@ const MatchDetail = (inVal) => {
       await MatchDataService.addPlayerToWaiting(match.m_id, uID)
       const newMatch = await MatchDataService.get(match.m_id)
       setMatch(newMatch.data)
+      navigateToHome()
     }
 
     useEffect(() => {
